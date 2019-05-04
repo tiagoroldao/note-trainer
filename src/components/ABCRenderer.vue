@@ -32,7 +32,7 @@
 
 <style scoped>
     .abcWrapper {
-        width: 50%;
+        width: 100%;
         display: inline-block;
     }
 </style>

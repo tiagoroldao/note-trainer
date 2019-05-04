@@ -7,7 +7,7 @@
                 {{ option.label ||  `microphone ${index + 1}`}}
             </option>
         </select>
-        <div>
+        <div class="note">
             <NoteRenderer :note="note"/>
         </div>
     </div>
@@ -19,8 +19,6 @@ import { Note } from 'tonal';
 import { toAbc } from 'tonal-abc-notation';
 import NoteRenderer from '@/components/NoteRenderer.vue';
 import { Component, Prop, Vue, Provide, Watch } from 'vue-property-decorator';
-
-const audioContext = new AudioContext();
 
 @Component({
   components: {
@@ -35,6 +33,7 @@ export default class PitchFinder extends Vue {
     @Provide() public note = 'x';
 
     private analyser!: PitchAnalyser;
+    private audioContext!: AudioContext;
 
     @Watch('selectedDevice')
     public onSelectedDeviceChange() {
@@ -68,12 +67,13 @@ export default class PitchFinder extends Vue {
             },
         })
         .then((stream) => {
-            this.analyser.connectToSource(audioContext.createMediaStreamSource(stream));
+            this.analyser.connectToSource(this.audioContext.createMediaStreamSource(stream));
         });
     }
 
     private startAnalyser() {
-        this.analyser = new PitchAnalyser(audioContext);
+        this.audioContext = new AudioContext();
+        this.analyser = new PitchAnalyser(this.audioContext);
         this.analyser.on('pitch-change', (pitch) => {
             if (pitch) {
                 this.pitch = pitch;
@@ -84,6 +84,13 @@ export default class PitchFinder extends Vue {
 }
 </script>
 
-<style>
-
+<style lang="scss">
+    .note {
+        width: 50%;
+        margin-left: 25%;
+        @media screen and (max-width: 750px) {
+            width: 100%;
+            margin-left: 0;
+        }
+    }
 </style>
