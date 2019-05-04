@@ -1,4 +1,4 @@
-# music-learner
+# note-trainer
 
 ## Project setup
 ```
