@@ -1,7 +1,5 @@
 <template>
-  <v-container fluid grid-list-xl class="home">
     <PitchFinder/>
-  </v-container>
 </template>
 
 <script lang="ts">
