@@ -1,18 +1,28 @@
 <template>
-    <div>
-        <h1>Pitch Finder</h1>
-        <div>
-            <select v-model="selectedDevice">
-                <option disabled value="">Please select an input device</option>
-                <option v-for="(option, index) in devices" :value="option.deviceId" :key="option.deviceId">
-                    {{ option.label ||  `microphone ${index + 1}`}}
-                </option>
-            </select>
-        </div>
-        <div class="note">
-            <NoteRenderer :note="note"/>
-        </div>
-    </div>
+    <v-container>
+        <v-layout wrap align-center justify-center>
+            <v-flex xs12>
+                <h1>Pitch Finder</h1>
+            </v-flex>
+        </v-layout>
+        <v-layout wrap align-center justify-center>
+            <v-flex xs12 sm6 d-flex>
+                <v-select
+                    v-model="selectedDevice"
+                    :items="devices"
+                    attach
+                    :item-text="(item) => item.label ||  `microphone ${index + 1}`"
+                    item-value="deviceId"
+                    label="Please select an input device"
+                ></v-select>
+            </v-flex>
+        </v-layout>
+        <v-layout wrap align-center justify-center>
+            <v-flex xs12 sm6 d-flex>
+                <NoteRenderer :note="note"/>
+            </v-flex>
+        </v-layout>
+    </v-container>
 </template>
 
 <script lang="ts">
@@ -142,12 +152,4 @@ export default class PitchFinder extends Vue {
 </script>
 
 <style lang="scss">
-    .note {
-        width: 50%;
-        margin-left: 25%;
-        @media screen and (max-width: 750px) {
-            width: 100%;
-            margin-left: 0;
-        }
-    }
 </style>
