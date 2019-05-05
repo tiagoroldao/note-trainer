@@ -1,7 +1,8 @@
 <template>
-  <div id="app">
+  <v-app id="app">
     <div id="nav">
-      <router-link to="/">Pitch Finder</router-link>|
+      <router-link to="/">Pitch Finder</router-link>
+      <span class="separator">|</span>
       <router-link to="/about">About</router-link>
     </div>
     <router-view/>
@@ -27,7 +28,7 @@
         ></path>
       </svg>
     </a>
-  </div>
+  </v-app>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
@@ -52,6 +53,10 @@ export default class Home extends Vue {}
     &.router-link-exact-active {
       color: #42b983;
     }
+  }
+
+  .separator {
+    margin: 0px 10px;
   }
 }
 
