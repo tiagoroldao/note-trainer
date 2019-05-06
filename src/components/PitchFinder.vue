@@ -64,8 +64,10 @@ export default class PitchFinder extends Vue {
         if (this.state !== 'running' && this.selectedDevice) {
             this.startContext().then(this.startAudioStream);
         } else {
-            this.suspendContext();
-            this.note = 'x';
+            this.suspendContext().then(() => {
+                this.state = 'stopped';
+                this.note = 'x';
+            });
         }
     }
 
@@ -108,15 +110,18 @@ export default class PitchFinder extends Vue {
                 track.stop();
             });
             delete this.audioStream;
-            this.state = 'stopped';
         }
     }
 
     private onVisibilityChange() {
         if (document.visibilityState === 'visible') {
-            this.resumeContext();
+            if (this.state === 'suspended') {
+                this.resumeContext();
+            }
         } else {
-            this.suspendContext();
+            if (this.state === 'running') {
+                this.suspendContext();
+            }
         }
     }
 
@@ -126,6 +131,7 @@ export default class PitchFinder extends Vue {
 
     private suspendContext(): Promise<void> {
         this.stopAudioStream();
+        this.state = 'suspended';
         return this.$audioContext.suspendContext();
     }
 
@@ -139,7 +145,6 @@ export default class PitchFinder extends Vue {
             delete this.analyser;
         }
         this.stopAudioStream();
-        return this.$audioContext.stopContext();
     }
 
     private startAnalyser() {
