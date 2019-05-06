@@ -60,8 +60,8 @@ export default class PitchAnalyser {
       if (!this.listeners[event]) {
         return;
       }
-      for (const listener of this.listeners[event]) {
-        setTimeout(() => listener(...args));
+      for (let i = 0; i < this.listeners[event].length; i += 1) {
+        setTimeout(() => this.listeners[event][i](...args));
       }
     }
 }

@@ -1,5 +1,5 @@
 <template>
-    <PitchFinder/>
+  <PitchFinder />
 </template>
 
 <script lang="ts">

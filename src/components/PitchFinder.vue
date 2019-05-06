@@ -1,40 +1,62 @@
 <template>
-    <v-container>
-        <v-layout wrap align-center justify-center>
-            <v-flex xs12>
-                <h1>Pitch Finder</h1>
-            </v-flex>
-        </v-layout>
-        <v-layout wrap align-center justify-center>
-            <v-flex xs12 sm6 d-flex>
-                <v-select
-                    v-model="selectedDevice"
-                    :items="devices"
-                    attach
-                    :item-text="(item) => item.label ||  `microphone ${index + 1}`"
-                    item-value="deviceId"
-                    label="Please select an input device"
-                ></v-select>
-            </v-flex>
-        </v-layout>
-        <v-layout wrap align-center justify-center>
-            <v-flex xs10 sm4 d-flex>
-                <v-btn
-                    @click="toggleStream"
-                    :disabled="!selectedDevice"
-                    :color="state == 'running' ? 'error' : 'success'">
-                    <span v-if="!selectedDevice">Please select an input device</span>
-                    <span v-else-if="state == 'running'">Stop</span>
-                    <span v-else>Start</span>
-                </v-btn>
-            </v-flex>
-        </v-layout>
-        <v-layout wrap align-center justify-center>
-            <v-flex xs12 sm6 d-flex>
-                <NoteRenderer :note="note"/>
-            </v-flex>
-        </v-layout>
-    </v-container>
+  <v-container>
+    <v-layout
+      wrap
+      align-center
+      justify-center>
+      <v-flex xs12>
+        <h1>
+          Pitch Finder
+        </h1>
+      </v-flex>
+    </v-layout>
+    <v-layout
+      wrap
+      align-center
+      justify-center>
+      <v-flex
+        xs12
+        sm6
+        d-flex>
+        <v-select
+          v-model="selectedDevice"
+          :items="devices"
+          attach
+          :item-text="(item) => item.label || `microphone ${index + 1}`"
+          item-value="deviceId"
+          label="Please select an input device" />
+      </v-flex>
+    </v-layout>
+    <v-layout
+      wrap
+      align-center
+      justify-center>
+      <v-flex
+        xs10
+        sm4
+        d-flex>
+        <v-btn
+          :disabled="!selectedDevice"
+          :color="state == 'running' ? 'error' : 'success'"
+          @click="toggleStream">
+          <span v-if="!selectedDevice">Please select an input device</span>
+          <span v-else-if="state == 'running'">Stop</span>
+          <span v-else>Start</span>
+        </v-btn>
+      </v-flex>
+    </v-layout>
+    <v-layout
+      wrap
+      align-center
+      justify-center>
+      <v-flex
+        xs12
+        sm6
+        d-flex>
+        <NoteRenderer :note="note" />
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -109,7 +131,8 @@ export default class PitchFinder extends Vue {
         .then((stream) => {
           if (this.$audioContext.Context) {
             this.audioStream = stream;
-            this.analyser.connectToSource(this.$audioContext.Context.createMediaStreamSource(stream));
+            this.analyser
+              .connectToSource(this.$audioContext.Context.createMediaStreamSource(stream));
             this.state = 'running';
           }
         });

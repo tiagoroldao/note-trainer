@@ -1,7 +1,9 @@
 <template>
-    <div class="abcWrapper">
-        <div ref="abcOutput" class="abcOutput"/>
-    </div>
+  <div class="abcWrapper">
+    <div
+      ref="abcOutput"
+      class="abcOutput" />
+  </div>
 </template>
 
 <script lang="ts">
