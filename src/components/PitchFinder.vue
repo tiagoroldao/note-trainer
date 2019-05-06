@@ -82,7 +82,11 @@ export default class PitchFinder extends Vue {
 
     public beforeDestroy() {
         document.removeEventListener('visibilitychange', this.onVisibilityChange);
-        return this.stopContext();
+        if (this.analyser) {
+            this.analyser.stop();
+            delete this.analyser;
+        }
+        this.stopAudioStream();
     }
 
     private startAudioStream(): Promise<void> {
@@ -115,7 +119,7 @@ export default class PitchFinder extends Vue {
 
     private onVisibilityChange() {
         if (document.visibilityState === 'visible') {
-            if (this.state === 'suspended') {
+            if (this.state === 'paused') {
                 this.resumeContext();
             }
         } else {
@@ -131,20 +135,12 @@ export default class PitchFinder extends Vue {
 
     private suspendContext(): Promise<void> {
         this.stopAudioStream();
-        this.state = 'suspended';
+        this.state = 'paused';
         return this.$audioContext.suspendContext();
     }
 
     private resumeContext(): Promise<void> {
         return this.$audioContext.startContext().then(this.startAudioStream);
-    }
-
-    private stopContext(): Promise<void> {
-        if (this.analyser) {
-            this.analyser.stop();
-            delete this.analyser;
-        }
-        this.stopAudioStream();
     }
 
     private startAnalyser() {
