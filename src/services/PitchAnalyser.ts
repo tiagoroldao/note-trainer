@@ -16,9 +16,13 @@ export default class PitchAnalyser extends AudioAnalyser<{freq: number, probabil
         this.minVol = Math.max(Math.min(1, value), 0);
     }
 
-    constructor(context: AudioContext, minVol = 0) {
-        super(context);
+    constructor(minVol = 0) {
+        super();
         this.MinVol = minVol;
+    }
+
+    public setup(context: AudioContext) {
+        super.setup(context);
         this.script.onaudioprocess = (event) => {
             const input = event.inputBuffer.getChannelData(0);
             const vol = PitchAnalyser.getVol(input);

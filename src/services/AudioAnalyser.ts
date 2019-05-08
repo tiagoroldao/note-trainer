@@ -5,11 +5,12 @@ export default class AudioAnalyser<P> {
 
     protected listeners: Array<(data: P) => void> = [];
 
-    protected context: AudioContext;
+    protected context!: AudioContext;
 
-    constructor(context: AudioContext) {
+    public setup(context: AudioContext) {
         this.context = context;
-        this.script = context.createScriptProcessor(2048, 1, 1);
+        this.stop();
+        this.script = this.context.createScriptProcessor(2048, 1, 1);
     }
 
     public onData(callback: (data: P) => void) {
@@ -35,9 +36,21 @@ export default class AudioAnalyser<P> {
 
     public stop() {
         if (this.source) {
-            this.source.disconnect();
+            try {
+                this.source.disconnect();
+            } catch (e) {
+                // do nothing;
+            }
+            delete this.source;
         }
-        this.script.disconnect();
+        if (this.script) {
+            try {
+                this.script.disconnect();
+            } catch (e) {
+                // do nothing;
+            }
+            delete this.script;
+        }
     }
 
     protected trigger(data: P) {

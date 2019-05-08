@@ -93,6 +93,8 @@ import { SettingsState } from '@/vuex/settings/state';
     },
 })
 export default class PitchFinder extends Vue {
+    private unsubscribers: (() => void)[] = [];
+
     @Provide() public devices = [] as MediaDeviceInfo[];
 
     @Provide() public pitch: number = 0;
@@ -107,25 +109,18 @@ export default class PitchFinder extends Vue {
 
     @Mutation('setSelectedInput', { namespace: 'settings' }) setSelectedInput: any;
 
-    public audioStream!: MediaStream;
-
-    private pitchAnalyser!: PitchAnalyser;
-
-    private volAnalyser!: VolumeAnalyser;
-
-    @Watch('settings.setSelectedInput')
+    @Watch('settings.selectedInput')
     private onSelectedInputChange() {
         if (this.state === 'running' && this.settings.selectedInput) {
-            this.startAudioStream();
+            this.$audioContext.start(this.settings.selectedInput);
         }
     }
 
     public toggleStream() {
         if (this.state !== 'running' && this.settings.selectedInput) {
-            this.startContext().then(this.startAudioStream);
+            this.$audioContext.start(this.settings.selectedInput);
         } else {
-            this.suspendContext().then(() => {
-                this.state = 'stopped';
+            this.$audioContext.suspend().then(() => {
                 this.note = 'x';
             });
         }
@@ -140,96 +135,39 @@ export default class PitchFinder extends Vue {
         });
 
         document.addEventListener('visibilitychange', this.onVisibilityChange);
+
+        this.unsubscribers = this.unsubscribers.concat([
+            this.$audioContext.pitchAnalyser.onData((pitch) => {
+                if (pitch.freq > 0) {
+                    this.pitch = pitch.freq;
+                    this.note = toAbc(Note.fromMidi(Note.freqToMidi(this.pitch)));
+                }
+            }),
+            this.$audioContext.volumeAnalyser.onData((v) => {
+                this.volume = v * 100;
+            }),
+            this.$audioContext.on('state-change', (state) => {
+                this.state = state;
+                if (state !== 'running') {
+                    this.note = 'x';
+                }
+            }),
+        ]);
     }
 
     public beforeDestroy() {
         document.removeEventListener('visibilitychange', this.onVisibilityChange);
-        this.stopAnalyser();
-        this.stopAudioStream();
-    }
-
-    private startAudioStream(): Promise<void> {
-        if (!this.settings.selectedInput) {
-            return Promise.resolve();
-        }
-        this.stopAudioStream();
-        return navigator.mediaDevices.getUserMedia({
-            audio: {
-                deviceId: { exact: this.settings.selectedInput },
-            },
-        })
-            .then((stream) => {
-                if (this.$audioContext.Context) {
-                    this.audioStream = stream;
-                    const source = this.$audioContext.Context.createMediaStreamSource(stream);
-                    this.pitchAnalyser.connectToSource(source);
-                    this.volAnalyser.connectToSource(source);
-                    this.state = 'running';
-                }
-            });
-    }
-
-    private stopAudioStream() {
-        if (this.audioStream) {
-            this.audioStream.getAudioTracks().forEach((track) => {
-                track.stop();
-            });
-            delete this.audioStream;
-        }
+        this.unsubscribers.forEach(u => u());
+        this.$audioContext.suspend();
     }
 
     private onVisibilityChange() {
         if (document.visibilityState === 'visible') {
             if (this.state === 'paused') {
-                this.resumeContext();
+                this.$audioContext.start(this.settings.selectedInput);
             }
         } else if (this.state === 'running') {
-            this.suspendContext();
-        }
-    }
-
-    private startContext(): Promise<void> {
-        return this.$audioContext.startContext().then(this.startAnalyser);
-    }
-
-    private suspendContext(): Promise<void> {
-        this.stopAudioStream();
-        this.state = 'paused';
-        return this.$audioContext.suspendContext();
-    }
-
-    private resumeContext(): Promise<void> {
-        return this.$audioContext.startContext().then(this.startAudioStream);
-    }
-
-    private startAnalyser() {
-        this.stopAnalyser();
-        if (this.$audioContext.Context) {
-            this.volAnalyser = new VolumeAnalyser(this.$audioContext.Context);
-            this.pitchAnalyser = new PitchAnalyser(
-                this.$audioContext.Context,
-                this.settings.minVol / 100,
-            );
-            this.pitchAnalyser.onData((pitch) => {
-                if (pitch.freq > 0) {
-                    this.pitch = pitch.freq;
-                    this.note = toAbc(Note.fromMidi(Note.freqToMidi(this.pitch)));
-                }
-            });
-            this.volAnalyser.onData((v) => {
-                this.volume = v * 100;
-            });
-        }
-    }
-
-    private stopAnalyser() {
-        if (this.pitchAnalyser) {
-            this.pitchAnalyser.stop();
-            delete this.pitchAnalyser;
-        }
-        if (this.volAnalyser) {
-            this.volAnalyser.stop();
-            delete this.volAnalyser;
+            this.$audioContext.suspend();
         }
     }
 }

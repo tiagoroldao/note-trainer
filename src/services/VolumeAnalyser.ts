@@ -1,8 +1,8 @@
 import AudioAnalyser from './AudioAnalyser';
 
 export default class VolumeAnalyser extends AudioAnalyser<number> {
-    constructor(context: AudioContext) {
-        super(context);
+    public setup(context: AudioContext) {
+        super.setup(context);
         this.script.onaudioprocess = (event) => {
             this.trigger(VolumeAnalyser.getVol(event.inputBuffer.getChannelData(0)));
         };
