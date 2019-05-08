@@ -92,13 +92,10 @@
 import { Component, Vue, Provide } from 'vue-property-decorator';
 import { State, Mutation } from 'vuex-class';
 import { SettingsState } from '@/vuex/settings/state';
-import VolumeAnalyser from '@/services/VolumeAnalyser';
 
 @Component({})
 export default class Settings extends Vue {
-    public audioStream!: MediaStream;
-
-    private volAnalyser!: VolumeAnalyser;
+    private unsubscribers: (() => void)[] = [];
 
     @Provide() public dialog = false;
 
@@ -110,6 +107,18 @@ export default class Settings extends Vue {
 
     onChangeVol(minVol: number) {
         this.setMinVol({ minVol });
+    }
+
+    public mounted() {
+        this.unsubscribers = this.unsubscribers.concat([
+            this.$audioContext.volumeAnalyser.onData((v) => {
+                this.volume = v * 100;
+            }),
+        ]);
+    }
+
+    public beforeDestroy() {
+        this.unsubscribers.forEach(u => u());
     }
 }
 </script>
@@ -132,5 +141,9 @@ export default class Settings extends Vue {
     width: 100%;
     overflow: visible;
     padding: 0 2em;
+  }
+
+  /deep/ .v-progress-linear__bar__determinate {
+    transition: none;
   }
 </style>

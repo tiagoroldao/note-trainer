@@ -101,8 +101,6 @@ export default class PitchFinder extends Vue {
 
     @Provide() public note = 'x';
 
-    @Provide() public volume = 0;
-
     @Provide() public state: 'stopped' | 'running' | 'paused' = 'stopped';
 
     @State('settings') public settings!: SettingsState;
@@ -143,9 +141,6 @@ export default class PitchFinder extends Vue {
                     this.note = toAbc(Note.fromMidi(Note.freqToMidi(this.pitch)));
                 }
             }),
-            this.$audioContext.volumeAnalyser.onData((v) => {
-                this.volume = v * 100;
-            }),
             this.$audioContext.on('state-change', (state) => {
                 this.state = state;
                 if (state !== 'running') {
@@ -174,10 +169,6 @@ export default class PitchFinder extends Vue {
 </script>
 
 <style lang="scss" scoped>
-  /deep/ .v-progress-linear__bar__determinate {
-    transition: none;
-  }
-
   .min-vol-slider-wrap {
     position: relative;
 
@@ -190,5 +181,4 @@ export default class PitchFinder extends Vue {
       z-index: 1;
     }
   }
-
 </style>
