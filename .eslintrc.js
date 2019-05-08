@@ -13,6 +13,7 @@ module.exports = {
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
         'import/prefer-default-export': false,
         'vue/singleline-html-element-content-newline': ['error', { ignoreWhenNoAttributes: false }],
+        'no-param-reassign': ['error', { 'props': false }],
         'vue/html-closing-bracket-newline': ['error', {
             singleline: 'never',
             multiline: 'never',

@@ -19,12 +19,13 @@
         sm6
         d-flex>
         <v-select
-          v-model="selectedDevice"
+          :value="settings.selectedInput"
           :items="devices"
           attach
           :item-text="(item) => item.label || `microphone ${index + 1}`"
           item-value="deviceId"
-          label="Please select an input device" />
+          label="Please select an input device"
+          @change="(val) => setSelectedInput({ selectedInput: val })" />
       </v-flex>
     </v-layout>
     <v-layout
@@ -36,13 +37,25 @@
         sm4
         d-flex>
         <v-btn
-          :disabled="!selectedDevice"
+          :disabled="!settings.selectedInput"
           :color="state == 'running' ? 'error' : 'success'"
           @click="toggleStream">
-          <span v-if="!selectedDevice">Please select an input device</span>
+          <span v-if="!settings.selectedInput">Please select an input device</span>
           <span v-else-if="state == 'running'">Stop</span>
           <span v-else>Start</span>
         </v-btn>
+      </v-flex>
+      <v-flex
+        xs1
+        sm1
+        d-flex>
+        <Settings>
+          <template v-slot:default="slotProps">
+            <v-icon v-on="slotProps.on">
+              settings
+            </v-icon>
+          </template>
+        </Settings>
       </v-flex>
     </v-layout>
     <v-layout
@@ -62,23 +75,25 @@
 <script lang="ts">
 import { Note } from 'tonal';
 import { toAbc } from 'tonal-abc-notation';
+import Settings from '@/components/Settings.vue';
 import NoteRenderer from '@/components/NoteRenderer.vue';
 import Vue from 'vue';
 import {
     Component, Prop, Provide, Watch,
 } from 'vue-property-decorator';
-import PitchAnalyser from '../services/PitchAnalyser';
-import VolumeAnalyser from '../services/VolumeAnalyser';
+import { State, Mutation } from 'vuex-class';
+import PitchAnalyser from '@/services/PitchAnalyser';
+import VolumeAnalyser from '@/services/VolumeAnalyser';
+import { SettingsState } from '@/vuex/settings/state';
 
 @Component({
     components: {
         NoteRenderer,
+        Settings,
     },
 })
 export default class PitchFinder extends Vue {
     @Provide() public devices = [] as MediaDeviceInfo[];
-
-    @Provide() public selectedDevice = '' as unknown as string;
 
     @Provide() public pitch: number = 0;
 
@@ -86,9 +101,11 @@ export default class PitchFinder extends Vue {
 
     @Provide() public volume = 0;
 
-    @Provide() public minVol = 0;
-
     @Provide() public state: 'stopped' | 'running' | 'paused' = 'stopped';
+
+    @State('settings') public settings!: SettingsState;
+
+    @Mutation('setSelectedInput', { namespace: 'settings' }) setSelectedInput: any;
 
     public audioStream!: MediaStream;
 
@@ -96,15 +113,15 @@ export default class PitchFinder extends Vue {
 
     private volAnalyser!: VolumeAnalyser;
 
-    @Watch('minVol')
-    private onMinVolChange() {
-        if (this.pitchAnalyser) {
-            this.pitchAnalyser.MinVol = this.minVol / 100;
+    @Watch('settings.setSelectedInput')
+    private onSelectedInputChange() {
+        if (this.state === 'running' && this.settings.selectedInput) {
+            this.startAudioStream();
         }
     }
 
     public toggleStream() {
-        if (this.state !== 'running' && this.selectedDevice) {
+        if (this.state !== 'running' && this.settings.selectedInput) {
             this.startContext().then(this.startAudioStream);
         } else {
             this.suspendContext().then(() => {
@@ -117,7 +134,9 @@ export default class PitchFinder extends Vue {
     public mounted() {
         navigator.mediaDevices.enumerateDevices().then((devices) => {
             this.devices = devices.filter(d => d.kind === 'audioinput');
-            this.selectedDevice = devices[0].deviceId;
+            if (!devices.find(d => d.deviceId === this.settings.selectedInput)) {
+                this.setSelectedInput({ selectedInput: devices[0].deviceId });
+            }
         });
 
         document.addEventListener('visibilitychange', this.onVisibilityChange);
@@ -130,13 +149,13 @@ export default class PitchFinder extends Vue {
     }
 
     private startAudioStream(): Promise<void> {
-        if (!this.selectedDevice) {
+        if (!this.settings.selectedInput) {
             return Promise.resolve();
         }
         this.stopAudioStream();
         return navigator.mediaDevices.getUserMedia({
             audio: {
-                deviceId: { exact: this.selectedDevice },
+                deviceId: { exact: this.settings.selectedInput },
             },
         })
             .then((stream) => {
@@ -187,7 +206,10 @@ export default class PitchFinder extends Vue {
         this.stopAnalyser();
         if (this.$audioContext.Context) {
             this.volAnalyser = new VolumeAnalyser(this.$audioContext.Context);
-            this.pitchAnalyser = new PitchAnalyser(this.$audioContext.Context, this.minVol / 100);
+            this.pitchAnalyser = new PitchAnalyser(
+                this.$audioContext.Context,
+                this.settings.minVol / 100,
+            );
             this.pitchAnalyser.onData((pitch) => {
                 if (pitch.freq > 0) {
                     this.pitch = pitch.freq;

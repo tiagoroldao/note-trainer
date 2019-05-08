@@ -5,7 +5,7 @@ import { mutations } from './mutations';
 import { RootState } from '../rootState';
 import { SettingsState, state } from './state';
 
-export const profile: Module<SettingsState, RootState> = {
+export const settings: Module<SettingsState, RootState> = {
     namespaced: true,
     state,
     getters,
