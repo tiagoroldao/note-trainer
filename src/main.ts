@@ -13,7 +13,7 @@ Vue.config.productionTip = false;
 Vue.prototype.$audioContext = new AudioContextProvider();
 
 new Vue({
-  router,
-  store,
-  render: h => h(App),
+    router,
+    store,
+    render: h => h(App),
 }).$mount('#app');

@@ -1,67 +1,40 @@
 import Pitchfinder from 'pitchfinder';
+import AudioAnalyser from './AudioAnalyser';
 
-const detectPitch = Pitchfinder.AMDF();
+const detectPitch = Pitchfinder.Macleod();
 
-export default class PitchAnalyser {
-    private pitch = 0;
+export default class PitchAnalyser extends AudioAnalyser<{freq: number, probability: number}> {
+    private pitch!: {freq: number, probability: number};
 
-    private script: ScriptProcessorNode;
+    private minVol: number = 0;
 
-    private source: MediaStreamAudioSourceNode | undefined;
-
-    private listeners: {[key: string]: Array<(...args: any[]) => void>} = {};
-
-    constructor(private context: AudioContext) {
-      this.script = context.createScriptProcessor(2048, 1, 1);
-      this.script.onaudioprocess = (event) => {
-        const input = event.inputBuffer.getChannelData(0);
-        this.pitch = detectPitch(input);
-        this.trigger('pitch-change', this.pitch);
-      };
+    public get MinVol(): number {
+        return this.minVol;
     }
 
-    public on(event: string, callback: (...args: any[]) => void) {
-      if (!this.listeners[event]) {
-        this.listeners[event] = [];
-      }
-
-      this.listeners[event].push(callback);
-
-      return () => this.off(event, callback);
+    public set MinVol(value: number) {
+        this.minVol = Math.max(Math.min(1, value), 0);
     }
 
-    public off(event: string, callback: (...args: any[]) => void) {
-      if (this.listeners[event]) {
-        this.listeners[event] = this.listeners[event].filter(e => e !== callback);
-      }
+    constructor(context: AudioContext, minVol = 0) {
+        super(context);
+        this.MinVol = minVol;
+        this.script.onaudioprocess = (event) => {
+            const input = event.inputBuffer.getChannelData(0);
+            const vol = PitchAnalyser.getVol(input);
+            if (vol > this.minVol) {
+                this.pitch = detectPitch(input);
+                this.trigger(this.pitch);
+            }
+        };
     }
 
-    public connectToSource(source: MediaStreamAudioSourceNode, callback?: () => void) {
-      if (this.source) {
-        this.source.disconnect(this.script);
-        this.source = undefined;
-      }
-      source.connect(this.script);
-      this.source = source;
-      this.script.connect(this.context.destination);
-      if (typeof callback !== 'undefined') {
-        callback();
-      }
-    }
+    public static getVol(input: Float32Array): number {
+        let sum = 0.0;
+        for (let i = 0; i < input.length; i += 1) {
+            sum += input[i] * input[i];
+        }
 
-    public stop() {
-      if (this.source) {
-        this.source.disconnect();
-      }
-      this.script.disconnect();
-    }
-
-    private trigger(event: string, ...args: any[]) {
-      if (!this.listeners[event]) {
-        return;
-      }
-      for (let i = 0; i < this.listeners[event].length; i += 1) {
-        setTimeout(() => this.listeners[event][i](...args));
-      }
+        return Math.sqrt(sum / input.length);
     }
 }
