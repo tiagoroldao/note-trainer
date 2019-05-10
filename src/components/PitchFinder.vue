@@ -33,6 +33,10 @@
       align-center
       justify-center>
       <v-flex
+        xs1
+        sm1
+        d-flex />
+      <v-flex
         xs10
         sm4
         d-flex>
@@ -51,7 +55,9 @@
         d-flex>
         <Settings>
           <template v-slot:default="slotProps">
-            <v-icon v-on="slotProps.on">
+            <v-icon
+              class="settings"
+              v-on="slotProps.on">
               settings
             </v-icon>
           </template>
@@ -166,16 +172,11 @@ export default class PitchFinder extends Vue {
 </script>
 
 <style lang="scss" scoped>
-  .min-vol-slider-wrap {
-    position: relative;
+  .settings {
+    color: #ddd;
 
-    .min-vol-slider {
-      position: absolute;
-      right: 0;
-      left: 0;
-      top: 5px;
-      margin: 0;
-      z-index: 1;
+    &:hover {
+      color: #999;
     }
   }
 </style>
