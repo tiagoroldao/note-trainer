@@ -5,6 +5,10 @@
         Pitch Finder
       </router-link>
       <span class="separator">|</span>
+      <router-link to="/teacher">
+        Note Teacher
+      </router-link>
+      <span class="separator">|</span>
       <router-link to="/about">
         About
       </router-link>

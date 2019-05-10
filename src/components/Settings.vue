@@ -41,48 +41,67 @@
         </v-toolbar-items>
       </v-toolbar>
       <v-card-text>
-        <v-list
-          three-line
-          subheader>
-          <v-subheader>
-            Audio Recording
-          </v-subheader>
-          <v-list-tile>
-            <v-list-tile-content>
-              <v-list-tile-title>
-                Note detection volume
-              </v-list-tile-title>
-              <v-list-tile-sub-title>
-                Minimum volume at which notes are registered
-              </v-list-tile-sub-title>
-              <v-list-tile-action-text class="volume-action-wrapper">
-                <v-layout
-                  wrap
-                  align-center
-                  justify-center>
-                  <v-flex
-                    xs12
-                    d-flex
-                    class="min-vol-slider-wrap">
-                    <v-progress-linear
-                      v-model="volume"
-                      height="14" />
-                    <v-slider
-                      :value="settings.minVol"
-                      always-dirty
-                      thumb-label
-                      color="rgba(0,0,0,0)"
-                      thumb-color="primary"
-                      track-color="rgba(0,0,0,0)"
-                      class="min-vol-slider"
-                      @change="onChangeVol" />
-                  </v-flex>
-                </v-layout>
-              </v-list-tile-action-text>
-            </v-list-tile-content>
-          </v-list-tile>
+        <h5 class="subheading">
+          Audio Recording
+        </h5>
+        <h3>
+          Note detection volume
+        </h3>
+        <p>
+          Minimum volume at which notes are registered
+        </p>
+        <v-layout
+          wrap
+          align-center
+          justify-center
+          class="volume-action-wrapper">
+          <v-flex
+            xs12
+            d-flex
+            class="min-vol-slider-wrap">
+            <v-progress-linear
+              v-model="volume"
+              height="14" />
+            <v-slider
+              :value="settings.minVol"
+              always-dirty
+              thumb-label
+              color="rgba(0,0,0,0)"
+              thumb-color="primary"
+              track-color="rgba(0,0,0,0)"
+              class="min-vol-slider"
+              @change="onChangeVol" />
+          </v-flex>
+        </v-layout>
+        <v-divider />
+        <h5 class="subheading">
+          Teacher Settings
+        </h5>
+        <h3>
+          Note hold time
+        </h3>
+        <p>
+          Time a note needs to be held for registering in ms.
+          Shorter times are more responsive, longer times produce less false results.
+        </p>
+        <v-layout
+          wrap
+          align-center
+          justify-center>
+          <v-flex
+            xs12
+            d-flex
+            class="min-vol-slider-wrap">
+            <v-text-field
+              :value="settings.teacher.noteRegisterTime"
+              class="mt-0"
+              hide-details
+              single-line
+              type="number"
+              @change="(val) => settings.teacher.setNoteRegisterTime(val)" />
+          </v-flex>
           <v-divider />
-        </v-list>
+        </v-layout>
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -142,5 +161,10 @@ export default class Settings extends Vue {
 
   /deep/ .v-progress-linear__bar__determinate {
     transition: none;
+  }
+
+  .subheading {
+    margin-bottom: 20px;
+    margin-top: 10px;
   }
 </style>

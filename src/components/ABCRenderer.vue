@@ -21,6 +21,7 @@ export default class ABCRenderer extends Vue {
             default: () => ({
                 responsive: 'resize',
                 staffwidth: 150,
+                add_classes: true,
             }),
         }) public readonly abcOptions!: any;
 

@@ -16,10 +16,9 @@ export default class NoteRenderer extends Vue {
 
         private get abc() {
             return `X: 1
-M: 4/4
 L: 1/8
 %%stretchlast
-[|${this.note}|]`;
+[|${this.note}8|]`;
         }
 }
 </script>

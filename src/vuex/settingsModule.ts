@@ -2,10 +2,13 @@ import {
     VuexModule, mutation, action, getter, Module,
 } from 'vuex-class-component';
 import services from '@/services/services';
+import { TeacherSettingsStore } from './teacherSettingsModule';
 
 @Module({ namespacedPath: 'settings/' })
 export class SettingsStore extends VuexModule {
     @getter minVol = 0;
+
+    teacher = TeacherSettingsStore.CreateSubModule(TeacherSettingsStore);
 
     @getter selectedInput = '';
 
