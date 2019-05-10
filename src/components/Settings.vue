@@ -90,23 +90,20 @@
 
 <script lang="ts">
 import { Component, Vue, Provide } from 'vue-property-decorator';
-import { State, Mutation } from 'vuex-class';
-import { SettingsState } from '@/vuex/settings/state';
+import { SettingsStore } from '../vuex/settingsModule';
 
 @Component({})
 export default class Settings extends Vue {
     private unsubscribers: (() => void)[] = [];
 
+    private settings = SettingsStore.CreateProxy(this.$store, SettingsStore);
+
     @Provide() public dialog = false;
 
     @Provide() public volume = 0;
 
-    @State('settings') public settings!: SettingsState;
-
-    @Mutation('setMinVol', { namespace: 'settings' }) setMinVol: any;
-
     onChangeVol(minVol: number) {
-        this.setMinVol({ minVol });
+        this.settings.setMinVol(minVol);
     }
 
     public mounted() {

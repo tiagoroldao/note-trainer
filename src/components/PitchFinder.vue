@@ -81,10 +81,9 @@ import Vue from 'vue';
 import {
     Component, Prop, Provide, Watch,
 } from 'vue-property-decorator';
-import { State, Mutation } from 'vuex-class';
 import PitchAnalyser from '@/services/PitchAnalyser';
 import VolumeAnalyser from '@/services/VolumeAnalyser';
-import { SettingsState } from '@/vuex/settings/state';
+import { SettingsStore } from '@/vuex/settingsModule';
 
 @Component({
     components: {
@@ -95,6 +94,8 @@ import { SettingsState } from '@/vuex/settings/state';
 export default class PitchFinder extends Vue {
     private unsubscribers: (() => void)[] = [];
 
+    private settings = SettingsStore.CreateProxy(this.$store, SettingsStore);
+
     @Provide() public devices = [] as MediaDeviceInfo[];
 
     @Provide() public pitch: number = 0;
@@ -102,10 +103,6 @@ export default class PitchFinder extends Vue {
     @Provide() public note = 'x';
 
     @Provide() public state: 'stopped' | 'running' | 'paused' = 'stopped';
-
-    @State('settings') public settings!: SettingsState;
-
-    @Mutation('setSelectedInput', { namespace: 'settings' }) setSelectedInput: any;
 
     @Watch('settings.selectedInput')
     private onSelectedInputChange() {
@@ -128,7 +125,7 @@ export default class PitchFinder extends Vue {
         navigator.mediaDevices.enumerateDevices().then((devices) => {
             this.devices = devices.filter(d => d.kind === 'audioinput');
             if (!devices.find(d => d.deviceId === this.settings.selectedInput)) {
-                this.setSelectedInput({ selectedInput: devices[0].deviceId });
+                this.settings.setSelectedInput(devices[0].deviceId);
             }
         });
 

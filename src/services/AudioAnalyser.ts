@@ -7,10 +7,18 @@ export default class AudioAnalyser<P> {
 
     protected context!: AudioContext;
 
+    protected bufferSize: number | undefined;
+
+    protected inputChannels: number | undefined;
+
+    protected outputChannels: number | undefined;
+
     public setup(context: AudioContext) {
         this.context = context;
         this.stop();
-        this.script = this.context.createScriptProcessor(2048, 1, 1);
+        this.script = this.context.createScriptProcessor(
+            this.bufferSize, this.inputChannels, this.outputChannels,
+        );
     }
 
     public onData(callback: (data: P) => void) {

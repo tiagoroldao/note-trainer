@@ -1,21 +1,36 @@
 import Vue from 'vue';
-import Vuex, { StoreOptions } from 'vuex';
+import Vuex, { StoreOptions, Store } from 'vuex';
 import VuexPersistence from 'vuex-persist';
-import { RootState } from './vuex/rootState';
-import { settings } from './vuex/settings/module';
-
-const vuexLocal = new VuexPersistence({
-    storage: window.localStorage,
-});
+import { SettingsStore } from './vuex/settingsModule';
 
 Vue.use(Vuex);
 
-const options: StoreOptions<RootState> = {
-    state: {},
+const vuexPersist = new VuexPersistence({
+    strictMode: true,
+    storage: window.localStorage,
+});
+
+const vuexPersistEmitter = () => (store: Store<any>) => {
+    store.subscribe((mutation) => {
+        if (mutation.type === 'RESTORE_MUTATION') {
+            // eslint-disable-next-line no-underscore-dangle
+            const setupActions = Object.keys((store as any)._actions)
+                .filter(k => k.endsWith('/onSetup'));
+            for (let i = 0; i < setupActions.length; i += 1) {
+                store.dispatch(setupActions[i]);
+            }
+        }
+    });
+};
+
+const options: StoreOptions<any> = {
     modules: {
-        settings,
+        settings: SettingsStore.ExtractVuexModule(SettingsStore),
     },
-    plugins: [vuexLocal.plugin],
+    mutations: {
+        RESTORE_MUTATION: vuexPersist.RESTORE_MUTATION,
+    },
+    plugins: [vuexPersistEmitter(), vuexPersist.plugin],
 };
 
 export default new Vuex.Store(options);
