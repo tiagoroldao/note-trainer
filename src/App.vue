@@ -1,42 +1,42 @@
 <template>
-  <v-app id="app">
-    <div id="nav">
-      <router-link to="/">
-        Pitch Finder
-      </router-link>
-      <span class="separator">|</span>
-      <router-link to="/teacher">
-        Note Teacher
-      </router-link>
-      <span class="separator">|</span>
-      <router-link to="/about">
-        About
-      </router-link>
-    </div>
-    <router-view />
-    <a
-      href="https://github.com/tiagoroldao/note-trainer"
-      class="github-corner"
-      aria-label="View source on GitHub">
-      <svg
-        width="80"
-        height="80"
-        viewBox="0 0 250 250"
-        style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0;"
-        aria-hidden="true">
-        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z" />
-        <path
-          d="M128.3,109.0
+    <v-app id="app">
+        <div id="nav">
+            <router-link to="/">
+                Pitch Finder
+            </router-link>
+            <span class="separator">|</span>
+            <router-link to="/teacher">
+                Teacher
+            </router-link>
+            <span class="separator">|</span>
+            <router-link to="/about">
+                About
+            </router-link>
+        </div>
+        <router-view />
+        <a
+            href="https://github.com/tiagoroldao/note-trainer"
+            class="github-corner"
+            aria-label="View source on GitHub">
+            <svg
+                width="80"
+                height="80"
+                viewBox="0 0 250 250"
+                style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0;"
+                aria-hidden="true">
+                <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z" />
+                <path
+                    d="M128.3,109.0
             C113.8,99.7 119.0,89.6 119.0,89.6
             C122.0,82.7 120.5,78.6 120.5,78.6
             C119.2,72.0 123.4,76.3 123.4,76.3
             C127.3,80.9 125.5,87.3 125.5,87.3
             C122.9,97.6 130.6,101.9 134.4,103.2"
-          fill="currentColor"
-          style="transform-origin: 130px 106px;"
-          class="octo-arm" />
-        <path
-          d="M115.0,115.0
+                    fill="currentColor"
+                    style="transform-origin: 130px 106px;"
+                    class="octo-arm" />
+                <path
+                    d="M115.0,115.0
             C114.9,115.1 118.7,116.5 119.8,115.4
             L133.7,101.6
             C136.9,99.2139.9,98.4 142.2,98.6
@@ -54,11 +54,11 @@
             L141.0,136.5
             C139.8,137.7 141.6,141.9 141.8,141.8
             Z"
-          fill="currentColor"
-          class="octo-body" />
-      </svg>
-    </a>
-  </v-app>
+                    fill="currentColor"
+                    class="octo-body" />
+            </svg>
+        </a>
+    </v-app>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';

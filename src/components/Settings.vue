@@ -1,147 +1,147 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    scrollable
-    fullscreen
-    hide-overlay
-    transition="dialog-bottom-transition">
-    <template v-slot:activator="{ on }">
-      <slot :on="on">
-        <v-btn
-          color="primary"
-          dark
-          v-on="on">
-          Settings
-        </v-btn>
-      </slot>
-    </template>
-    <v-card>
-      <v-toolbar
-        dark
-        color="primary">
-        <v-btn
-          icon
-          dark
-          @click="dialog = false">
-          <v-icon>
-            close
-          </v-icon>
-        </v-btn>
-        <v-toolbar-title>
-          Settings
-        </v-toolbar-title>
-        <v-spacer />
-        <v-toolbar-items>
-          <v-btn
-            dark
-            flat
-            @click="dialog = false">
-            Close
-          </v-btn>
-        </v-toolbar-items>
-      </v-toolbar>
-      <v-card-text>
-        <div class="form-section">
-          <h5 class="subheading">
-            Audio Recording
-          </h5>
-          <div class="form-input-box">
-            <v-layout
-              wrap
-              align-center
-              justify-center>
-              <v-flex
-                xs10
-                sm6
-                d-flex>
-                <div>
-                  <h3>
-                    Recording device
-                  </h3>
-                  <p>
-                    Recording device used for pitch detection.<br>
-                    Will be reset if selected device is no longer available.
-                  </p>
-                  <v-select
-                    :value="settings.selectedInput"
-                    :items="devices"
-                    attach
-                    :item-text="(item, index) => item.label || `microphone ${index + 1}`"
-                    item-value="deviceId"
-                    label="Please select an input device"
-                    @change="(val) => settings.setSelectedInput(val)" />
+    <v-dialog
+        v-model="dialog"
+        scrollable
+        fullscreen
+        hide-overlay
+        transition="dialog-bottom-transition">
+        <template v-slot:activator="{ on }">
+            <slot :on="on">
+                <v-btn
+                    color="primary"
+                    dark
+                    v-on="on">
+                    Settings
+                </v-btn>
+            </slot>
+        </template>
+        <v-card>
+            <v-toolbar
+                dark
+                color="primary">
+                <v-btn
+                    icon
+                    dark
+                    @click="dialog = false">
+                    <v-icon>
+                        close
+                    </v-icon>
+                </v-btn>
+                <v-toolbar-title>
+                    Settings
+                </v-toolbar-title>
+                <v-spacer />
+                <v-toolbar-items>
+                    <v-btn
+                        dark
+                        flat
+                        @click="dialog = false">
+                        Close
+                    </v-btn>
+                </v-toolbar-items>
+            </v-toolbar>
+            <v-card-text>
+                <div class="form-section">
+                    <h5 class="subheading">
+                        Audio Recording
+                    </h5>
+                    <div class="form-input-box">
+                        <v-layout
+                            wrap
+                            align-center
+                            justify-center>
+                            <v-flex
+                                xs10
+                                sm6
+                                d-flex>
+                                <div>
+                                    <h3>
+                                        Recording device
+                                    </h3>
+                                    <p>
+                                        Recording device used for pitch detection.<br>
+                                        Will be reset if selected device is no longer available.
+                                    </p>
+                                    <v-select
+                                        :value="settings.selectedInput"
+                                        :items="devices"
+                                        attach
+                                        :item-text="(item, index) => item.label || `microphone ${index + 1}`"
+                                        item-value="deviceId"
+                                        label="Please select an input device"
+                                        @change="(val) => settings.setSelectedInput(val)" />
+                                </div>
+                            </v-flex>
+                        </v-layout>
+                    </div>
+                    <div class="form-input-box">
+                        <h3>
+                            Note detection volume
+                        </h3>
+                        <p>
+                            Minimum volume at which notes are registered
+                        </p>
+                        <v-layout
+                            wrap
+                            align-center
+                            justify-center>
+                            <v-flex
+                                xs10
+                                sm6
+                                d-flex
+                                class="min-vol-slider-wrap">
+                                <v-progress-linear
+                                    v-model="volume"
+                                    height="14" />
+                                <v-slider
+                                    :value="settings.minVol"
+                                    always-dirty
+                                    thumb-label
+                                    color="rgba(0,0,0,0)"
+                                    thumb-color="primary"
+                                    track-color="rgba(0,0,0,0)"
+                                    class="min-vol-slider"
+                                    @change="onChangeVol" />
+                            </v-flex>
+                        </v-layout>
+                    </div>
+                    <v-divider />
                 </div>
-              </v-flex>
-            </v-layout>
-          </div>
-          <div class="form-input-box">
-            <h3>
-              Note detection volume
-            </h3>
-            <p>
-              Minimum volume at which notes are registered
-            </p>
-            <v-layout
-              wrap
-              align-center
-              justify-center>
-              <v-flex
-                xs10
-                sm6
-                d-flex
-                class="min-vol-slider-wrap">
-                <v-progress-linear
-                  v-model="volume"
-                  height="14" />
-                <v-slider
-                  :value="settings.minVol"
-                  always-dirty
-                  thumb-label
-                  color="rgba(0,0,0,0)"
-                  thumb-color="primary"
-                  track-color="rgba(0,0,0,0)"
-                  class="min-vol-slider"
-                  @change="onChangeVol" />
-              </v-flex>
-            </v-layout>
-          </div>
-          <v-divider />
-        </div>
-        <h5 class="subheading">
-          Teacher Settings
-        </h5>
-        <div class="form-input-box">
-          <v-layout
-            wrap
-            align-center
-            justify-center>
-            <v-flex
-              xs10
-              sm6
-              d-flex>
-              <div>
-                <h3>
-                  Note hold time
-                </h3>
-                <p>
-                  Time a note needs to be held for registering in ms.<br>
-                  Shorter times are more responsive, longer times produce less false results.
-                </p>
-                <v-text-field
-                  :value="settings.teacher.noteRegisterTime"
-                  class="mt-0"
-                  hide-details
-                  single-line
-                  type="number"
-                  @change="(val) => settings.teacher.setNoteRegisterTime(val)" />
-              </div>
-            </v-flex>
-          </v-layout>
-        </div>
-        <v-divider />
-      </v-card-text>
-    </v-card>
-  </v-dialog>
+                <h5 class="subheading">
+                    Teacher Settings
+                </h5>
+                <div class="form-input-box">
+                    <v-layout
+                        wrap
+                        align-center
+                        justify-center>
+                        <v-flex
+                            xs10
+                            sm6
+                            d-flex>
+                            <div>
+                                <h3>
+                                    Note hold time
+                                </h3>
+                                <p>
+                                    Time a note needs to be held for registering in ms.<br>
+                                    Shorter times are more responsive, longer times produce less false results.
+                                </p>
+                                <v-text-field
+                                    :value="settings.teacher.noteRegisterTime"
+                                    class="mt-0"
+                                    hide-details
+                                    single-line
+                                    type="number"
+                                    @change="(val) => settings.teacher.setNoteRegisterTime(val)" />
+                            </div>
+                        </v-flex>
+                    </v-layout>
+                </div>
+                <v-divider />
+            </v-card-text>
+        </v-card>
+    </v-dialog>
 </template>
 
 <script lang="ts">

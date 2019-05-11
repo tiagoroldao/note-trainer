@@ -1,58 +1,60 @@
 <template>
-  <v-container>
-    <v-layout
-      wrap
-      align-center
-      justify-center>
-      <v-flex xs12>
-        <h1>
-          Pitch Finder
-        </h1>
-      </v-flex>
-      <v-flex
-        xs1
-        sm1
-        d-flex />
-      <v-flex
-        xs10
-        sm4
-        d-flex>
-        <v-btn
-          :disabled="!settings.selectedInput"
-          :color="audio.state == 'running' ? 'error' : 'success'"
-          @click="toggleStream">
-          <span v-if="!settings.selectedInput">Please select an input device in Settings</span>
-          <span v-else-if="audio.state == 'running'">Stop</span>
-          <span v-else>Start</span>
-        </v-btn>
-      </v-flex>
-      <v-flex
-        xs1
-        sm1
-        d-flex>
-        <Settings>
-          <template v-slot:default="slotProps">
-            <v-icon
-              class="settings"
-              v-on="slotProps.on">
-              settings
-            </v-icon>
-          </template>
-        </Settings>
-      </v-flex>
-    </v-layout>
-    <v-layout
-      wrap
-      align-center
-      justify-center>
-      <v-flex
-        xs12
-        sm6
-        d-flex>
-        <NoteRenderer :note="note" />
-      </v-flex>
-    </v-layout>
-  </v-container>
+    <v-container>
+        <v-layout
+            wrap
+            align-center
+            justify-center>
+            <v-flex xs12>
+                <h1>
+                    Pitch Finder
+                </h1>
+            </v-flex>
+            <v-flex
+                xs1
+                sm1
+                d-flex />
+            <v-flex
+                xs10
+                sm4
+                d-flex>
+                <v-btn
+                    :disabled="!settings.selectedInput"
+                    :color="audio.state == 'running' ? 'error' : 'success'"
+                    @click="toggleStream">
+                    <span v-if="!settings.selectedInput">
+                        Please select an input device in Settings
+                    </span>
+                    <span v-else-if="audio.state == 'running'">Stop</span>
+                    <span v-else>Start</span>
+                </v-btn>
+            </v-flex>
+            <v-flex
+                xs1
+                sm1
+                d-flex>
+                <Settings>
+                    <template v-slot:default="slotProps">
+                        <v-icon
+                            class="settings"
+                            v-on="slotProps.on">
+                            settings
+                        </v-icon>
+                    </template>
+                </Settings>
+            </v-flex>
+        </v-layout>
+        <v-layout
+            wrap
+            align-center
+            justify-center>
+            <v-flex
+                xs12
+                sm6
+                d-flex>
+                <NoteRenderer :note="note" />
+            </v-flex>
+        </v-layout>
+    </v-container>
 </template>
 
 <script lang="ts">
@@ -108,9 +110,8 @@ export default class PitchFinder extends Vue {
     public mounted() {
         this.unsubscribers = this.unsubscribers.concat([
             this.$audioContext.pitchAnalyser.onData((pitch) => {
-                if (pitch.freq > 0) {
-                    this.pitch = pitch.freq;
-                    this.note = toAbc(Note.fromMidi(Note.freqToMidi(this.pitch)));
+                if (pitch > 0) {
+                    this.note = toAbc(Note.fromMidi(Note.freqToMidi(pitch)));
                 }
             }),
         ]);

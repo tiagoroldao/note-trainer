@@ -1,5 +1,5 @@
 <template>
-  <ABCRenderer :abc="abc" />
+    <ABCRenderer :abc="abc" />
 </template>
 
 <script lang="ts">
