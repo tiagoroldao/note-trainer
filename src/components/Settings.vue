@@ -138,6 +138,44 @@
                         </v-flex>
                     </v-layout>
                 </div>
+                <div class="form-input-box">
+                    <v-layout
+                        wrap
+                        align-center
+                        justify-center>
+                        <v-flex
+                            xs10
+                            sm6
+                            d-flex>
+                            <div>
+                                <h3>
+                                    Possible Notes
+                                </h3>
+                                <p>
+                                    Notes the teacher may choose from<br>
+                                    (for diatonic instruments)
+                                </p>
+                                <v-layout
+                                    wrap
+                                    align-center
+                                    justify-center>
+                                    <v-flex
+                                        v-for="(note, index) in possibleNotes"
+                                        :key="index"
+                                        xs10
+                                        sm6
+                                        d-flex>
+                                        <v-switch
+                                            :input-value="settings.teacher.notes"
+                                            :label="note"
+                                            :value="note"
+                                            @change="onChangeNotes" />
+                                    </v-flex>
+                                </v-layout>
+                            </div>
+                        </v-flex>
+                    </v-layout>
+                </div>
                 <v-divider />
             </v-card-text>
         </v-card>
@@ -145,6 +183,7 @@
 </template>
 
 <script lang="ts">
+import { Note } from 'tonal';
 import { Component, Vue, Provide } from 'vue-property-decorator';
 import { SettingsModule } from '../vuex/settingsModule';
 
@@ -160,8 +199,16 @@ export default class Settings extends Vue {
 
     @Provide() public devices = [] as MediaDeviceInfo[];
 
+    @Provide() public possibleNotes = Note.names(' #');
+
+    @Provide() public people = [];
+
     onChangeVol(minVol: number) {
         this.settings.setMinVol(minVol);
+    }
+
+    onChangeNotes(val: any) {
+        this.settings.teacher.setNotes(val);
     }
 
     public mounted() {
