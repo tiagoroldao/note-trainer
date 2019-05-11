@@ -98,6 +98,10 @@ html.html:not(.overflow-y-hidden) {
   }
 }
 
+.view-title {
+  padding: 20px 0px;
+}
+
 .github-corner:hover .octo-arm {
   animation: octocat-wave 560ms ease-in-out;
 }

@@ -5,7 +5,7 @@
             align-center
             justify-center>
             <v-flex xs12>
-                <h1>
+                <h1 class="view-title">
                     Pitch Finder
                 </h1>
             </v-flex>
