@@ -25,7 +25,7 @@
                 <v-btn
                     :disabled="!settings.selectedInput"
                     :color="audio.state == 'running' ? 'error' : 'success'"
-                    @click="toggleStream">
+                    @click="toggleTeacher">
                     <span v-if="!settings.selectedInput">
                         Please select an input device in Settings
                     </span>
@@ -61,6 +61,22 @@
                 <NoteRenderer
                     :note="note"
                     :class="['current-note', { correct: note === targetNote }]" />
+            </v-flex>
+        </v-layout>
+        <v-layout
+            wrap
+            align-center
+            justify-center>
+            <v-flex
+                xs10
+                sm4
+                d-flex>
+                <v-btn
+                    :disabled="audio.state !== 'running'"
+                    color="success"
+                    @click="nextNote">
+                    Next Note
+                </v-btn>
             </v-flex>
         </v-layout>
     </v-container>
@@ -106,7 +122,7 @@ export default class NoteTeacher extends Vue {
         }
     }
 
-    public toggleStream() {
+    public toggleTeacher() {
         if (this.audio.state !== 'running' && this.settings.selectedInput) {
             this.$audioContext.start(this.settings.selectedInput);
         } else {
@@ -114,6 +130,11 @@ export default class NoteTeacher extends Vue {
                 this.note = 'x';
             });
         }
+    }
+
+    public nextNote() {
+        this.note = 'x';
+        this.targetNote = this.randomNote();
     }
 
     public mounted() {

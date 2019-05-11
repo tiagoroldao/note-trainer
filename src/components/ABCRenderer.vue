@@ -2,7 +2,8 @@
     <div class="abcWrapper">
         <div
             ref="abcOutput"
-            class="abcOutput" />
+            class="abcOutput"
+            v-on="$listeners" />
     </div>
 </template>
 

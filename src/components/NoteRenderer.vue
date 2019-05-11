@@ -1,5 +1,7 @@
 <template>
-    <ABCRenderer :abc="abc" />
+    <ABCRenderer
+        :abc="abc"
+        v-on="$listeners" />
 </template>
 
 <script lang="ts">
