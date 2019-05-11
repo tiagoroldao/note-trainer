@@ -56,11 +56,8 @@
                 xs12
                 sm6
                 d-flex
-                class="note-holder">
-                <NoteRenderer :note="targetNote" />
-                <NoteRenderer
-                    :note="note"
-                    :class="['current-note', { correct: note === targetNote }]" />
+                :class="['note-holder', { correct: note === targetNote }]">
+                <NoteRenderer :note="[targetNote, note]" />
             </v-flex>
         </v-layout>
         <v-layout
@@ -72,7 +69,6 @@
                 sm4
                 d-flex>
                 <v-btn
-                    :disabled="audio.state !== 'running'"
                     color="success"
                     @click="nextNote">
                     Next Note
@@ -111,9 +107,9 @@ export default class NoteTeacher extends Vue {
 
     @Provide() public devices = [] as MediaDeviceInfo[];
 
-    @Provide() public note = 'C';
+    @Provide() public note = 'A';
 
-    @Provide() public targetNote = 'e';
+    @Provide() public targetNote = 'D';
 
     @Watch('audio.state')
     private onAudioStateChange() {
@@ -133,7 +129,7 @@ export default class NoteTeacher extends Vue {
     }
 
     public nextNote() {
-        this.note = 'x';
+        // this.note = 'x';
         this.targetNote = this.randomNote();
     }
 
@@ -145,6 +141,17 @@ export default class NoteTeacher extends Vue {
                 }
             }),
         ]);
+    }
+
+    public randomNote() {
+        const min = this.settings.teacher.noteRange[0];
+        const max = this.settings.teacher.noteRange[1] + 1;
+        let note: number = 0;
+        do {
+            note = Math.floor((Math.random() * (max - min)) + min);
+        } while (this.settings.teacher.notes
+            .indexOf(Note.pc(Note.enharmonic(Note.fromMidi(note)) as string) as string) === -1);
+        return toAbc(Note.enharmonic(Note.fromMidi(note)));
     }
 
     public beforeDestroy() {
@@ -164,26 +171,22 @@ export default class NoteTeacher extends Vue {
   }
 
   .note-holder {
-      position: relative;
+        position: relative;
 
-      .current-note {
-          position: absolute;
+        &:not(.correct) {
+            /deep/ .abcjs-note.abcjs-n1{
+                fill: red;
+            }
+        }
 
-          /deep/ svg *:not(.abcjs-note):not(.abcjs-staff.abcjs-m0) {
-              display: none;
-          }
-
-          /deep/ .abcjs-note,
-          /deep/ .abcjs-staff.abcjs-m0 {
-              fill: red;
-          }
-
-          &.correct {
-            /deep/ .abcjs-note,
-            /deep/ .abcjs-staff.abcjs-m0 {
+        &.correct {
+            /deep/ svg * {
                 fill: green;
             }
-          }
-      }
+        }
+  }
+
+  /deep/ .abcjs-note_selected {
+      fill: #000;
   }
 </style>

@@ -162,14 +162,70 @@
                                     <v-flex
                                         v-for="(note, index) in possibleNotes"
                                         :key="index"
-                                        xs10
-                                        sm6
+                                        shrink
                                         d-flex>
                                         <v-switch
+                                            class="switch-note"
                                             :input-value="settings.teacher.notes"
                                             :label="note"
                                             :value="note"
                                             @change="onChangeNotes" />
+                                    </v-flex>
+                                </v-layout>
+                            </div>
+                        </v-flex>
+                    </v-layout>
+                </div>
+                <div class="form-input-box">
+                    <v-layout
+                        wrap
+                        align-center
+                        justify-center>
+                        <v-flex
+                            xs10
+                            sm6
+                            d-flex>
+                            <div>
+                                <h3>
+                                    Possible Notes
+                                </h3>
+                                <p>
+                                    Notes the teacher may choose from<br>
+                                    (for diatonic instruments)
+                                </p>
+                                <v-layout
+                                    wrap
+                                    align-center
+                                    justify-center>
+                                    <v-flex
+
+                                        shrink
+                                        style="width: 60px">
+                                        <v-text-field
+                                            :value="settings.teacher.noteRange[0]"
+                                            class="mt-0"
+                                            hide-details
+                                            single-line
+                                            type="number"
+                                            @input="val => setNoteRange([val, settings.teacher.noteRange[1]])" />
+                                    </v-flex>
+                                    <v-flex>
+                                        <v-range-slider
+                                            :value="settings.teacher.noteRange"
+                                            :max="127"
+                                            :min="0"
+                                            @change="setNoteRange" />
+                                    </v-flex>
+                                    <v-flex
+                                        shrink
+                                        style="width: 60px">
+                                        <v-text-field
+                                            :value="settings.teacher.noteRange[1]"
+                                            class="mt-0"
+                                            hide-details
+                                            single-line
+                                            type="number"
+                                            @input="val => setNoteRange([settings.teacher.noteRange[0], val])" />
                                     </v-flex>
                                 </v-layout>
                             </div>
@@ -201,14 +257,16 @@ export default class Settings extends Vue {
 
     @Provide() public possibleNotes = Note.names(' #');
 
-    @Provide() public people = [];
-
     onChangeVol(minVol: number) {
         this.settings.setMinVol(minVol);
     }
 
     onChangeNotes(val: any) {
         this.settings.teacher.setNotes(val);
+    }
+
+    setNoteRange(val: number[]) {
+        this.settings.teacher.setNoteRange(val);
     }
 
     public mounted() {
@@ -265,5 +323,9 @@ export default class Settings extends Vue {
 
   .form-input-box {
       margin: 20px 0px;
+  }
+
+  .switch-note {
+    padding: 10px;
   }
 </style>

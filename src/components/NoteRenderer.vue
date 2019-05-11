@@ -14,13 +14,13 @@ import ABCRenderer from '@/components/ABCRenderer.vue';
         },
     })
 export default class NoteRenderer extends Vue {
-        @Prop({ default: 'x', type: String }) private note!: string;
+        @Prop({ default: () => [], type: Array }) private note!: string[];
 
         private get abc() {
             return `X: 1
 L: 1/8
 %%stretchlast
-[|${this.note}8|]`;
+[| ${this.note.map(n => `${n}8 `).join('')} |]`;
         }
 }
 </script>

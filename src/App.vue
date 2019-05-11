@@ -82,6 +82,7 @@ html.html:not(.overflow-y-hidden) {
   position: absolute;
   right: 0;
   left: 0;
+  background: transparent;
 }
 #nav {
   padding: 30px;

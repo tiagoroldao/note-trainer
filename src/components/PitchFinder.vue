@@ -88,12 +88,12 @@ export default class PitchFinder extends Vue {
 
     @Provide() public pitch: number = 0;
 
-    @Provide() public note = 'x';
+    @Provide() public note: string[] = [];
 
     @Watch('audio.state')
     private onAudioStateChange() {
         if (this.audio.state !== 'running') {
-            this.note = 'x';
+            this.note = [];
         }
     }
 
@@ -102,7 +102,7 @@ export default class PitchFinder extends Vue {
             this.$audioContext.start(this.settings.selectedInput);
         } else {
             this.$audioContext.suspend().then(() => {
-                this.note = 'x';
+                this.note = [];
             });
         }
     }
@@ -111,7 +111,7 @@ export default class PitchFinder extends Vue {
         this.unsubscribers = this.unsubscribers.concat([
             this.$audioContext.pitchAnalyser.onData((pitch) => {
                 if (pitch > 0) {
-                    this.note = toAbc(Note.fromMidi(Note.freqToMidi(pitch)));
+                    this.note = [toAbc(Note.fromMidi(Note.freqToMidi(pitch)))];
                 }
             }),
         ]);
@@ -131,5 +131,9 @@ export default class PitchFinder extends Vue {
     &:hover {
       color: #999;
     }
+  }
+
+  /deep/ .abcjs-note_selected {
+      fill: #000;
   }
 </style>
