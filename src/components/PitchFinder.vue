@@ -9,29 +9,6 @@
           Pitch Finder
         </h1>
       </v-flex>
-    </v-layout>
-    <v-layout
-      wrap
-      align-center
-      justify-center>
-      <v-flex
-        xs12
-        sm6
-        d-flex>
-        <v-select
-          :value="settings.selectedInput"
-          :items="devices"
-          attach
-          :item-text="(item) => item.label || `microphone ${index + 1}`"
-          item-value="deviceId"
-          label="Please select an input device"
-          @change="(val) => setSelectedInput({ selectedInput: val })" />
-      </v-flex>
-    </v-layout>
-    <v-layout
-      wrap
-      align-center
-      justify-center>
       <v-flex
         xs1
         sm1
@@ -42,10 +19,10 @@
         d-flex>
         <v-btn
           :disabled="!settings.selectedInput"
-          :color="state == 'running' ? 'error' : 'success'"
+          :color="audio.state == 'running' ? 'error' : 'success'"
           @click="toggleStream">
-          <span v-if="!settings.selectedInput">Please select an input device</span>
-          <span v-else-if="state == 'running'">Stop</span>
+          <span v-if="!settings.selectedInput">Please select an input device in Settings</span>
+          <span v-else-if="audio.state == 'running'">Stop</span>
           <span v-else>Start</span>
         </v-btn>
       </v-flex>
@@ -89,7 +66,8 @@ import {
 } from 'vue-property-decorator';
 import PitchAnalyser from '@/services/PitchAnalyser';
 import VolumeAnalyser from '@/services/VolumeAnalyser';
-import { SettingsStore } from '@/vuex/settingsModule';
+import { SettingsModule } from '@/vuex/settingsModule';
+import { AudioModule } from '../vuex/audioModule';
 
 @Component({
     components: {
@@ -100,7 +78,9 @@ import { SettingsStore } from '@/vuex/settingsModule';
 export default class PitchFinder extends Vue {
     private unsubscribers: (() => void)[] = [];
 
-    private settings = SettingsStore.CreateProxy(this.$store, SettingsStore);
+    private settings = SettingsModule.CreateProxy(this.$store, SettingsModule);
+
+    private audio = AudioModule.CreateProxy(this.$store, AudioModule);
 
     @Provide() public devices = [] as MediaDeviceInfo[];
 
@@ -108,17 +88,15 @@ export default class PitchFinder extends Vue {
 
     @Provide() public note = 'x';
 
-    @Provide() public state: 'stopped' | 'running' | 'paused' = 'stopped';
-
-    @Watch('settings.selectedInput')
-    private onSelectedInputChange() {
-        if (this.state === 'running' && this.settings.selectedInput) {
-            this.$audioContext.start(this.settings.selectedInput);
+    @Watch('audio.state')
+    private onAudioStateChange() {
+        if (this.audio.state !== 'running') {
+            this.note = 'x';
         }
     }
 
     public toggleStream() {
-        if (this.state !== 'running' && this.settings.selectedInput) {
+        if (this.audio.state !== 'running' && this.settings.selectedInput) {
             this.$audioContext.start(this.settings.selectedInput);
         } else {
             this.$audioContext.suspend().then(() => {
@@ -128,15 +106,6 @@ export default class PitchFinder extends Vue {
     }
 
     public mounted() {
-        navigator.mediaDevices.enumerateDevices().then((devices) => {
-            this.devices = devices.filter(d => d.kind === 'audioinput');
-            if (!devices.find(d => d.deviceId === this.settings.selectedInput)) {
-                this.settings.setSelectedInput(devices[0].deviceId);
-            }
-        });
-
-        document.addEventListener('visibilitychange', this.onVisibilityChange);
-
         this.unsubscribers = this.unsubscribers.concat([
             this.$audioContext.pitchAnalyser.onData((pitch) => {
                 if (pitch.freq > 0) {
@@ -144,29 +113,12 @@ export default class PitchFinder extends Vue {
                     this.note = toAbc(Note.fromMidi(Note.freqToMidi(this.pitch)));
                 }
             }),
-            this.$audioContext.on('state-change', (state) => {
-                this.state = state;
-                if (state !== 'running') {
-                    this.note = 'x';
-                }
-            }),
         ]);
     }
 
     public beforeDestroy() {
-        document.removeEventListener('visibilitychange', this.onVisibilityChange);
         this.unsubscribers.forEach(u => u());
         this.$audioContext.suspend();
-    }
-
-    private onVisibilityChange() {
-        if (document.visibilityState === 'visible') {
-            if (this.state === 'paused') {
-                this.$audioContext.start(this.settings.selectedInput);
-            }
-        } else if (this.state === 'running') {
-            this.$audioContext.suspend();
-        }
     }
 }
 </script>

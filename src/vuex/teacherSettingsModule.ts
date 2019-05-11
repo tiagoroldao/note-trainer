@@ -3,7 +3,7 @@ import {
 } from 'vuex-class-component';
 
 @Module({ namespacedPath: 'teacher/' })
-export class TeacherSettingsStore extends VuexModule {
+export class TeacherSettingsModule extends VuexModule {
     @getter noteRegisterTime = 350;
 
     @mutation setNoteRegisterTime(time: number) {
