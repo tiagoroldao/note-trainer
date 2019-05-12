@@ -88,12 +88,12 @@ export default class PitchFinder extends Vue {
 
     @Provide() public pitch: number = 0;
 
-    @Provide() public note: string[] = [];
+    @Provide() public note: string[] = ['x'];
 
     @Watch('audio.state')
     private onAudioStateChange() {
         if (this.audio.state !== 'running') {
-            this.note = [];
+            this.note = ['x'];
         }
     }
 
@@ -102,7 +102,7 @@ export default class PitchFinder extends Vue {
             this.$audioContext.start(this.settings.selectedInput);
         } else {
             this.$audioContext.suspend().then(() => {
-                this.note = [];
+                this.note = ['x'];
             });
         }
     }
