@@ -56,7 +56,7 @@
                 xs12
                 sm6
                 d-flex
-                :class="['note-holder', { correct: note === targetNote }]">
+                :class="['note-holder', { correct: state === 'success' }]">
                 <NoteRenderer :note="[targetNote, note]" />
             </v-flex>
         </v-layout>
@@ -70,7 +70,7 @@
                 d-flex>
                 <v-btn
                     color="success"
-                    @click="nextNote">
+                    @click="nextTargetNote">
                     Next Note
                 </v-btn>
             </v-flex>
@@ -92,6 +92,9 @@ import VolumeAnalyser from '@/services/VolumeAnalyser';
 import { SettingsModule } from '@/vuex/settingsModule';
 import { AudioModule } from '@/vuex/audioModule';
 
+type teacherState = 'off' | 'querying' | 'success';
+const noteSuccessHoldTime = 2000;
+
 @Component({
     components: {
         NoteRenderer,
@@ -107,9 +110,11 @@ export default class NoteTeacher extends Vue {
 
     @Provide() public devices = [] as MediaDeviceInfo[];
 
-    @Provide() public note = 'A';
+    @Provide() public note = 'x';
 
-    @Provide() public targetNote = 'D';
+    @Provide() public targetNote = 'x';
+
+    @Provide() public state: teacherState = 'off';
 
     @Watch('audio.state')
     private onAudioStateChange() {
@@ -120,26 +125,61 @@ export default class NoteTeacher extends Vue {
 
     public toggleTeacher() {
         if (this.audio.state !== 'running' && this.settings.selectedInput) {
-            this.$audioContext.start(this.settings.selectedInput);
+            this.$audioContext.start(this.settings.selectedInput).then((() => {
+                this.nextTargetNote();
+            }));
         } else {
             this.$audioContext.suspend().then(() => {
                 this.note = 'x';
+                this.targetNote = 'x';
+                this.state = 'off';
             });
         }
     }
 
-    public nextNote() {
-        // this.note = 'x';
+    public nextTargetNote() {
+        this.state = 'querying';
+        this.note = 'x';
         this.targetNote = this.randomNote();
+    }
+
+    public nextNote(note: string) {
+        if (this.state !== 'querying') return;
+        this.note = note;
+        if (this.note === this.targetNote) {
+            this.state = 'success';
+            setTimeout(() => {
+                if (this.state === 'success') {
+                    this.nextTargetNote();
+                }
+            }, noteSuccessHoldTime);
+        }
+    }
+
+    private tempNote: string = '';
+
+    private noteStart: number = 0;
+
+    public handleNoteData(pitch: number) {
+        if (this.state !== 'querying') return;
+        if (pitch > 0) {
+            const identified: string = toAbc(Note.enharmonic(Note.fromMidi(Note.freqToMidi(pitch)))) || '';
+            if (identified.length && identified !== this.tempNote) {
+                console.log('id');
+                this.tempNote = identified;
+                this.noteStart = Date.now();
+            } else if (Date.now() > this.noteStart + this.settings.teacher.noteRegisterTime) {
+                this.nextNote(identified);
+                this.tempNote = '';
+            }
+        } else {
+            this.tempNote = '';
+        }
     }
 
     public mounted() {
         this.unsubscribers = this.unsubscribers.concat([
-            this.$audioContext.pitchAnalyser.onData((pitch) => {
-                if (pitch > 0) {
-                    this.note = toAbc(Note.fromMidi(Note.freqToMidi(pitch)));
-                }
-            }),
+            this.$audioContext.pitchAnalyser.onData(pitch => this.handleNoteData(pitch)),
         ]);
     }
 
