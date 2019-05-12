@@ -88,20 +88,37 @@
                             <v-flex
                                 xs10
                                 sm6
-                                d-flex
-                                class="min-vol-slider-wrap">
-                                <v-progress-linear
-                                    v-model="volume"
-                                    height="14" />
-                                <v-slider
-                                    :value="settings.minVol"
-                                    always-dirty
-                                    thumb-label
-                                    color="rgba(0,0,0,0)"
-                                    thumb-color="primary"
-                                    track-color="rgba(0,0,0,0)"
-                                    class="min-vol-slider"
-                                    @change="onChangeVol" />
+                                d-flex>
+                                <v-layout
+                                    wrap
+                                    align-center
+                                    justify-center>
+                                    <v-flex
+                                        class="min-vol-slider-wrap">
+                                        <v-progress-linear
+                                            v-model="volume"
+                                            height="14" />
+                                        <v-slider
+                                            :value="settings.minVol"
+                                            always-dirty
+                                            thumb-label
+                                            color="rgba(0,0,0,0)"
+                                            thumb-color="primary"
+                                            track-color="rgba(0,0,0,0)"
+                                            class="min-vol-slider"
+                                            @change="onChangeVol" />
+                                    </v-flex>
+                                    <v-flex
+                                        shrink
+                                        style="width: 60px">
+                                        <v-btn
+                                            :color="audio.state == 'running' ? 'error' : 'success'"
+                                            @click="toggleStream">
+                                            <span v-if="audio.state == 'running'">Stop</span>
+                                            <span v-else>Start</span>
+                                        </v-btn>
+                                    </v-flex>
+                                </v-layout>
                             </v-flex>
                         </v-layout>
                     </div>
@@ -187,45 +204,33 @@
                             d-flex>
                             <div>
                                 <h3>
-                                    Possible Notes
+                                    Note range
                                 </h3>
                                 <p>
-                                    Notes the teacher may choose from<br>
-                                    (for diatonic instruments)
+                                    Highest and lowest possible notes
                                 </p>
                                 <v-layout
                                     wrap
                                     align-center
                                     justify-center>
                                     <v-flex
-
-                                        shrink
-                                        style="width: 60px">
-                                        <v-text-field
-                                            :value="settings.teacher.noteRange[0]"
-                                            class="mt-0"
-                                            hide-details
-                                            single-line
-                                            type="number"
-                                            @input="val => setNoteRange([val, settings.teacher.noteRange[1]])" />
+                                        xs12
+                                        sm2>
+                                        {{ toHumanNote(settings.teacher.noteRange[0]) }}
                                     </v-flex>
-                                    <v-flex>
+                                    <v-flex
+                                        xs12
+                                        sm8>
                                         <v-range-slider
                                             :value="settings.teacher.noteRange"
                                             :max="127"
                                             :min="0"
-                                            @change="setNoteRange" />
+                                            @input="setNoteRange" />
                                     </v-flex>
                                     <v-flex
-                                        shrink
-                                        style="width: 60px">
-                                        <v-text-field
-                                            :value="settings.teacher.noteRange[1]"
-                                            class="mt-0"
-                                            hide-details
-                                            single-line
-                                            type="number"
-                                            @input="val => setNoteRange([settings.teacher.noteRange[0], val])" />
+                                        xs12
+                                        sm2>
+                                        {{ toHumanNote(settings.teacher.noteRange[1]) }}
                                     </v-flex>
                                 </v-layout>
                             </div>
@@ -242,12 +247,15 @@
 import { Note } from 'tonal';
 import { Component, Vue, Provide } from 'vue-property-decorator';
 import { SettingsModule } from '../vuex/settingsModule';
+import { AudioModule } from '@/vuex/audioModule';
 
 @Component({})
 export default class Settings extends Vue {
     private unsubscribers: (() => void)[] = [];
 
     private settings = SettingsModule.CreateProxy(this.$store, SettingsModule);
+
+    private audio = AudioModule.CreateProxy(this.$store, AudioModule);
 
     @Provide() public dialog = false;
 
@@ -267,6 +275,18 @@ export default class Settings extends Vue {
 
     setNoteRange(val: number[]) {
         this.settings.teacher.setNoteRange(val);
+    }
+
+    toHumanNote(note: number) {
+        return Note.fromMidi(note);
+    }
+
+    public toggleStream() {
+        if (this.audio.state !== 'running' && this.settings.selectedInput) {
+            this.$audioContext.start(this.settings.selectedInput);
+        } else {
+            this.$audioContext.suspend();
+        }
     }
 
     public mounted() {

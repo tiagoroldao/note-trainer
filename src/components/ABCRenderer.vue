@@ -44,11 +44,6 @@ export default class ABCRenderer extends Vue {
 <style lang="scss" scoped>
     .abcWrapper {
         width: 100%;
-        height: 400px;
         display: inline-block;
-    }
-
-    .abcOutput {
-        height: 400px;
     }
 </style>

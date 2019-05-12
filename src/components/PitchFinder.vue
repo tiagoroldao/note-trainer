@@ -19,12 +19,12 @@
                 d-flex>
                 <v-btn
                     :disabled="!settings.selectedInput"
-                    :color="audio.state == 'running' ? 'error' : 'success'"
+                    :color="state == 'on' ? 'error' : 'success'"
                     @click="toggleStream">
                     <span v-if="!settings.selectedInput">
                         Please select an input device in Settings
                     </span>
-                    <span v-else-if="audio.state == 'running'">Stop</span>
+                    <span v-else-if="state == 'on'">Stop</span>
                     <span v-else>Start</span>
                 </v-btn>
             </v-flex>
@@ -51,7 +51,20 @@
                 xs12
                 sm6
                 d-flex>
-                <NoteRenderer :note="note" />
+                <NoteRenderer :note="[note]" />
+            </v-flex>
+        </v-layout>
+        <v-layout
+            wrap
+            align-center
+            justify-center>
+            <v-flex
+                xs12
+                sm6
+                d-flex>
+                <span class="note-string">
+                    {{ noteString || '' }}
+                </span>
             </v-flex>
         </v-layout>
     </v-container>
@@ -71,6 +84,8 @@ import VolumeAnalyser from '@/services/VolumeAnalyser';
 import { SettingsModule } from '@/vuex/settingsModule';
 import { AudioModule } from '../vuex/audioModule';
 
+type pitchState = 'off' | 'on';
+
 @Component({
     components: {
         NoteRenderer,
@@ -88,21 +103,31 @@ export default class PitchFinder extends Vue {
 
     @Provide() public pitch: number = 0;
 
-    @Provide() public note: string[] = ['x'];
+    @Provide() public note: string = 'x';
+
+    @Provide() public noteString: string = '';
+
+    @Provide() public state: pitchState = 'off';
 
     @Watch('audio.state')
     private onAudioStateChange() {
         if (this.audio.state !== 'running') {
-            this.note = ['x'];
+            this.note = 'x';
+            this.noteString = '';
+            this.state = 'off';
         }
     }
 
     public toggleStream() {
-        if (this.audio.state !== 'running' && this.settings.selectedInput) {
-            this.$audioContext.start(this.settings.selectedInput);
-        } else {
+        if (this.state === 'on') {
             this.$audioContext.suspend().then(() => {
-                this.note = ['x'];
+                this.state = 'off';
+                this.note = 'x';
+                this.noteString = '';
+            });
+        } else if (this.settings.selectedInput) {
+            this.$audioContext.start(this.settings.selectedInput).then(() => {
+                this.state = 'on';
             });
         }
     }
@@ -110,8 +135,9 @@ export default class PitchFinder extends Vue {
     public mounted() {
         this.unsubscribers = this.unsubscribers.concat([
             this.$audioContext.pitchAnalyser.onData((pitch) => {
-                if (pitch > 0) {
-                    this.note = [toAbc(Note.fromMidi(Note.freqToMidi(pitch)))];
+                if (this.state === 'on' && pitch > 0) {
+                    this.noteString = Note.enharmonic(Note.fromMidi(Note.freqToMidi(pitch))) as string;
+                    this.note = toAbc(this.noteString);
                 }
             }),
         ]);
@@ -135,5 +161,11 @@ export default class PitchFinder extends Vue {
 
   /deep/ .abcjs-note_selected {
       fill: #000;
+  }
+
+  .note-string {
+    font-size: 5em;
+    font-weight: 900;
+    color: #bbb;
   }
 </style>

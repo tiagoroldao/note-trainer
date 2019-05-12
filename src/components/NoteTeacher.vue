@@ -69,7 +69,8 @@
                 sm4
                 d-flex>
                 <v-btn
-                    color="success"
+                    :disabled="state == 'off'"
+                    color="primary"
                     @click="nextTargetNote">
                     Next Note
                 </v-btn>
@@ -120,6 +121,7 @@ export default class NoteTeacher extends Vue {
     private onAudioStateChange() {
         if (this.audio.state !== 'running') {
             this.note = 'x';
+            this.state = 'off';
         }
     }
 
@@ -165,7 +167,6 @@ export default class NoteTeacher extends Vue {
         if (pitch > 0) {
             const identified: string = toAbc(Note.enharmonic(Note.fromMidi(Note.freqToMidi(pitch)))) || '';
             if (identified.length && identified !== this.tempNote) {
-                console.log('id');
                 this.tempNote = identified;
                 this.noteStart = Date.now();
             } else if (Date.now() > this.noteStart + this.settings.teacher.noteRegisterTime) {
