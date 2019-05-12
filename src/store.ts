@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions, Store } from 'vuex';
 import VuexPersistence from 'vuex-persist';
-import { SettingsStore } from './vuex/settingsModule';
+import { SettingsModule } from './vuex/settingsModule';
+import { AudioModule } from './vuex/audioModule';
 
 Vue.use(Vuex);
 
@@ -25,7 +26,8 @@ const vuexPersistEmitter = () => (store: Store<any>) => {
 
 const options: StoreOptions<any> = {
     modules: {
-        settings: SettingsStore.ExtractVuexModule(SettingsStore),
+        settings: SettingsModule.ExtractVuexModule(SettingsModule),
+        audio: AudioModule.ExtractVuexModule(AudioModule),
     },
     mutations: {
         RESTORE_MUTATION: vuexPersist.RESTORE_MUTATION,

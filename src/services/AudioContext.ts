@@ -5,6 +5,7 @@ import EventEmmiter from './EventEmmiter';
 const Context = (window as any).AudioContext || (window as any).webkitAudioContext;
 
 export type AudioContextProviderEvent = 'state-change';
+export type AudioContextProviderState = 'stopped' | 'running' | 'paused' | 'hold';
 
 export default class AudioContextProvider extends EventEmmiter<AudioContextProviderEvent> {
     private context!: AudioContext | undefined;
@@ -15,17 +16,24 @@ export default class AudioContextProvider extends EventEmmiter<AudioContextProvi
 
     public audioStream!: MediaStream;
 
-    private state: 'stopped' | 'running' | 'paused' = 'stopped';
+    private state: AudioContextProviderState = 'stopped';
+
+    private currentInput: string = '';
+
+    constructor() {
+        super();
+        document.addEventListener('visibilitychange', () => this.onVisibilityChange());
+    }
 
     public get Context(): AudioContext | undefined {
         return this.context;
     }
 
-    public get State(): 'stopped' | 'running' | 'paused' {
+    public get State(): AudioContextProviderState {
         return this.state;
     }
 
-    private setState(state: 'stopped' | 'running' | 'paused') {
+    private setState(state: AudioContextProviderState) {
         this.state = state;
         this.trigger('state-change', state);
     }
@@ -43,14 +51,24 @@ export default class AudioContextProvider extends EventEmmiter<AudioContextProvi
         return startContext;
     }
 
-    public suspend(): Promise<void> {
+    public suspend(hold = false): Promise<void> {
         if (this.context) {
             this.stopAudioStream();
             return this.context.suspend().then(() => {
-                this.setState('paused');
+                this.setState(hold ? 'hold' : 'paused');
             });
         }
         return Promise.resolve();
+    }
+
+    private onVisibilityChange() {
+        if (document.visibilityState === 'visible') {
+            if (this.state === 'hold') {
+                this.start(this.currentInput);
+            }
+        } else if (this.state === 'running') {
+            this.suspend(true);
+        }
     }
 
     public stop(): Promise<void> {
@@ -74,6 +92,7 @@ export default class AudioContextProvider extends EventEmmiter<AudioContextProvi
             .then((stream) => {
                 if (this.context) {
                     this.audioStream = stream;
+                    this.currentInput = input;
                     this.startAnalyser();
                     this.setState('running');
                 }

@@ -3,7 +3,7 @@ import AudioAnalyser from './AudioAnalyser';
 
 const detectPitch = Pitchfinder.Macleod();
 
-export default class PitchAnalyser extends AudioAnalyser<{freq: number, probability: number}> {
+export default class PitchAnalyser extends AudioAnalyser<number> {
     private pitch!: {freq: number, probability: number};
 
     private minVol: number = 0;
@@ -28,7 +28,7 @@ export default class PitchAnalyser extends AudioAnalyser<{freq: number, probabil
             const vol = PitchAnalyser.getVol(input);
             if (vol > this.minVol) {
                 this.pitch = detectPitch(input);
-                this.trigger(this.pitch);
+                this.trigger(this.pitch.freq);
             }
         };
     }

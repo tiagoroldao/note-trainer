@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
+import NoteTeacher from './components/NoteTeacher.vue';
 
 Vue.use(Router);
 
@@ -8,8 +9,13 @@ export default new Router({
     routes: [
         {
             path: '/',
-            name: 'home',
+            name: 'pitchfinder',
             component: Home,
+        },
+        {
+            path: '/teacher',
+            name: 'teacher',
+            component: NoteTeacher,
         },
         {
             path: '/about',
