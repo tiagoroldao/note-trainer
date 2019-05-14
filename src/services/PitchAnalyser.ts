@@ -1,10 +1,13 @@
 import Pitchfinder from 'pitchfinder';
 import AudioAnalyser from './AudioAnalyser';
 
-const detectPitch = Pitchfinder.Macleod();
-
 export default class PitchAnalyser extends AudioAnalyser<number> {
     private pitch!: {freq: number, probability: number};
+
+    private detectPitch!: (input: Float32Array) => {
+        freq: number;
+        probability: number;
+    }
 
     private minVol: number = 0;
 
@@ -23,11 +26,19 @@ export default class PitchAnalyser extends AudioAnalyser<number> {
 
     public setup(context: AudioContext) {
         super.setup(context);
+        this.detectPitch = Pitchfinder.Macleod({ bufferSize: this.script.bufferSize });
         this.script.onaudioprocess = (event) => {
+            if (this.sampleRate !== event.inputBuffer.sampleRate) {
+                this.sampleRate = event.inputBuffer.sampleRate;
+                this.detectPitch = Pitchfinder.Macleod({
+                    bufferSize: this.script.bufferSize,
+                    sampleRate: this.sampleRate,
+                });
+            }
             const input = event.inputBuffer.getChannelData(0);
             const vol = PitchAnalyser.getVol(input);
             if (vol > this.minVol) {
-                this.pitch = detectPitch(input);
+                this.pitch = this.detectPitch(input);
                 this.trigger(this.pitch.freq);
             }
         };

@@ -167,5 +167,6 @@ export default class PitchFinder extends Vue {
     font-size: 5em;
     font-weight: 900;
     color: #bbb;
+    word-break: break-word;
   }
 </style>

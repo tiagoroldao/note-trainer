@@ -9,6 +9,8 @@ export default class AudioAnalyser<P> {
 
     protected bufferSize: number | undefined;
 
+    protected sampleRate: number | undefined;
+
     protected inputChannels: number | undefined;
 
     protected outputChannels: number | undefined;
