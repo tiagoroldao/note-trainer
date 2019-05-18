@@ -1,9 +1,10 @@
 <template>
-  <div class="abcWrapper">
-    <div
-      ref="abcOutput"
-      class="abcOutput" />
-  </div>
+    <div class="abcWrapper">
+        <div
+            ref="abcOutput"
+            class="abcOutput"
+            v-on="$listeners" />
+    </div>
 </template>
 
 <script lang="ts">
@@ -21,6 +22,7 @@ export default class ABCRenderer extends Vue {
             default: () => ({
                 responsive: 'resize',
                 staffwidth: 150,
+                add_classes: true,
             }),
         }) public readonly abcOptions!: any;
 
@@ -39,7 +41,7 @@ export default class ABCRenderer extends Vue {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .abcWrapper {
         width: 100%;
         display: inline-block;
