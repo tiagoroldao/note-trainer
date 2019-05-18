@@ -12,6 +12,12 @@ export class SettingsModule extends VuexModule {
 
     @getter selectedInput = '';
 
+    @getter useRomanceNotes = true;
+
+    @mutation setUseRomanceNotes(useRomanceNotes: boolean) {
+        this.useRomanceNotes = useRomanceNotes;
+    }
+
     @mutation setMinVol(minVol: number) {
         this.minVol = minVol;
         services.$audioContext.pitchAnalyser.MinVol = this.minVol / 100;
