@@ -191,8 +191,8 @@ export default class NoteTeacher extends Vue {
         do {
             note = Math.floor((Math.random() * (max - min)) + min);
         } while (this.settings.teacher.notes
-            .indexOf(Note.pc(Note.enharmonic(Note.fromMidi(note)) as string) as string) === -1);
-        return toAbc(Note.enharmonic(Note.fromMidi(note)));
+            .indexOf(Note.pc(Note.fromMidi(note, true) as string) as string) === -1);
+        return toAbc(Note.fromMidi(note, true));
     }
 
     public beforeDestroy() {

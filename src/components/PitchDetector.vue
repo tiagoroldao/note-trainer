@@ -82,6 +82,7 @@ import {
 import VolumeAnalyser from '@/services/VolumeAnalyser';
 import { SettingsModule } from '@/vuex/settingsModule';
 import { AudioModule } from '../vuex/audioModule';
+import { toRomance } from '@/helpers/noteHelpers';
 
 type pitchState = 'off' | 'on';
 
@@ -121,6 +122,14 @@ export default class PitchDetector extends Vue {
         }
     }
 
+    toHumanNote(_note: number | string) {
+        let note = _note;
+        if (typeof note === 'number') {
+            note = Note.fromMidi(note, true);
+        }
+        return this.settings.useRomanceNotes ? toRomance(note) : note;
+    }
+
     public toggleStream() {
         if (this.state === 'on') {
             this.$audioContext.suspend().then(() => {
@@ -139,8 +148,9 @@ export default class PitchDetector extends Vue {
         this.unsubscribers = this.unsubscribers.concat([
             this.$audioContext.pitchAnalyser.on('pitchData', (pitch) => {
                 if (this.state === 'on' && pitch.freq > 0) {
-                    this.noteString = Note.enharmonic(Note.fromMidi(Note.freqToMidi(pitch.freq))) as string;
-                    this.note = toAbc(this.noteString);
+                    const noteString = Note.fromMidi(Note.freqToMidi(pitch.freq), true) as string;
+                    this.note = toAbc(noteString);
+                    this.noteString = this.toHumanNote(noteString);
                     this.duration = this.$audioContext.pitchAnalyser.duration;
                     this.prob = pitch.probability;
                 }
