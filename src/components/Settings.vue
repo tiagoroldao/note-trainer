@@ -295,7 +295,7 @@ export default class Settings extends Vue {
         });
 
         this.unsubscribers = this.unsubscribers.concat([
-            this.$audioContext.volumeAnalyser.onData((v) => {
+            this.$audioContext.volumeAnalyser.on('volumeData', (v) => {
                 this.volume = v * 100;
             }),
         ]);

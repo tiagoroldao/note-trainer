@@ -1,7 +1,8 @@
 import AudioAnalyser from './AudioAnalyser';
 import { PitchFinder } from '@/workers/pitchFinder';
 
-export default class PitchAnalyser extends AudioAnalyser<{ freq: number, probability: number}> {
+export type PitchAnalyserEvent = 'pitchData';
+export default class PitchAnalyser extends AudioAnalyser<PitchAnalyserEvent> {
     private pitch!: {freq: number, probability: number};
 
     private pitchFinder: PitchFinder = new PitchFinder();
@@ -23,22 +24,32 @@ export default class PitchAnalyser extends AudioAnalyser<{ freq: number, probabi
         this.MinVol = opts.minVol || 0;
     }
 
+    private onFrame() {
+        if (!this.source) return;
+        const start = performance.now();
+        this.analyserNode.getFloatTimeDomainData(this.timeData);
+
+        const vol = PitchAnalyser.getVol(this.timeData);
+        if (vol > this.minVol) {
+            this.pitch = this.pitchFinder.findPitch(this.timeData);
+            this.trigger('pitchData', this.pitch);
+            this.duration = performance.now() - start;
+        }
+        window.requestAnimationFrame(() => this.onFrame());
+    }
+
+    public connectToSource(source: MediaStreamAudioSourceNode, callback?: () => void) {
+        super.connectToSource(source, callback);
+        const { sampleRate } = this.source.mediaStream.getAudioTracks()[0].getCapabilities();
+
+        if (sampleRate && this.pitchFinder.sampleRate !== sampleRate) {
+            this.pitchFinder.sampleRate = sampleRate as number;
+        }
+        this.onFrame();
+    }
+
     public setup(context: AudioContext) {
         super.setup(context);
-        this.script.onaudioprocess = (event) => {
-            const start = performance.now();
-            this.analyserNode.getFloatTimeDomainData(this.timeData);
-
-            const vol = PitchAnalyser.getVol(this.timeData);
-            if (vol > this.minVol) {
-                if (this.pitchFinder.sampleRate !== event.inputBuffer.sampleRate) {
-                    this.pitchFinder.sampleRate = event.inputBuffer.sampleRate;
-                }
-                this.pitch = this.pitchFinder.findPitch(this.timeData);
-                this.trigger(this.pitch);
-                this.duration = performance.now() - start;
-            }
-        };
     }
 
     public static getVol(input: Float32Array): number {

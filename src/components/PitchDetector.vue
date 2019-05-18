@@ -143,7 +143,7 @@ export default class PitchDetector extends Vue {
 
     public mounted() {
         this.unsubscribers = this.unsubscribers.concat([
-            this.$audioContext.pitchAnalyser.onData((pitch) => {
+            this.$audioContext.pitchAnalyser.on('pitchData', (pitch) => {
                 if (this.state === 'on' && pitch.freq > 0) {
                     this.noteString = Note.enharmonic(Note.fromMidi(Note.freqToMidi(pitch.freq))) as string;
                     this.note = toAbc(this.noteString);

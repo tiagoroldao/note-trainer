@@ -180,7 +180,7 @@ export default class NoteTeacher extends Vue {
 
     public mounted() {
         this.unsubscribers = this.unsubscribers.concat([
-            this.$audioContext.pitchAnalyser.onData(pitch => this.handleNoteData(pitch)),
+            this.$audioContext.pitchAnalyser.on('pitchData', pitch => this.handleNoteData(pitch)),
         ]);
     }
 
