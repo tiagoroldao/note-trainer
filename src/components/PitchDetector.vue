@@ -62,14 +62,8 @@
                 xs12
                 sm6
                 d-flex>
-                <!-- <span class="note-string">
+                <span class="note-string">
                     {{ noteString || '' }}
-                </span> -->
-                <span class="note-string">
-                    {{ duration ? duration.toFixed(3) : '' }}
-                </span>
-                <span class="note-string">
-                    {{ prob ? prob.toFixed(3) : '' }}
                 </span>
             </v-flex>
         </v-layout>

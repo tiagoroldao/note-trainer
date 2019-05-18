@@ -40,16 +40,12 @@ export default class PitchAnalyser extends AudioAnalyser<PitchAnalyserEvent> {
 
     public connectToSource(source: MediaStreamAudioSourceNode, callback?: () => void) {
         super.connectToSource(source, callback);
-        const { sampleRate } = this.source.mediaStream.getAudioTracks()[0].getCapabilities();
-
-        if (sampleRate && this.pitchFinder.sampleRate !== sampleRate) {
-            this.pitchFinder.sampleRate = sampleRate as number;
-        }
         this.onFrame();
     }
 
     public setup(context: AudioContext) {
         super.setup(context);
+        this.pitchFinder.sampleRate = context.sampleRate;
     }
 
     public static getVol(input: Float32Array): number {

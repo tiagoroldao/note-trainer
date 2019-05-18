@@ -35,10 +35,16 @@ export class PitchFinder {
      */
     public sampleRate: number;
 
-    public nsd!: Float32Array;
+    /**
+     * Contains a normalized square difference function value for each delay
+     * (tau).
+     */
+    public nsdf!: Float32Array;
 
-    public squares!: Float32Array;
-
+    /**
+     * Contains a sum of squares of the Buffer, for improving performance
+     * (avoids redoing math in the normalized square difference function)
+     */
     public squareSums!: Float32Array;
 
     constructor(config: {[key: string]: any} = {}) {
@@ -53,10 +59,9 @@ export class PitchFinder {
      */
     private normalizedSquareDifference(float32AudioBuffer: Float32Array) {
         let acf = 0;
-        this.squares[0] = float32AudioBuffer[0] * float32AudioBuffer[0];
+        this.squareSums[0] = float32AudioBuffer[0] * float32AudioBuffer[0];
         for (let x = 1; x < float32AudioBuffer.length; x += 1) {
-            this.squares[x] = float32AudioBuffer[x] * float32AudioBuffer[x];
-            this.squareSums[x] = this.squares[x] + this.squareSums[x - 1];
+            this.squareSums[x] = (float32AudioBuffer[x] * float32AudioBuffer[x]) + this.squareSums[x - 1];
         }
         for (let tau = 0; tau < float32AudioBuffer.length; tau += 1) {
             acf = 0;
@@ -66,7 +71,7 @@ export class PitchFinder {
             for (let i = 0; i < float32AudioBuffer.length - tau; i += 1) {
                 acf += float32AudioBuffer[i] * float32AudioBuffer[i + tau];
             }
-            this.nsd[tau] = 2 * acf / divisorM;
+            this.nsdf[tau] = 2 * acf / divisorM;
         }
     }
 
@@ -146,9 +151,8 @@ export class PitchFinder {
     }
 
     public findPitch(float32AudioBuffer: Float32Array): PitchData {
-        if (!this.nsd || this.nsd.length !== float32AudioBuffer.length) {
-            this.nsd = new Float32Array(float32AudioBuffer.length);
-            this.squares = new Float32Array(float32AudioBuffer.length);
+        if (!this.nsdf || this.nsdf.length !== float32AudioBuffer.length) {
+            this.nsdf = new Float32Array(float32AudioBuffer.length);
             this.squareSums = new Float32Array(float32AudioBuffer.length);
         }
 
@@ -159,18 +163,18 @@ export class PitchFinder {
         // 1. Calculate the normalized square difference for each Tau value.
         this.normalizedSquareDifference(float32AudioBuffer);
         // 2. Peak picking time: time to pick some peaks.
-        const maxPositions = this.peakPicking(this.nsd);
+        const maxPositions = this.peakPicking(this.nsdf);
 
         let highestAmplitude = -Infinity;
 
         for (let i = 0; i < maxPositions.length; i += 1) {
             const tau = maxPositions[i];
             // make sure every annotation has a probability attached
-            highestAmplitude = Math.max(highestAmplitude, this.nsd[tau]);
+            highestAmplitude = Math.max(highestAmplitude, this.nsdf[tau]);
 
-            if (this.nsd[tau] > SMALL_CUTOFF) {
+            if (this.nsdf[tau] > SMALL_CUTOFF) {
                 // calculates turningPointX and Y
-                const turningPoint = this.parabolicInterpolation(this.nsd, tau);
+                const turningPoint = this.parabolicInterpolation(this.nsdf, tau);
                 // store the turning points
                 ampEstimates.push(turningPoint.y);
                 periodEstimates.push(turningPoint.x);
