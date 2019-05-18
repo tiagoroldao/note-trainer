@@ -35,10 +35,11 @@ export class PitchFinder {
      */
     public sampleRate: number;
 
-    /**
-     * Size of the input buffer.
-     */
     public nsd!: Float32Array;
+
+    public squares!: Float32Array;
+
+    public squareSums!: Float32Array;
 
     constructor(config: {[key: string]: any} = {}) {
         this.cutoff = config.cutoff || DEFAULT_CUTOFF;
@@ -51,13 +52,19 @@ export class PitchFinder {
      * optimized by using an FFT. The results should remain the same.
      */
     private normalizedSquareDifference(float32AudioBuffer: Float32Array) {
+        let acf = 0;
+        this.squares[0] = float32AudioBuffer[0] * float32AudioBuffer[0];
+        for (let x = 1; x < float32AudioBuffer.length; x += 1) {
+            this.squares[x] = float32AudioBuffer[x] * float32AudioBuffer[x];
+            this.squareSums[x] = this.squares[x] + this.squareSums[x - 1];
+        }
         for (let tau = 0; tau < float32AudioBuffer.length; tau += 1) {
-            let acf = 0;
-            let divisorM = 0;
+            acf = 0;
+            const divisorM = this.squareSums[float32AudioBuffer.length - 1 - tau]
+                + this.squareSums[float32AudioBuffer.length - 1]
+                - this.squareSums[tau];
             for (let i = 0; i < float32AudioBuffer.length - tau; i += 1) {
                 acf += float32AudioBuffer[i] * float32AudioBuffer[i + tau];
-                divisorM += (float32AudioBuffer[i] * float32AudioBuffer[i])
-                    + (float32AudioBuffer[i + tau] * float32AudioBuffer[i + tau]);
             }
             this.nsd[tau] = 2 * acf / divisorM;
         }
@@ -141,6 +148,8 @@ export class PitchFinder {
     public findPitch(float32AudioBuffer: Float32Array): PitchData {
         if (!this.nsd || this.nsd.length !== float32AudioBuffer.length) {
             this.nsd = new Float32Array(float32AudioBuffer.length);
+            this.squares = new Float32Array(float32AudioBuffer.length);
+            this.squareSums = new Float32Array(float32AudioBuffer.length);
         }
 
         let pitch;
