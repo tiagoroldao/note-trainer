@@ -1,11 +1,22 @@
 import AudioAnalyser from './AudioAnalyser';
 
-export default class VolumeAnalyser extends AudioAnalyser<number> {
+export type VolumenAnalyserEvent = 'volumeData';
+
+export default class VolumeAnalyser extends AudioAnalyser<VolumenAnalyserEvent> {
     public setup(context: AudioContext) {
         super.setup(context);
-        this.script.onaudioprocess = (event) => {
-            this.trigger(VolumeAnalyser.getVol(event.inputBuffer.getChannelData(0)));
-        };
+    }
+
+    public connectToSource(source: MediaStreamAudioSourceNode, callback?: () => void) {
+        super.connectToSource(source, callback);
+        this.onFrame();
+    }
+
+    private onFrame() {
+        if (!this.source) return;
+        this.analyserNode.getFloatTimeDomainData(this.timeData);
+        this.trigger('volumeData', VolumeAnalyser.getVol(this.timeData));
+        window.requestAnimationFrame(() => this.onFrame());
     }
 
     public static getVol(input: Float32Array): number {

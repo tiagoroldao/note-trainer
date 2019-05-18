@@ -1,15 +1,15 @@
-import Pitchfinder from 'pitchfinder';
 import AudioAnalyser from './AudioAnalyser';
+import { PitchFinder } from '@/workers/pitchFinder';
 
-export default class PitchAnalyser extends AudioAnalyser<number> {
+export type PitchAnalyserEvent = 'pitchData';
+export default class PitchAnalyser extends AudioAnalyser<PitchAnalyserEvent> {
     private pitch!: {freq: number, probability: number};
 
-    private detectPitch!: (input: Float32Array) => {
-        freq: number;
-        probability: number;
-    }
+    private pitchFinder: PitchFinder = new PitchFinder();
 
     private minVol: number = 0;
+
+    public duration: number = 0;
 
     public get MinVol(): number {
         return this.minVol;
@@ -19,29 +19,33 @@ export default class PitchAnalyser extends AudioAnalyser<number> {
         this.minVol = Math.max(Math.min(1, value), 0);
     }
 
-    constructor(minVol = 0) {
-        super();
-        this.MinVol = minVol;
+    constructor(opts: any = {}) {
+        super(opts);
+        this.MinVol = opts.minVol || 0;
+    }
+
+    private onFrame() {
+        if (!this.source) return;
+        const start = performance.now();
+        this.analyserNode.getFloatTimeDomainData(this.timeData);
+
+        const vol = PitchAnalyser.getVol(this.timeData);
+        if (vol > this.minVol) {
+            this.pitch = this.pitchFinder.findPitch(this.timeData);
+            this.trigger('pitchData', this.pitch);
+            this.duration = performance.now() - start;
+        }
+        window.requestAnimationFrame(() => this.onFrame());
+    }
+
+    public connectToSource(source: MediaStreamAudioSourceNode, callback?: () => void) {
+        super.connectToSource(source, callback);
+        this.onFrame();
     }
 
     public setup(context: AudioContext) {
         super.setup(context);
-        this.detectPitch = Pitchfinder.Macleod({ bufferSize: this.script.bufferSize });
-        this.script.onaudioprocess = (event) => {
-            if (this.sampleRate !== event.inputBuffer.sampleRate) {
-                this.sampleRate = event.inputBuffer.sampleRate;
-                this.detectPitch = Pitchfinder.Macleod({
-                    bufferSize: this.script.bufferSize,
-                    sampleRate: this.sampleRate,
-                });
-            }
-            const input = event.inputBuffer.getChannelData(0);
-            const vol = PitchAnalyser.getVol(input);
-            if (vol > this.minVol) {
-                this.pitch = this.detectPitch(input);
-                this.trigger(this.pitch.freq);
-            }
-        };
+        this.pitchFinder.sampleRate = context.sampleRate;
     }
 
     public static getVol(input: Float32Array): number {

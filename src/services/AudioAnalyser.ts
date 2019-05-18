@@ -1,44 +1,45 @@
-export default class AudioAnalyser<P> {
-    protected script!: ScriptProcessorNode;
 
-    protected source: MediaStreamAudioSourceNode | undefined;
+import EventEmmiter from './EventEmmiter';
 
-    protected listeners: Array<(data: P) => void> = [];
+export default class AudioAnalyser<P> extends EventEmmiter<P> {
+    // protected script!: ScriptProcessorNode;
+
+    protected source!: MediaStreamAudioSourceNode;
 
     protected context!: AudioContext;
 
-    protected bufferSize: number | undefined;
-
-    protected sampleRate: number | undefined;
+    protected bufferSize: number = 1024;
 
     protected inputChannels: number | undefined;
 
     protected outputChannels: number | undefined;
 
+    protected analyserNode!: AnalyserNode;
+
+    protected timeData!: Float32Array;
+
+    constructor(opts: any = {}) {
+        super();
+        if (opts.bufferSize) {
+            this.bufferSize = opts.bufferSize;
+        }
+    }
+
     public setup(context: AudioContext) {
         this.context = context;
         this.stop();
-        this.script = this.context.createScriptProcessor(
-            this.bufferSize, this.inputChannels, this.outputChannels,
-        );
-    }
-
-    public onData(callback: (data: P) => void) {
-        this.listeners.push(callback);
-
-        return () => {
-            this.listeners = this.listeners.filter(e => e !== callback);
-        };
+        this.analyserNode = this.context.createAnalyser();
+        this.analyserNode.fftSize = this.bufferSize;
+        this.timeData = new Float32Array(this.analyserNode.fftSize);
     }
 
     public connectToSource(source: MediaStreamAudioSourceNode, callback?: () => void) {
         if (this.source) {
-            this.source.disconnect(this.script);
-            this.source = undefined;
+            this.source.disconnect(this.analyserNode);
+            delete this.source;
         }
-        source.connect(this.script);
         this.source = source;
-        this.script.connect(this.context.destination);
+        source.connect(this.analyserNode);
         if (typeof callback !== 'undefined') {
             callback();
         }
@@ -47,25 +48,19 @@ export default class AudioAnalyser<P> {
     public stop() {
         if (this.source) {
             try {
-                this.source.disconnect();
+                this.source.disconnect(this.analyserNode);
             } catch (e) {
                 // do nothing;
             }
             delete this.source;
         }
-        if (this.script) {
+        if (this.analyserNode) {
             try {
-                this.script.disconnect();
+                this.analyserNode.disconnect();
             } catch (e) {
                 // do nothing;
             }
-            delete this.script;
-        }
-    }
-
-    protected trigger(data: P) {
-        for (let i = 0; i < this.listeners.length; i += 1) {
-            setTimeout(() => this.listeners[i](data));
+            delete this.analyserNode;
         }
     }
 }

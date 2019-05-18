@@ -88,10 +88,10 @@ import Vue from 'vue';
 import {
     Component, Prop, Provide, Watch,
 } from 'vue-property-decorator';
-import PitchAnalyser from '@/services/PitchAnalyser';
 import VolumeAnalyser from '@/services/VolumeAnalyser';
 import { SettingsModule } from '@/vuex/settingsModule';
 import { AudioModule } from '@/vuex/audioModule';
+import { PitchData } from '@/workers/pitchFinder';
 
 type teacherState = 'off' | 'querying' | 'success';
 const noteSuccessHoldTime = 2000;
@@ -162,10 +162,10 @@ export default class NoteTeacher extends Vue {
 
     private noteStart: number = 0;
 
-    public handleNoteData(pitch: number) {
+    public handleNoteData(pitch: PitchData) {
         if (this.state !== 'querying') return;
-        if (pitch > 0) {
-            const identified: string = toAbc(Note.enharmonic(Note.fromMidi(Note.freqToMidi(pitch)))) || '';
+        if (pitch.freq > 0) {
+            const identified: string = toAbc(Note.enharmonic(Note.fromMidi(Note.freqToMidi(pitch.freq)))) || '';
             if (identified.length && identified !== this.tempNote) {
                 this.tempNote = identified;
                 this.noteStart = Date.now();
@@ -180,7 +180,7 @@ export default class NoteTeacher extends Vue {
 
     public mounted() {
         this.unsubscribers = this.unsubscribers.concat([
-            this.$audioContext.pitchAnalyser.onData(pitch => this.handleNoteData(pitch)),
+            this.$audioContext.pitchAnalyser.on('pitchData', pitch => this.handleNoteData(pitch)),
         ]);
     }
 
