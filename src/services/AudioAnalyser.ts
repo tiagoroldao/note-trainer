@@ -9,11 +9,19 @@ export default class AudioAnalyser<P> {
 
     protected bufferSize: number | undefined;
 
-    protected sampleRate: number | undefined;
-
     protected inputChannels: number | undefined;
 
     protected outputChannels: number | undefined;
+
+    protected analyserNode!: AnalyserNode;
+
+    protected freqData!: Float32Array;
+
+    protected timeData!: Float32Array;
+
+    constructor(opts: any = {}) {
+        this.bufferSize = opts.bufferSize;
+    }
 
     public setup(context: AudioContext) {
         this.context = context;
@@ -21,6 +29,10 @@ export default class AudioAnalyser<P> {
         this.script = this.context.createScriptProcessor(
             this.bufferSize, this.inputChannels, this.outputChannels,
         );
+        this.analyserNode = this.context.createAnalyser();
+        this.analyserNode.fftSize = this.script.bufferSize;
+        this.freqData = new Float32Array(this.analyserNode.frequencyBinCount);
+        this.timeData = new Float32Array(this.analyserNode.fftSize);
     }
 
     public onData(callback: (data: P) => void) {
@@ -36,8 +48,9 @@ export default class AudioAnalyser<P> {
             this.source.disconnect(this.script);
             this.source = undefined;
         }
-        source.connect(this.script);
         this.source = source;
+        source.connect(this.analyserNode);
+        this.analyserNode.connect(this.script);
         this.script.connect(this.context.destination);
         if (typeof callback !== 'undefined') {
             callback();

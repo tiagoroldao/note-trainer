@@ -62,8 +62,14 @@
                 xs12
                 sm6
                 d-flex>
-                <span class="note-string">
+                <!-- <span class="note-string">
                     {{ noteString || '' }}
+                </span> -->
+                <span class="note-string">
+                    {{ duration ? duration.toFixed(3) : '' }}
+                </span>
+                <span class="note-string">
+                    {{ prob ? prob.toFixed(3) : '' }}
                 </span>
             </v-flex>
         </v-layout>
@@ -79,7 +85,6 @@ import Vue from 'vue';
 import {
     Component, Prop, Provide, Watch,
 } from 'vue-property-decorator';
-import PitchAnalyser from '@/services/PitchAnalyser';
 import VolumeAnalyser from '@/services/VolumeAnalyser';
 import { SettingsModule } from '@/vuex/settingsModule';
 import { AudioModule } from '../vuex/audioModule';
@@ -92,7 +97,7 @@ type pitchState = 'off' | 'on';
         Settings,
     },
 })
-export default class PitchFinder extends Vue {
+export default class PitchDetector extends Vue {
     private unsubscribers: (() => void)[] = [];
 
     private settings = SettingsModule.CreateProxy(this.$store, SettingsModule);
@@ -108,6 +113,10 @@ export default class PitchFinder extends Vue {
     @Provide() public noteString: string = '';
 
     @Provide() public state: pitchState = 'off';
+
+    @Provide() public duration: number = 0;
+
+    @Provide() public prob: number = 0;
 
     @Watch('audio.state')
     private onAudioStateChange() {
@@ -135,9 +144,11 @@ export default class PitchFinder extends Vue {
     public mounted() {
         this.unsubscribers = this.unsubscribers.concat([
             this.$audioContext.pitchAnalyser.onData((pitch) => {
-                if (this.state === 'on' && pitch > 0) {
-                    this.noteString = Note.enharmonic(Note.fromMidi(Note.freqToMidi(pitch))) as string;
+                if (this.state === 'on' && pitch.freq > 0) {
+                    this.noteString = Note.enharmonic(Note.fromMidi(Note.freqToMidi(pitch.freq))) as string;
                     this.note = toAbc(this.noteString);
+                    this.duration = this.$audioContext.pitchAnalyser.duration;
+                    this.prob = pitch.probability;
                 }
             }),
         ]);

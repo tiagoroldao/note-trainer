@@ -1,14 +1,14 @@
 <template>
-    <PitchFinder />
+    <PitchDetector />
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import PitchFinder from '@/components/PitchFinder.vue';
+import PitchDetector from '@/components/PitchDetector.vue';
 
 @Component({
     components: {
-        PitchFinder,
+        PitchDetector,
     },
 })
 export default class Home extends Vue {}

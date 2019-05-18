@@ -10,9 +10,9 @@ export type AudioContextProviderState = 'stopped' | 'running' | 'paused' | 'hold
 export default class AudioContextProvider extends EventEmmiter<AudioContextProviderEvent> {
     private context!: AudioContext | undefined;
 
-    public readonly pitchAnalyser: PitchAnalyser = new PitchAnalyser();
+    public readonly pitchAnalyser: PitchAnalyser = new PitchAnalyser({ bufferSize: 1024 });
 
-    public readonly volumeAnalyser: VolumeAnalyser = new VolumeAnalyser();
+    public readonly volumeAnalyser: VolumeAnalyser = new VolumeAnalyser({ bufferSize: 1024 });
 
     public audioStream!: MediaStream;
 
