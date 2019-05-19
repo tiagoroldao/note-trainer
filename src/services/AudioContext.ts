@@ -20,6 +20,19 @@ export default class AudioContextProvider extends EventEmmiter<AudioContextProvi
 
     private currentInput: string = '';
 
+    private _useRawAudio: boolean = false;
+
+    public get useRawAudio(): boolean {
+        return this._useRawAudio;
+    }
+
+    public set useRawAudio(value: boolean) {
+        this._useRawAudio = value;
+        if (this.state === 'running') {
+            this.startAudioStream(this.currentInput);
+        }
+    }
+
     constructor() {
         super();
         document.addEventListener('visibilitychange', () => this.onVisibilityChange());
@@ -84,11 +97,13 @@ export default class AudioContextProvider extends EventEmmiter<AudioContextProvi
 
     private startAudioStream(input: string): Promise<void> {
         this.stopAudioStream();
-        return navigator.mediaDevices.getUserMedia({
-            audio: {
-                deviceId: { exact: input },
-            },
-        })
+        const audio: any = { deviceId: { exact: input } };
+        if (this.useRawAudio) {
+            audio.echoCancellation = false;
+            audio.noiseSuppression = false;
+            audio.autoGainControl = false;
+        }
+        return navigator.mediaDevices.getUserMedia({ audio })
             .then((stream) => {
                 if (this.context) {
                     this.audioStream = stream;

@@ -14,13 +14,20 @@ export class SettingsModule extends VuexModule {
 
     @getter useRomanceNotes = true;
 
+    @getter useRawAudio = true;
+
     @mutation setUseRomanceNotes(useRomanceNotes: boolean) {
         this.useRomanceNotes = useRomanceNotes;
     }
 
     @mutation setMinVol(minVol: number) {
         this.minVol = minVol;
-        services.$audioContext.pitchAnalyser.MinVol = this.minVol / 100;
+        services.$audioContext.pitchAnalyser.MinVol = this.minVol;
+    }
+
+    @mutation setUseRawAudio(useRawAudio: boolean) {
+        this.useRawAudio = useRawAudio;
+        services.$audioContext.useRawAudio = this.useRawAudio;
     }
 
     @mutation setSelectedInput(selectedInput: string) {
@@ -38,5 +45,6 @@ export class SettingsModule extends VuexModule {
             }
         });
         this.setMinVol(this.minVol);
+        this.setUseRawAudio(this.useRawAudio);
     }
 }

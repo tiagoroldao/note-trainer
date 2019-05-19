@@ -71,6 +71,15 @@
                             label="Please select an input device"
                             @change="(val) => settings.setSelectedInput(val)" />
                     </SettingsSection>
+                    <SettingsSection>
+                        <v-switch
+                            class="switch-romanceNotation"
+                            label="Use Raw Audio?"
+                            description="Disable all hardware noise/echo cancelling.
+                                Your milleage may vary - test which is best for your ambient and instrument."
+                            :input-value="settings.useRawAudio"
+                            @change="onChangeUseRawAudio" />
+                    </SettingsSection>
                     <SettingsSection
                         title="Note detection volume"
                         description="Minimum volume at which notes are registered">
@@ -84,6 +93,8 @@
                                     v-model="volume"
                                     height="14" />
                                 <v-slider
+                                    min="0"
+                                    max="255"
                                     :value="settings.minVol"
                                     always-dirty
                                     thumb-label
@@ -208,12 +219,16 @@ export default class Settings extends Vue {
         this.settings.setMinVol(minVol);
     }
 
-    onChangeNotes(val: any) {
+    onChangeNotes(val: string[]) {
         this.settings.teacher.setNotes(val);
     }
 
-    onChangeUseRomanceNotes(val: any) {
+    onChangeUseRomanceNotes(val: boolean) {
         this.settings.setUseRomanceNotes(val);
+    }
+
+    onChangeUseRawAudio(val: boolean) {
+        this.settings.setUseRawAudio(val);
     }
 
     setNoteRange(val: number[]) {
@@ -243,7 +258,7 @@ export default class Settings extends Vue {
 
         this.unsubscribers = this.unsubscribers.concat([
             this.$audioContext.volumeAnalyser.on('volumeData', (v) => {
-                this.volume = v * 100;
+                this.volume = v / 2.55;
             }),
         ]);
     }

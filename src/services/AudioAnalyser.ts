@@ -8,7 +8,7 @@ export default class AudioAnalyser<P> extends EventEmmiter<P> {
 
     protected context!: AudioContext;
 
-    protected bufferSize: number = 1024;
+    protected bufferSize: number = 2048;
 
     protected inputChannels: number | undefined;
 
@@ -17,6 +17,8 @@ export default class AudioAnalyser<P> extends EventEmmiter<P> {
     protected analyserNode!: AnalyserNode;
 
     protected timeData!: Float32Array;
+
+    protected freqData!: Uint8Array;
 
     constructor(opts: any = {}) {
         super();
@@ -31,6 +33,7 @@ export default class AudioAnalyser<P> extends EventEmmiter<P> {
         this.analyserNode = this.context.createAnalyser();
         this.analyserNode.fftSize = this.bufferSize;
         this.timeData = new Float32Array(this.analyserNode.fftSize);
+        this.freqData = new Uint8Array(this.analyserNode.frequencyBinCount);
     }
 
     public connectToSource(source: MediaStreamAudioSourceNode, callback?: () => void) {

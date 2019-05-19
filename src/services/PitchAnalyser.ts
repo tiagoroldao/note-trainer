@@ -16,7 +16,7 @@ export default class PitchAnalyser extends AudioAnalyser<PitchAnalyserEvent> {
     }
 
     public set MinVol(value: number) {
-        this.minVol = Math.max(Math.min(1, value), 0);
+        this.minVol = Math.max(Math.min(255, value), 0);
     }
 
     constructor(opts: any = {}) {
@@ -27,10 +27,11 @@ export default class PitchAnalyser extends AudioAnalyser<PitchAnalyserEvent> {
     private onFrame() {
         if (!this.source) return;
         const start = performance.now();
-        this.analyserNode.getFloatTimeDomainData(this.timeData);
+        this.analyserNode.getByteFrequencyData(this.freqData);
 
-        const vol = PitchAnalyser.getVol(this.timeData);
+        const vol = PitchAnalyser.getVol(this.freqData);
         if (vol > this.minVol) {
+            this.analyserNode.getFloatTimeDomainData(this.timeData);
             this.pitch = this.pitchFinder.findPitch(this.timeData);
             this.trigger('pitchData', this.pitch);
             this.duration = performance.now() - start;
@@ -48,12 +49,12 @@ export default class PitchAnalyser extends AudioAnalyser<PitchAnalyserEvent> {
         this.pitchFinder.sampleRate = context.sampleRate;
     }
 
-    public static getVol(input: Float32Array): number {
+    public static getVol(input: Uint8Array): number {
         let sum = 0.0;
         for (let i = 0; i < input.length; i += 1) {
-            sum += input[i] * input[i];
+            sum += input[i];
         }
 
-        return Math.sqrt(sum / input.length);
+        return sum / input.length;
     }
 }
