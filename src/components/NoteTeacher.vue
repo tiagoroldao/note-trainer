@@ -162,19 +162,26 @@ export default class NoteTeacher extends Vue {
 
     private noteStart: number = 0;
 
+    private failures: number = 0;
+
     public handleNoteData(pitch: PitchData) {
         if (this.state !== 'querying') return;
-        if (pitch.freq > 0) {
-            const identified: string = toAbc(Note.enharmonic(Note.fromMidi(Note.freqToMidi(pitch.freq)))) || '';
+        if (pitch.freq > 0 && pitch.probability > 0.92) {
+            const identified: string = toAbc(Note.fromMidi(Note.freqToMidi(pitch.freq), true)) || '';
             if (identified.length && identified !== this.tempNote) {
                 this.tempNote = identified;
                 this.noteStart = Date.now();
+                this.failures = 0;
             } else if (Date.now() > this.noteStart + this.settings.teacher.noteRegisterTime) {
                 this.nextNote(identified);
                 this.tempNote = '';
+                this.failures = 0;
             }
         } else {
-            this.tempNote = '';
+            this.failures += 1;
+            if (this.failures > 3) {
+                this.tempNote = '';
+            }
         }
     }
 

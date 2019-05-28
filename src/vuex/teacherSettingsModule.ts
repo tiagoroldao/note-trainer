@@ -5,7 +5,7 @@ import { Scale } from 'tonal';
 
 @Module({ namespacedPath: 'teacher/' })
 export class TeacherSettingsModule extends VuexModule {
-    @getter noteRegisterTime = 350;
+    @getter noteRegisterTime = 70;
 
     @getter notes: string[] = Scale.notes('C major');;
 

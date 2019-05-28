@@ -83,6 +83,7 @@ import VolumeAnalyser from '@/services/VolumeAnalyser';
 import { SettingsModule } from '@/vuex/settingsModule';
 import { AudioModule } from '../vuex/audioModule';
 import { toRomance } from '@/helpers/noteHelpers';
+import { PitchData } from '@/workers/pitchFinder';
 
 type pitchState = 'off' | 'on';
 
@@ -108,8 +109,6 @@ export default class PitchDetector extends Vue {
     @Provide() public noteString: string = '';
 
     @Provide() public state: pitchState = 'off';
-
-    @Provide() public duration: number = 0;
 
     @Provide() public prob: number = 0;
 
@@ -144,17 +143,38 @@ export default class PitchDetector extends Vue {
         }
     }
 
+    private tempNote: string = '';
+
+    private failures: number = 0;
+
+    private noteStart: number = 0;
+
+    public handleNoteData(pitch: PitchData) {
+        if (pitch.freq > 0 && pitch.probability > 0.92) {
+            const identified: string = Note.fromMidi(Note.freqToMidi(pitch.freq), true) || '';
+            if (identified.length && identified !== this.tempNote) {
+                this.tempNote = identified;
+                this.noteStart = Date.now();
+                this.failures = 0;
+            } else if (Date.now() > this.noteStart + this.settings.teacher.noteRegisterTime) {
+                this.note = toAbc(identified);
+                this.noteString = this.toHumanNote(identified);
+                this.prob = pitch.probability;
+                this.pitch = pitch.freq;
+                this.tempNote = '';
+                this.failures = 0;
+            }
+        } else {
+            this.failures += 1;
+            if (this.failures > 3) {
+                this.tempNote = '';
+            }
+        }
+    }
+
     public mounted() {
         this.unsubscribers = this.unsubscribers.concat([
-            this.$audioContext.pitchAnalyser.on('pitchData', (pitch) => {
-                if (this.state === 'on' && pitch.freq > 0) {
-                    const noteString = Note.fromMidi(Note.freqToMidi(pitch.freq), true) as string;
-                    this.note = toAbc(noteString);
-                    this.noteString = this.toHumanNote(noteString);
-                    this.duration = this.$audioContext.pitchAnalyser.duration;
-                    this.prob = pitch.probability;
-                }
-            }),
+            this.$audioContext.pitchAnalyser.on('pitchData', (pitch: PitchData) => this.handleNoteData(pitch)),
         ]);
     }
 

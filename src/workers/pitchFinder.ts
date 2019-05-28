@@ -156,7 +156,7 @@ export class PitchFinder {
             this.squareSums = new Float32Array(float32AudioBuffer.length);
         }
 
-        let pitch;
+        let pitch = -1;
         const periodEstimates: number[] = [];
         const ampEstimates = [];
 
@@ -188,30 +188,22 @@ export class PitchFinder {
             // The cutoff value is based on the highest value and a relative
             // threshold.
             const actualCutoff = this.cutoff * highestAmplitude;
-            let periodIndex = 0;
 
             for (let i = 0; i < ampEstimates.length; i += 1) {
                 if (ampEstimates[i] >= actualCutoff) {
-                    periodIndex = i;
-                    break;
+                    const period = periodEstimates[i];
+                    const pitchEstimate = this.sampleRate / period;
+
+                    if (pitchEstimate > LOWER_PITCH_CUTOFF) {
+                        pitch = pitchEstimate;
+                        break;
+                    }
                 }
             }
-
-            const period = periodEstimates[periodIndex];
-            const pitchEstimate = this.sampleRate / period;
-
-            if (pitchEstimate > LOWER_PITCH_CUTOFF) {
-                pitch = pitchEstimate;
-            } else {
-                pitch = -1;
-            }
-        } else {
-        // no pitch detected.
-            pitch = -1;
         }
 
         return {
-            probability: highestAmplitude,
+            probability: pitch !== -1 ? highestAmplitude : 0,
             freq: pitch,
         };
     }
