@@ -1,18 +1,18 @@
 import {
-    VuexModule, mutation, action, getter, Module,
+    VuexModule, mutation, action, Module,
 } from 'vuex-class-component';
 import services from '@/services/services';
 import { TeacherSettingsModule } from './teacherSettingsModule';
 
 @Module({ namespacedPath: 'settings/' })
 export class SettingsModule extends VuexModule {
-    @getter minVol = 0;
+    private minVol = 0;
 
     teacher = TeacherSettingsModule.CreateSubModule(TeacherSettingsModule);
 
-    @getter selectedInput = '';
+    private selectedInput = '';
 
-    @getter useRomanceNotes = true;
+    private useRomanceNotes = true;
 
     @mutation setUseRomanceNotes(useRomanceNotes: boolean) {
         this.useRomanceNotes = useRomanceNotes;
