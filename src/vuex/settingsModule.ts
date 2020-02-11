@@ -1,18 +1,23 @@
 import {
-    VuexModule, mutation, action, Module,
+  createModule, mutation, action, createSubModule,
 } from 'vuex-class-component';
 import services from '@/services/services';
 import { TeacherSettingsModule } from './teacherSettingsModule';
 
-@Module({ namespacedPath: 'settings/' })
+const VuexModule = createModule({
+  strict: false,
+  namespaced: "settings",
+  enableLocalWatchers: true,
+});
+
 export class SettingsModule extends VuexModule {
-    private minVol = 0;
+    public minVol = 0;
 
-    teacher = TeacherSettingsModule.CreateSubModule(TeacherSettingsModule);
+    teacher = createSubModule(TeacherSettingsModule);
 
-    private selectedInput = '';
+    public selectedInput = '';
 
-    private useRomanceNotes = true;
+    public useRomanceNotes = true;
 
     @mutation setUseRomanceNotes(useRomanceNotes: boolean) {
         this.useRomanceNotes = useRomanceNotes;

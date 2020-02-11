@@ -58,7 +58,7 @@ const noteSuccessHoldTime = 2000;
     Settings
   }
 })
-export default class NoteTeacher extends Vue {
+export default class AccordionViewer extends Vue {
   private unsubscribers: (() => void)[] = [];
 
   @Provide() public devices = [] as MediaDeviceInfo[];

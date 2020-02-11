@@ -1,10 +1,15 @@
 import {
-    VuexModule, mutation, action, getter, Module,
+  createModule, mutation, action, getter,
 } from 'vuex-class-component';
 import services from '@/services/services';
 import { AudioContextProviderState } from '@/services/AudioContext';
 
-@Module({ namespacedPath: 'audio/' })
+const VuexModule = createModule({
+  strict: false,
+  namespaced: "audio",
+  enableLocalWatchers: true,
+});
+
 export class AudioModule extends VuexModule {
     @getter state: AudioContextProviderState = 'stopped';
 

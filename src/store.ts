@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions, Store } from 'vuex';
 import VuexPersistence from 'vuex-persist';
+import { extractVuexModule, createProxy } from "vuex-class-component";
 import { SettingsModule } from './vuex/settingsModule';
 import { AudioModule } from './vuex/audioModule';
 
@@ -26,8 +27,8 @@ const vuexPersistEmitter = () => (store: Store<any>) => {
 
 const options: StoreOptions<any> = {
     modules: {
-        settings: SettingsModule.ExtractVuexModule(SettingsModule),
-        audio: AudioModule.ExtractVuexModule(AudioModule),
+        ...extractVuexModule(SettingsModule),
+        ...extractVuexModule(AudioModule),
     },
     mutations: {
         RESTORE_MUTATION: vuexPersist.RESTORE_MUTATION,
@@ -35,4 +36,9 @@ const options: StoreOptions<any> = {
     plugins: [vuexPersistEmitter(), vuexPersist.plugin],
 };
 
-export default new Vuex.Store(options);
+export const store = new Vuex.Store(options)
+
+export const vxm = {
+  settings: createProxy( store, SettingsModule ),
+  audio: createProxy( store, AudioModule ),
+}

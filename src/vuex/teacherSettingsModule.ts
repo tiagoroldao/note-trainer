@@ -1,13 +1,18 @@
 import {
-    VuexModule, mutation, getter, Module,
+  createModule, mutation, getter,
 } from 'vuex-class-component';
 import { Scale } from 'tonal';
 
-@Module({ namespacedPath: 'teacher/' })
+const VuexModule = createModule({
+  strict: false,
+  namespaced: "teacher",
+  enableLocalWatchers: true,
+});
+
 export class TeacherSettingsModule extends VuexModule {
     @getter noteRegisterTime = 350;
 
-    @getter notes: string[] = Scale.notes('C major');;
+    @getter notes: string[] = Scale.notes('C major');
 
     @getter noteRange: number[] = [10, 100];
 

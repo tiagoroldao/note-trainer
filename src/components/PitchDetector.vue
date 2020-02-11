@@ -1,73 +1,44 @@
 <template>
-    <v-container>
-        <v-layout
-            wrap
-            align-center
-            justify-center>
-            <v-flex xs12>
-                <h1 class="view-title">
-                    Pitch Finder
-                </h1>
-            </v-flex>
-            <v-flex
-                xs1
-                sm1
-                d-flex />
-            <v-flex
-                xs10
-                sm4
-                d-flex>
-                <v-btn
-                    :disabled="!settings.selectedInput"
-                    :color="state == 'on' ? 'error' : 'success'"
-                    @click="toggleStream">
-                    <span v-if="!settings.selectedInput">
-                        Please select an input device in Settings
-                    </span>
-                    <span v-else-if="state == 'on'">Stop</span>
-                    <span v-else>Start</span>
-                </v-btn>
-            </v-flex>
-            <v-flex
-                xs1
-                sm1
-                d-flex>
-                <Settings>
-                    <template v-slot:default="slotProps">
-                        <v-icon
-                            class="settings"
-                            v-on="slotProps.on">
-                            settings
-                        </v-icon>
-                    </template>
-                </Settings>
-            </v-flex>
-        </v-layout>
-        <v-layout
-            wrap
-            align-center
-            justify-center>
-            <v-flex
-                xs12
-                sm6
-                d-flex>
-                <NoteRenderer :note="[note]" />
-            </v-flex>
-        </v-layout>
-        <v-layout
-            wrap
-            align-center
-            justify-center>
-            <v-flex
-                xs12
-                sm6
-                d-flex>
-                <span class="note-string">
-                    {{ noteString || '' }}
-                </span>
-            </v-flex>
-        </v-layout>
-    </v-container>
+  <v-container>
+    <v-row wrap align-center justify="center">
+      <v-col cols="12">
+        <h1 class="view-title">Pitch Finder</h1>
+      </v-col>
+    </v-row>
+    <v-row wrap align-center justify="center">
+      <v-col cols="10" md="5" offset-md="1">
+        <v-btn
+          block
+          :disabled="!$vxm.settings.selectedInput"
+          :color="$vxm.audio.state == 'running' ? 'error' : 'success'"
+          @click="toggleStream"
+        >
+          <span v-if="!$vxm.settings.selectedInput">Please select an input device in Settings</span>
+          <span v-else-if="$vxm.audio.state == 'running'">Stop</span>
+          <span v-else>Start</span>
+        </v-btn>
+      </v-col>
+      <v-col cols="12" md="1">
+        <Settings>
+          <template v-slot:default="slotProps">
+            <v-icon class="settings" v-on="slotProps.on">settings</v-icon>
+          </template>
+        </Settings>
+      </v-col>
+    </v-row>
+    <v-row wrap align-center justify="center">
+      <v-col cols="12" md="6" :class="['note-holder', { correct: state === 'success' }]">
+        <NoteRenderer :note="[note]" />
+      </v-col>
+    </v-row>
+    <v-row wrap align-center justify="center">
+      <v-col cols="10" md="4">
+        <span class="note-string">
+          {{ noteString || '' }}
+        </span>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -80,7 +51,6 @@ import {
     Component, Prop, Provide, Watch,
 } from 'vue-property-decorator';
 import VolumeAnalyser from '@/services/VolumeAnalyser';
-import { SettingsModule } from '@/vuex/settingsModule';
 import { AudioModule } from '../vuex/audioModule';
 import { toRomance } from '@/helpers/noteHelpers';
 
@@ -94,10 +64,6 @@ type pitchState = 'off' | 'on';
 })
 export default class PitchDetector extends Vue {
     private unsubscribers: (() => void)[] = [];
-
-    private settings = SettingsModule.CreateProxy(this.$store, SettingsModule);
-
-    private audio = AudioModule.CreateProxy(this.$store, AudioModule);
 
     @Provide() public devices = [] as MediaDeviceInfo[];
 
@@ -115,7 +81,7 @@ export default class PitchDetector extends Vue {
 
     @Watch('audio.state')
     private onAudioStateChange() {
-        if (this.audio.state !== 'running') {
+        if (this.$vxm.audio.state !== 'running') {
             this.note = 'x';
             this.noteString = '';
             this.state = 'off';
@@ -127,7 +93,7 @@ export default class PitchDetector extends Vue {
         if (typeof note === 'number') {
             note = Note.fromMidi(note, true);
         }
-        return this.settings.useRomanceNotes ? toRomance(note) : note;
+        return this.$vxm.settings.useRomanceNotes ? toRomance(note) : note;
     }
 
     public toggleStream() {
@@ -137,8 +103,8 @@ export default class PitchDetector extends Vue {
                 this.note = 'x';
                 this.noteString = '';
             });
-        } else if (this.settings.selectedInput) {
-            this.$audioContext.start(this.settings.selectedInput).then(() => {
+        } else if (this.$vxm.settings.selectedInput) {
+            this.$audioContext.start(this.$vxm.settings.selectedInput).then(() => {
                 this.state = 'on';
             });
         }
@@ -167,6 +133,7 @@ export default class PitchDetector extends Vue {
 
 <style lang="scss" scoped>
   .settings {
+    margin-top: 0.3em;
     color: #ddd;
 
     &:hover {

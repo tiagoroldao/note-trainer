@@ -34,7 +34,7 @@
                 <v-toolbar-items>
                     <v-btn
                         dark
-                        flat
+                        text
                         @click="dialog = false">
                         Close
                     </v-btn>
@@ -49,7 +49,7 @@
                         <v-switch
                             class="switch-romanceNotation"
                             label="Use Romance Notation?"
-                            :input-value="settings.useRomanceNotes"
+                            :input-value="$vxm.settings.useRomanceNotes"
                             @change="onChangeUseRomanceNotes" />
                     </SettingsSection>
                     <v-divider />
@@ -63,28 +63,28 @@
                         description="Recording device used for pitch detection.
                             Will be reset if selected device is no longer available.">
                         <v-select
-                            :value="settings.selectedInput"
+                            :value="$vxm.settings.selectedInput"
                             :items="devices"
                             attach
                             :item-text="(item, index) => item.label || `microphone ${index + 1}`"
                             item-value="deviceId"
                             label="Please select an input device"
-                            @change="(val) => settings.setSelectedInput(val)" />
+                            @change="(val) => $vxm.settings.setSelectedInput(val)" />
                     </SettingsSection>
                     <SettingsSection
                         title="Note detection volume"
                         description="Minimum volume at which notes are registered">
-                        <v-layout
+                        <v-row
                             wrap
                             align-center
-                            justify-center>
-                            <v-flex
+                            justify="center">
+                            <v-col
                                 class="min-vol-slider-wrap">
                                 <v-progress-linear
                                     v-model="volume"
                                     height="14" />
                                 <v-slider
-                                    :value="settings.minVol"
+                                    :value="$vxm.settings.minVol"
                                     always-dirty
                                     thumb-label
                                     color="rgba(0,0,0,0)"
@@ -92,18 +92,18 @@
                                     track-color="rgba(0,0,0,0)"
                                     class="min-vol-slider"
                                     @change="onChangeVol" />
-                            </v-flex>
-                            <v-flex
+                            </v-col>
+                            <v-col
                                 shrink
                                 style="width: 60px">
                                 <v-btn
-                                    :color="audio.state == 'running' ? 'error' : 'success'"
+                                    :color="$vxm.audio.state == 'running' ? 'error' : 'success'"
                                     @click="toggleStream">
-                                    <span v-if="audio.state == 'running'">Stop</span>
+                                    <span v-if="$vxm.audio.state == 'running'">Stop</span>
                                     <span v-else>Start</span>
                                 </v-btn>
-                            </v-flex>
-                        </v-layout>
+                            </v-col>
+                        </v-row>
                     </SettingsSection>
                     <v-divider />
                 </div>
@@ -115,62 +115,62 @@
                     description="Time a note needs to be held for registering in ms.
                         Shorter times are more responsive, longer times produce less false results.">
                     <v-text-field
-                        :value="settings.teacher.noteRegisterTime"
+                        :value="$vxm.settings.teacher.noteRegisterTime"
                         class="mt-0"
                         hide-details
                         single-line
                         type="number"
-                        @change="(val) => settings.teacher.setNoteRegisterTime(val)" />
+                        @change="(val) => $vxm.settings.teacher.setNoteRegisterTime(val)" />
                 </SettingsSection>
                 <SettingsSection
                     title="Possible Notes"
                     description="Notes the teacher may choose from
                         (for diatonic instruments)">
-                    <v-layout
+                    <v-row
                         wrap
                         align-center
-                        justify-center>
-                        <v-flex
+                        no-gutters
+                        justify="center">
+                        <v-col
                             v-for="(note, index) in possibleNotes"
                             :key="index"
-                            shrink
-                            d-flex>
+                            shrink>
                             <v-switch
                                 class="switch-note"
-                                :input-value="settings.teacher.notes"
+                                :input-value="$vxm.settings.teacher.notes"
                                 :label="toHumanNote(note)"
                                 :value="note"
                                 @change="onChangeNotes" />
-                        </v-flex>
-                    </v-layout>
+                        </v-col>
+                    </v-row>
                 </SettingsSection>
                 <SettingsSection
                     title="Note range"
                     description="Highest and lowest possible notes">
-                    <v-layout
+                    <v-row
                         wrap
                         align-center
-                        justify-center>
-                        <v-flex
-                            xs12
-                            sm2>
-                            {{ toHumanNote(settings.teacher.noteRange[0]) }}
-                        </v-flex>
-                        <v-flex
-                            xs12
-                            sm8>
+                        justify="center">
+                        <v-col
+                            cols="10"
+                            sm="2">
+                            {{ toHumanNote($vxm.settings.teacher.noteRange[0]) }}
+                        </v-col>
+                        <v-col
+                            cols="10"
+                            sm="8">
                             <v-range-slider
-                                :value="settings.teacher.noteRange"
+                                :value="$vxm.settings.teacher.noteRange"
                                 :max="127"
                                 :min="0"
                                 @input="setNoteRange" />
-                        </v-flex>
-                        <v-flex
-                            xs12
-                            sm2>
-                            {{ toHumanNote(settings.teacher.noteRange[1]) }}
-                        </v-flex>
-                    </v-layout>
+                        </v-col>
+                        <v-col
+                            cols="10"
+                            sm="2">
+                            {{ toHumanNote($vxm.settings.teacher.noteRange[1]) }}
+                        </v-col>
+                    </v-row>
                 </SettingsSection>
                 <v-divider />
             </v-card-text>
@@ -182,7 +182,6 @@
 import { Note } from 'tonal';
 import { Component, Vue, Provide } from 'vue-property-decorator';
 import { SettingsModule } from '../vuex/settingsModule';
-import { AudioModule } from '@/vuex/audioModule';
 import SettingsSection from './SettingsSection.vue';
 import { toRomance } from '../helpers/noteHelpers';
 
@@ -191,10 +190,6 @@ import { toRomance } from '../helpers/noteHelpers';
 })
 export default class Settings extends Vue {
     private unsubscribers: (() => void)[] = [];
-
-    private settings = SettingsModule.CreateProxy(this.$store, SettingsModule);
-
-    private audio = AudioModule.CreateProxy(this.$store, AudioModule);
 
     @Provide() public dialog = false;
 
@@ -205,19 +200,19 @@ export default class Settings extends Vue {
     @Provide() public possibleNotes = Note.names(' #');
 
     onChangeVol(minVol: number) {
-        this.settings.setMinVol(minVol);
+        this.$vxm.settings.setMinVol(minVol);
     }
 
     onChangeNotes(val: any) {
-        this.settings.teacher.setNotes(val);
+        this.$vxm.settings.teacher.setNotes(val);
     }
 
     onChangeUseRomanceNotes(val: any) {
-        this.settings.setUseRomanceNotes(val);
+        this.$vxm.settings.setUseRomanceNotes(val);
     }
 
     setNoteRange(val: number[]) {
-        this.settings.teacher.setNoteRange(val);
+        this.$vxm.settings.teacher.setNoteRange(val);
     }
 
     toHumanNote(_note: number | string) {
@@ -225,12 +220,12 @@ export default class Settings extends Vue {
         if (typeof note === 'number') {
             note = Note.fromMidi(note, true);
         }
-        return this.settings.useRomanceNotes ? toRomance(note) : note;
+        return this.$vxm.settings.useRomanceNotes ? toRomance(note) : note;
     }
 
     public toggleStream() {
-        if (this.audio.state !== 'running' && this.settings.selectedInput) {
-            this.$audioContext.start(this.settings.selectedInput);
+        if (this.$vxm.audio.state !== 'running' && this.$vxm.settings.selectedInput) {
+            this.$audioContext.start(this.$vxm.settings.selectedInput);
         } else {
             this.$audioContext.suspend();
         }

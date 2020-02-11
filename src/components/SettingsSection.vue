@@ -1,13 +1,12 @@
 <template>
     <div class="form-input-box">
-        <v-layout
+        <v-row
             wrap
             align-center
-            justify-center>
-            <v-flex
-                xs10
-                sm6
-                d-flex>
+            justify="center">
+            <v-col
+                cols="10"
+                sm="6">
                 <div>
                     <h3 v-if="title.length">
                         {{ title }}
@@ -17,8 +16,8 @@
                     </p>
                     <slot />
                 </div>
-            </v-flex>
-        </v-layout>
+            </v-col>
+        </v-row>
     </div>
 </template>
 
