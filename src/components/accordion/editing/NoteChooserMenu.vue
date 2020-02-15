@@ -20,7 +20,7 @@
           menu-props="eager"
           placeholder="Choose Note..."
           :items="notes"
-          @change="$emit('change', $event)" />
+          @change="onChosenNote" />
       </v-card-text>
     </v-card>
   </v-menu>
@@ -32,7 +32,7 @@ import {
 } from 'vue-property-decorator';
 import _ from 'lodash';
 import { Note } from 'tonal';
-import { toRomance } from '@/helpers/noteHelpers';
+import { toHumanNote } from '@/helpers/noteHelpers';
 
 @Component
 export default class NoteChooserMenu extends Vue {
@@ -40,9 +40,9 @@ export default class NoteChooserMenu extends Vue {
     noteChoice: any;
   }
 
-  private notes = _.range(128).map((n) => ({ value: n, text: this.toHumanNote(n) }));
+  private notes = _.range(128).map((n) => ({ value: Note.fromMidi(n, true), text: this.toHumanNote(n) }));
 
-  private value: number | null = null;
+  private value: string = '';
 
   showingMenu = false;
 
@@ -50,10 +50,10 @@ export default class NoteChooserMenu extends Vue {
 
   y = 0;
 
-  show(x = 0, y = 0, value?: number) {
+  show(x = 0, y = 0, value?: string) {
     this.x = x;
     this.y = y;
-    this.value = value || null;
+    this.value = value || '';
     this.showingMenu = true;
   }
 
@@ -62,17 +62,12 @@ export default class NoteChooserMenu extends Vue {
   }
 
   onChosenNote($event: any) {
-    this.$emit('change', $event);
+    this.$emit('change', $event || '');
     this.showingMenu = false;
   }
 
   toHumanNote(_note: number | string) {
-    let note = _note;
-    if (typeof note === 'number') {
-      note = Note.fromMidi(note, true);
-    }
-
-    return this.$vxm.settings.useRomanceNotes ? toRomance(note) : note;
+    return toHumanNote(_note, this.$vxm.settings.useRomanceNotes);
   }
 }
 </script>

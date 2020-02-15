@@ -20,7 +20,7 @@
         class="button"
         :size="buttonSpace"
         :style="{
-          top: getButtonY(row, row.buttons.length + 0.6) + 'px',
+          top: getButtonY(row, row.buttons.length + 0.6, false) + 'px',
         }"
         @set-row-offset="setRowOffset($event)"
         @remove-row="$emit('remove-row')" />
@@ -83,9 +83,9 @@ export default class AccordionViewer extends Vue {
     this.$emit('set-row-offset', offset);
   }
 
-  getButtonY(row: RowDefinition, index: number) {
+  getButtonY(row: RowDefinition, index: number, mirrorView = this.mirrorView) {
     const buttonY = this.buttonSpace * (index + 0.5);
-    if (this.mirrorView) {
+    if (mirrorView) {
       return buttonY;
     }
     return (row.buttons.length * this.buttonSpace) - buttonY;

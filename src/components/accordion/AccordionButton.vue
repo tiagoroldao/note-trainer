@@ -63,8 +63,7 @@
 import Vue from 'vue';
 import _ from 'lodash';
 import { Component, Prop } from 'vue-property-decorator';
-import { Note } from 'tonal';
-import { toRomance } from '@/helpers/noteHelpers';
+import { toHumanNote } from '@/helpers/noteHelpers';
 import { ButtonDefinition } from './AccordionDef';
 import NoteChooserMenu from './editing/NoteChooserMenu.vue';
 import OptionsMenu from './editing/OptionsMenu.vue';
@@ -136,25 +135,19 @@ export default class extends Vue {
   }
 
   get hasNote() {
-    return this.button.closing > -1 && this.button.opening > -1;
+    return this.button.closing !== '' && this.button.opening !== '';
   }
 
   get closingNote() {
-    return this.button.closing > -1 ? this.toHumanNote(this.button.closing) : '';
+    return this.toHumanNote(this.button.closing);
   }
 
   get openingNote() {
-    return this.button.opening > -1 ? this.toHumanNote(this.button.opening) : '';
+    return this.toHumanNote(this.button.opening);
   }
 
   toHumanNote(_note: number | string) {
-    let note = _note;
-    if (typeof note === 'number') {
-      note = Note.fromMidi(note, true);
-    }
-    const token = Note.tokenize(note);
-    note = token[0] + token[1];
-    return this.$vxm.settings.useRomanceNotes ? toRomance(note) : note;
+    return toHumanNote(_note, this.$vxm.settings.useRomanceNotes);
   }
 }
 </script>

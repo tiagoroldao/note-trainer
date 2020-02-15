@@ -1,7 +1,7 @@
 export interface ButtonDefinition {
   isChord?: boolean;
-  opening: number;
-  closing: number;
+  opening: string;
+  closing: string;
 }
 
 export interface RowDefinition {

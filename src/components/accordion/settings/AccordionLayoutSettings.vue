@@ -59,6 +59,15 @@
         </template>
         <template v-else>
           <v-btn
+            v-if="currentLayout.edited"
+            small
+            color="warning"
+            :disabled="!currentLayout.edited"
+            class="ma-1"
+            @click="resetLayout">
+            Reset
+          </v-btn>
+          <v-btn
             small
             color="primary"
             class="ma-1"
