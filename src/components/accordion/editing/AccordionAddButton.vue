@@ -11,7 +11,7 @@
         'font-size': fontSize + 'px',
       }"
       class="accordion-add-button"
-      color="grey lighten-2">
+      color="green lighten-4">
       <v-icon>
         add_circle_outline
       </v-icon>
@@ -21,26 +21,13 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Component, Prop } from 'vue-property-decorator';
-import NoteChooserMenu from './NoteChooserMenu.vue';
-import NoteOptionsMenu from './NoteOptionsMenu.vue';
 
-@Component({
-  components: {
-    NoteChooserMenu,
-    NoteOptionsMenu,
-  },
-})
+@Component
 export default class extends Vue {
-  @Prop({ default: false }) editable!: boolean;
-
   @Prop({ required: true }) size!: number;
 
   get buttonSize() {
     return Math.floor(this.size * 0.65);
-  }
-
-  get borderSize() {
-    return Math.floor(this.buttonSize / 15);
   }
 
   get fontSize() {

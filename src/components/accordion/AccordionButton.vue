@@ -24,7 +24,13 @@
         </div>
       </div>
     </div>
-    <NoteOptionsMenu>
+    <OptionsMenu
+      :items="[
+        { title: 'Remove button', name: 'remove-button' },
+        { title: 'Add button above', name: 'add-button-above' },
+        { title: 'Add button below', name: 'add-button-below' },
+      ]"
+      @action="onButtonAction">
       <template v-slot:activator="{ on }">
         <v-btn
           v-show="editable"
@@ -40,14 +46,14 @@
             'margin-top': '-' + (buttonSize / 4) + 'px',
             'font-size': fontSize + 'px',
           }"
-          color="darkgrey"
+          color="amber lighten-2"
           v-on="on">
           <v-icon>
             arrow_drop_down_circle
           </v-icon>
         </v-btn>
       </template>
-    </NoteOptionsMenu>
+    </OptionsMenu>
     <NoteChooserMenu
       ref="noteChooserMenu"
       @change="onNoteChosen" />
@@ -60,13 +66,13 @@ import { Component, Prop } from 'vue-property-decorator';
 import { Note } from 'tonal';
 import { toRomance } from '@/helpers/noteHelpers';
 import { ButtonDefinition } from './AccordionDef';
-import NoteChooserMenu from './NoteChooserMenu.vue';
-import NoteOptionsMenu from './NoteOptionsMenu.vue';
+import NoteChooserMenu from './editing/NoteChooserMenu.vue';
+import OptionsMenu from './editing/OptionsMenu.vue';
 
 @Component({
   components: {
     NoteChooserMenu,
-    NoteOptionsMenu,
+    OptionsMenu,
   },
 })
 export default class extends Vue {
@@ -82,6 +88,10 @@ export default class extends Vue {
 
   $refs!: {
     noteChooserMenu: NoteChooserMenu;
+  }
+
+  onButtonAction(actionEvent: any) {
+    console.log(actionEvent);
   }
 
   onButtonClick(

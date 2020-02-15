@@ -27,7 +27,14 @@
               right: (buttonSpace * (-0.5)) + 'px',
             }" />
         </template>
-        <template v-for="(row, rowIndex) in accordion.rightHand">
+        <div
+          v-for="(row, rowIndex) in accordion.rightHand"
+          :key="`rightHand-${rowIndex}-row`"
+          class="row-holder"
+          :style="{
+            right: (buttonSpace * (rowIndex + 0.5)) + 'px',
+            top: getRowStart(row) + 'px',
+          }">
           <template v-if="showEditControls">
             <AccordionAddButton
               :key="`rightHand-${rowIndex}-bottom-add`"
@@ -35,7 +42,6 @@
               :size="buttonSpace"
               :style="{
                 top: getButtonY(row, -1) + 'px',
-                right: (buttonSpace * (rowIndex + 0.5)) + 'px',
               }" />
             <AccordionAddButton
               :key="`rightHand-${rowIndex}-top-add`"
@@ -43,8 +49,16 @@
               :size="buttonSpace"
               :style="{
                 top: getButtonY(row, row.buttons.length) + 'px',
-                right: (buttonSpace * (rowIndex + 0.5)) + 'px',
               }" />
+            <RowMenu
+              :key="`rightHand-${rowIndex}-top-menu`"
+              :row="row"
+              class="button"
+              :size="buttonSpace"
+              :style="{
+                top: getButtonY(row, row.buttons.length + 0.6) + 'px',
+              }"
+              @set-row-offset="setRowOffset(true, rowIndex, $event)" />
           </template>
           <template v-for="(button, index) in row.buttons">
             <AccordionButton
@@ -56,11 +70,10 @@
               :display="$vxm.settings.accordion.viewStyle"
               :style="{
                 top: getButtonY(row, index) + 'px',
-                right: (buttonSpace * (rowIndex + 0.5)) + 'px',
               }"
               @noteChange="onNoteChange(true, rowIndex, index, $event)" />
           </template>
-        </template>
+        </div>
         <template v-if="showEditControls">
           <AccordionAddButton
             :key="`leftHand-first-row-add`"
@@ -79,7 +92,14 @@
               left: (buttonSpace * (-0.5)) + 'px',
             }" />
         </template>
-        <template v-for="(row, rowIndex) in accordion.leftHand">
+        <div
+          v-for="(row, rowIndex) in accordion.leftHand"
+          :key="`leftHand-${rowIndex}-row`"
+          class="row-holder"
+          :style="{
+            left: (buttonSpace * (rowIndex + 0.5)) + 'px',
+            top: getRowStart(row) + 'px',
+          }">
           <template v-if="showEditControls">
             <AccordionAddButton
               :key="`leftHand-${rowIndex}-bottom`"
@@ -87,7 +107,6 @@
               :size="buttonSpace"
               :style="{
                 top: getButtonY(row, -1) + 'px',
-                left: (buttonSpace * (rowIndex + 0.5)) + 'px',
               }" />
             <AccordionAddButton
               :key="`leftHand-${rowIndex}-top`"
@@ -95,8 +114,16 @@
               :size="buttonSpace"
               :style="{
                 top: getButtonY(row, row.buttons.length) + 'px',
-                left: (buttonSpace * (rowIndex + 0.5)) + 'px',
               }" />
+            <RowMenu
+              :key="`leftHand-${rowIndex}-top-menu`"
+              :row="row"
+              class="button"
+              :size="buttonSpace"
+              :style="{
+                top: getButtonY(row, row.buttons.length + 0.6) + 'px',
+              }"
+              @set-row-offset="setRowOffset(false, rowIndex, $event)" />
           </template>
           <template v-for="(button, index) in row.buttons">
             <AccordionButton
@@ -108,11 +135,10 @@
               :button="button"
               :style="{
                 top: getButtonY(row, index) + 'px',
-                left: (buttonSpace * (rowIndex + 0.5)) + 'px',
               }"
               @noteChange="onNoteChange(false, rowIndex, index, $event)" />
           </template>
-        </template>
+        </div>
       </div>
     </div>
   </div>
@@ -125,13 +151,15 @@ import {
   Component, Watch,
 } from 'vue-property-decorator';
 import AccordionButton from './AccordionButton.vue';
-import AccordionAddButton from './AccordionAddButton.vue';
+import AccordionAddButton from './editing/AccordionAddButton.vue';
+import RowMenu from './editing/RowMenu.vue';
 import { RowDefinition, ButtonDefinition } from './AccordionDef';
 
 @Component({
   components: {
     AccordionButton,
     AccordionAddButton,
+    RowMenu,
   },
 })
 export default class AccordionViewer extends Vue {
@@ -190,19 +218,36 @@ export default class AccordionViewer extends Vue {
     });
   }
 
+  setRowOffset(
+    isRightHand: boolean,
+    rowIndex: number,
+    offset: number,
+  ) {
+    const row: RowDefinition[] = _.cloneDeep(
+      isRightHand ? this.accordion.rightHand : this.accordion.leftHand,
+    );
+
+    row[rowIndex].offset = offset;
+
+    this.$vxm.settings.accordion.updateLayout({
+      [isRightHand ? 'rightHand' : 'leftHand']: row,
+    });
+  }
+
   getRowStart(row: RowDefinition) {
-    return (
-      (this.buttonLength - row.buttons.length - (row.offset || 0))
+    const offset = this.mirrorView ? (row.offset || 0) : -(row.offset || 0);
+    return this.buttonSpace * (
+      (this.buttonLength - row.buttons.length - offset)
       / 2
     );
   }
 
   getButtonY(row: RowDefinition, index: number) {
-    const buttonY = this.buttonSpace * (index + 0.5 + this.getRowStart(row));
-    if (this.$vxm.settings.accordion.mirrorView) {
+    const buttonY = this.buttonSpace * (index + 0.5);
+    if (this.mirrorView) {
       return buttonY;
     }
-    return (this.buttonLength * this.buttonSpace) - buttonY;
+    return (row.buttons.length * this.buttonSpace) - buttonY;
   }
 
   get buttonLength() {
@@ -216,6 +261,10 @@ export default class AccordionViewer extends Vue {
 
   get showEditControls() {
     return this.$vxm.settings.accordion.showEditControls;
+  }
+
+  get mirrorView() {
+    return this.$vxm.settings.accordion.mirrorView;
   }
 
   get horizontalOffset() {
@@ -240,6 +289,12 @@ export default class AccordionViewer extends Vue {
   width: 100%;
   height: 100%;
   overflow: hidden;
+
+  .row-holder {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+  }
 }
 
 .accordion-wrap {

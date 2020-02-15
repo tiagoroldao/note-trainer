@@ -3,8 +3,6 @@
     v-model="showingMenu"
     absolute
     offset-y
-    :position-x="x"
-    :position-y="y"
     v-bind="$props"
     :close-on-content-click="false"
     style="max-width: 600px">
@@ -28,37 +26,20 @@
 
 <script lang="ts">
 import {
-  Component, Vue,
+  Component, Vue, Prop,
 } from 'vue-property-decorator';
 
 @Component
 export default class NoteChooserMenu extends Vue {
-  private items = [
-    { title: 'do a' },
-    { title: 'do b' },
-    { title: 'do c' },
-    { title: 'do d' },
-  ];
+  @Prop({ required: true }) items!: {name: string, title: string}[];
 
   showingMenu = false;
 
-  x = 0;
-
-  y = 0;
-
-  show(x = 0, y = 0) {
-    this.x = x;
-    this.y = y;
-    this.showingMenu = true;
-  }
-
-  hide() {
-    this.showingMenu = false;
-  }
-
-  onItemClick($event: any) {
-    this.$emit('action', $event);
-    this.showingMenu = false;
+  onItemClick($event: any, close = true) {
+    this.$emit('action', $event.name);
+    if (close) {
+      this.showingMenu = false;
+    }
   }
 }
 </script>
