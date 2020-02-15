@@ -9,136 +9,45 @@
           width: squareSize + 'px',
           height: squareSize + 'px',
         }">
-        <template v-if="showEditControls">
-          <AccordionAddButton
-            :key="`rightHand-first-row-add`"
-            class="button"
-            :size="buttonSpace"
-            :style="{
-              top: centerY + 'px',
-              right: (buttonSpace * (accordion.rightHand.length + 0.5)) + 'px',
-            }" />
-          <AccordionAddButton
-            :key="`rightHand-last-row-add`"
-            class="button"
-            :size="buttonSpace"
-            :style="{
-              top: centerY + 'px',
-              right: (buttonSpace * (-0.5)) + 'px',
-            }" />
-        </template>
-        <div
-          v-for="(row, rowIndex) in accordion.rightHand"
-          :key="`rightHand-${rowIndex}-row`"
-          class="row-holder"
-          :style="{
-            right: (buttonSpace * (rowIndex + 0.5)) + 'px',
-            top: getRowStart(row) + 'px',
-          }">
+        <template v-for="side in sides">
           <template v-if="showEditControls">
             <AccordionAddButton
-              :key="`rightHand-${rowIndex}-bottom-add`"
+              :key="`${side}-first-row-add`"
               class="button"
               :size="buttonSpace"
               :style="{
-                top: getButtonY(row, -1) + 'px',
-              }" />
+                top: centerY + 'px',
+                left: getRowX(side === 'rightHand', (accordion[side].length)) + 'px',
+              }"
+              @add-button="onAddRow(side === 'rightHand', accordion[side].length)" />
             <AccordionAddButton
-              :key="`rightHand-${rowIndex}-top-add`"
+              :key="`${side}-last-row-add`"
               class="button"
               :size="buttonSpace"
               :style="{
-                top: getButtonY(row, row.buttons.length) + 'px',
-              }" />
-            <RowMenu
-              :key="`rightHand-${rowIndex}-top-menu`"
-              :row="row"
-              class="button"
-              :size="buttonSpace"
-              :style="{
-                top: getButtonY(row, row.buttons.length + 0.6) + 'px',
+                top: centerY + 'px',
+                left: getRowX(side === 'rightHand', -1) + 'px',
               }"
-              @set-row-offset="setRowOffset(true, rowIndex, $event)" />
+              @add-button="onAddRow(side === 'rightHand', 0)" />
           </template>
-          <template v-for="(button, index) in row.buttons">
-            <AccordionButton
-              :key="`rightHand-${rowIndex}-${index}`"
-              :editable="showEditControls"
-              class="button"
-              :size="buttonSpace"
-              :button="button"
-              :display="$vxm.settings.accordion.viewStyle"
-              :style="{
-                top: getButtonY(row, index) + 'px',
-              }"
-              @noteChange="onNoteChange(true, rowIndex, index, $event)" />
-          </template>
-        </div>
-        <template v-if="showEditControls">
-          <AccordionAddButton
-            :key="`leftHand-first-row-add`"
-            class="button"
-            :size="buttonSpace"
+          <AccordionViewerRow
+            v-for="(row, rowIndex) in accordion[side]"
+            :key="`${side}-${rowIndex}-row`"
+            :row="row"
+            :mirror-view="mirrorView"
+            :show-edit-controls="showEditControls"
+            :button-space="buttonSpace"
+            class="row-holder"
             :style="{
-              top: centerY + 'px',
-              left: (buttonSpace * (accordion.leftHand.length + 0.5)) + 'px',
-            }" />
-          <AccordionAddButton
-            :key="`leftHand-last-row-add`"
-            class="button"
-            :size="buttonSpace"
-            :style="{
-              top: centerY + 'px',
-              left: (buttonSpace * (-0.5)) + 'px',
-            }" />
+              left: getRowX(side === 'rightHand', rowIndex) + 'px',
+              top: getRowY(row) + 'px',
+            }"
+            @add-button="(index) => onAddButton(side === 'rightHand', rowIndex, index)"
+            @remove-button="(index) => onRemoveButton(side === 'rightHand', rowIndex, index)"
+            @remove-row="(index) => onRemoveRow(side === 'rightHand', rowIndex)"
+            @note-change="(index, note) => onNoteChange(side === 'rightHand', rowIndex, index, note)"
+            @set-row-offset="(offset) => setRowOffset(side === 'rightHand', rowIndex, offset)" />
         </template>
-        <div
-          v-for="(row, rowIndex) in accordion.leftHand"
-          :key="`leftHand-${rowIndex}-row`"
-          class="row-holder"
-          :style="{
-            left: (buttonSpace * (rowIndex + 0.5)) + 'px',
-            top: getRowStart(row) + 'px',
-          }">
-          <template v-if="showEditControls">
-            <AccordionAddButton
-              :key="`leftHand-${rowIndex}-bottom`"
-              class="button"
-              :size="buttonSpace"
-              :style="{
-                top: getButtonY(row, -1) + 'px',
-              }" />
-            <AccordionAddButton
-              :key="`leftHand-${rowIndex}-top`"
-              class="button"
-              :size="buttonSpace"
-              :style="{
-                top: getButtonY(row, row.buttons.length) + 'px',
-              }" />
-            <RowMenu
-              :key="`leftHand-${rowIndex}-top-menu`"
-              :row="row"
-              class="button"
-              :size="buttonSpace"
-              :style="{
-                top: getButtonY(row, row.buttons.length + 0.6) + 'px',
-              }"
-              @set-row-offset="setRowOffset(false, rowIndex, $event)" />
-          </template>
-          <template v-for="(button, index) in row.buttons">
-            <AccordionButton
-              :key="`leftHand-${rowIndex}-${index}`"
-              :editable="showEditControls"
-              class="button"
-              :size="buttonSpace"
-              :display="$vxm.settings.accordion.viewStyle"
-              :button="button"
-              :style="{
-                top: getButtonY(row, index) + 'px',
-              }"
-              @noteChange="onNoteChange(false, rowIndex, index, $event)" />
-          </template>
-        </div>
       </div>
     </div>
   </div>
@@ -151,6 +60,7 @@ import {
   Component, Watch,
 } from 'vue-property-decorator';
 import AccordionButton from './AccordionButton.vue';
+import AccordionViewerRow from './AccordionViewerRow.vue';
 import AccordionAddButton from './editing/AccordionAddButton.vue';
 import RowMenu from './editing/RowMenu.vue';
 import { RowDefinition, ButtonDefinition } from './AccordionDef';
@@ -159,6 +69,7 @@ import { RowDefinition, ButtonDefinition } from './AccordionDef';
   components: {
     AccordionButton,
     AccordionAddButton,
+    AccordionViewerRow,
     RowMenu,
   },
 })
@@ -172,6 +83,8 @@ export default class AccordionViewer extends Vue {
   squareSize = 0;
 
   centerRowWidth = 3;
+
+  sides = ['rightHand', 'leftHand'];
 
   private onWindowResizeListener = () => this.calculateButtons();
 
@@ -207,14 +120,14 @@ export default class AccordionViewer extends Vue {
     buttonIndex: number,
     button: ButtonDefinition,
   ) {
-    const row: RowDefinition[] = _.cloneDeep(
+    const rows: RowDefinition[] = _.cloneDeep(
       isRightHand ? this.accordion.rightHand : this.accordion.leftHand,
     );
 
-    row[rowIndex].buttons[buttonIndex] = button;
+    rows[rowIndex].buttons[buttonIndex] = button;
 
     this.$vxm.settings.accordion.updateLayout({
-      [isRightHand ? 'rightHand' : 'leftHand']: row,
+      [isRightHand ? 'rightHand' : 'leftHand']: rows,
     });
   }
 
@@ -223,18 +136,83 @@ export default class AccordionViewer extends Vue {
     rowIndex: number,
     offset: number,
   ) {
-    const row: RowDefinition[] = _.cloneDeep(
+    const rows: RowDefinition[] = _.cloneDeep(
       isRightHand ? this.accordion.rightHand : this.accordion.leftHand,
     );
 
-    row[rowIndex].offset = offset;
+    rows[rowIndex].offset = offset;
 
     this.$vxm.settings.accordion.updateLayout({
-      [isRightHand ? 'rightHand' : 'leftHand']: row,
+      [isRightHand ? 'rightHand' : 'leftHand']: rows,
     });
   }
 
-  getRowStart(row: RowDefinition) {
+  onAddButton(
+    isRightHand: boolean,
+    rowIndex: number,
+    index: number,
+  ) {
+    const rows: RowDefinition[] = _.cloneDeep(
+      isRightHand ? this.accordion.rightHand : this.accordion.leftHand,
+    );
+
+    rows[rowIndex].buttons.splice(index, 0, {
+      opening: -1,
+      closing: -1,
+    });
+
+    this.$vxm.settings.accordion.updateLayout({
+      [isRightHand ? 'rightHand' : 'leftHand']: rows,
+    });
+  }
+
+  onRemoveButton(
+    isRightHand: boolean,
+    rowIndex: number,
+    index: number,
+  ) {
+    const rows: RowDefinition[] = _.cloneDeep(
+      isRightHand ? this.accordion.rightHand : this.accordion.leftHand,
+    );
+
+    rows[rowIndex].buttons.splice(index, 1);
+
+    this.$vxm.settings.accordion.updateLayout({
+      [isRightHand ? 'rightHand' : 'leftHand']: rows,
+    });
+  }
+
+  onAddRow(
+    isRightHand: boolean,
+    rowIndex: number,
+  ) {
+    const rows: RowDefinition[] = _.cloneDeep(
+      isRightHand ? this.accordion.rightHand : this.accordion.leftHand,
+    );
+
+    rows.splice(rowIndex, 0, { buttons: [] });
+
+    this.$vxm.settings.accordion.updateLayout({
+      [isRightHand ? 'rightHand' : 'leftHand']: rows,
+    });
+  }
+
+  onRemoveRow(
+    isRightHand: boolean,
+    rowIndex: number,
+  ) {
+    const rows: RowDefinition[] = _.cloneDeep(
+      isRightHand ? this.accordion.rightHand : this.accordion.leftHand,
+    );
+
+    rows.splice(rowIndex, 1);
+
+    this.$vxm.settings.accordion.updateLayout({
+      [isRightHand ? 'rightHand' : 'leftHand']: rows,
+    });
+  }
+
+  getRowY(row: RowDefinition) {
     const offset = this.mirrorView ? (row.offset || 0) : -(row.offset || 0);
     return this.buttonSpace * (
       (this.buttonLength - row.buttons.length - offset)
@@ -242,20 +220,26 @@ export default class AccordionViewer extends Vue {
     );
   }
 
-  getButtonY(row: RowDefinition, index: number) {
-    const buttonY = this.buttonSpace * (index + 0.5);
-    if (this.mirrorView) {
-      return buttonY;
+  getRowX(isRightHand: boolean, rowIndex: number) {
+    const center = this.centerX;
+    const centerOffset = ((this.accordion.rightHand.length - this.accordion.leftHand.length) / 2);
+    let rowOffset = (this.centerRowWidth / 2)
+    + (isRightHand ? this.accordion.rightHand : this.accordion.leftHand).length
+    - rowIndex;
+
+    if (!isRightHand) {
+      rowOffset = -rowOffset;
     }
-    return (row.buttons.length * this.buttonSpace) - buttonY;
+
+    return center + ((rowOffset - centerOffset) * this.buttonSpace);
   }
 
   get buttonLength() {
-    const editOffset = this.showEditControls ? 2 : 0;
+    const editOffset = this.showEditControls ? 3 : 0;
 
     return Math.max(
-      ...this.accordion.rightHand.map((r) => r.buttons.length + (r.offset || 0) + editOffset),
-      ...this.accordion.leftHand.map((r) => r.buttons.length + (r.offset || 0) + editOffset),
+      ...this.accordion.rightHand.map((r) => r.buttons.length + Math.abs(r.offset || 0) + editOffset),
+      ...this.accordion.leftHand.map((r) => r.buttons.length + Math.abs(r.offset || 0) + editOffset),
     );
   }
 

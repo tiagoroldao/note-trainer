@@ -72,6 +72,10 @@
       ref="deleteLayoutModal"
       title="Delete Layout?"
       text="Deleting a layout is not reversible" />
+    <ConfirmModal
+      ref="changeLayoutModal"
+      title="Change Layout?"
+      text="The current layout has unsaved changes, which will be lost." />
   </div>
 </template>
 <script lang="ts">
@@ -94,6 +98,7 @@ export default class AccordionLayoutSettings extends Vue {
   $refs!: {
     layoutChoice: any;
     deleteLayoutModal: ConfirmModal,
+    changeLayoutModal: ConfirmModal,
   };
 
   deleteDialog = false;
@@ -107,8 +112,17 @@ export default class AccordionLayoutSettings extends Vue {
   }
 
   onLayoutChoice(choice: AccordionDefinition) {
-    this.$vxm.settings.accordion.accordionLayout = choice;
-    this.$refs.layoutChoice.reset();
+    if (this.currentLayout.edited) {
+      this.$refs.changeLayoutModal.popup().then((result) => {
+        if (result === 'ok') {
+          this.$vxm.settings.accordion.accordionLayout = choice;
+          this.$refs.layoutChoice.reset();
+        }
+      });
+    } else {
+      this.$vxm.settings.accordion.accordionLayout = choice;
+      this.$refs.layoutChoice.reset();
+    }
   }
 
   setLayoutName(name: string) {

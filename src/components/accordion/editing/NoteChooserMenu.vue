@@ -13,6 +13,8 @@
           ref="noteChoice"
           :value="value"
           hide-details
+          :hide-selected="false"
+          clearable
           autofocus
           class="pa-0 ma-0"
           menu-props="eager"

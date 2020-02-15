@@ -1,7 +1,7 @@
 <template>
   <div class="accordion-button-holder">
     <div
-      :class="['accordion-button', { editable }, `editing-${editing}`]"
+      :class="['accordion-button', { editable, hasNote }, `editing-${editing}`]"
       :style="{
         height: buttonSize + 'px',
         width: buttonSize + 'px',
@@ -11,7 +11,7 @@
         'border-width': borderSize + 'px',
         'font-size': fontSize + 'px',
       }">
-      <div :class="['note-texts', `show-${display}`]">
+      <div :class="['note-texts', `show-${displayedCalc}`]">
         <div
           class="note-text opening"
           @click="onButtonClick($event, 'opening')">
@@ -90,8 +90,16 @@ export default class extends Vue {
     noteChooserMenu: NoteChooserMenu;
   }
 
+  get displayedCalc() {
+    if (!this.editable && this.button.closing === this.button.opening) {
+      return 'opening';
+    }
+
+    return this.display;
+  }
+
   onButtonAction(actionEvent: any) {
-    console.log(actionEvent);
+    this.$emit(actionEvent);
   }
 
   onButtonClick(
@@ -111,28 +119,32 @@ export default class extends Vue {
     this.$refs.noteChooserMenu.hide();
     const button = _.cloneDeep(this.button);
     button[this.editing || 'opening'] = note;
-    this.$emit('noteChange', button);
+    this.$emit('note-change', button);
     this.editing = null;
   }
 
   get buttonSize() {
-    return Math.floor(this.size * 0.85);
+    return Math.ceil(this.size * 0.85);
   }
 
   get borderSize() {
-    return Math.floor(this.buttonSize / 15);
+    return Math.ceil(this.buttonSize / 40);
   }
 
   get fontSize() {
-    return Math.floor(this.buttonSize / 3.5);
+    return Math.ceil(this.buttonSize / 3.5);
+  }
+
+  get hasNote() {
+    return this.button.closing > -1 && this.button.opening > -1;
   }
 
   get closingNote() {
-    return this.toHumanNote(this.button.closing);
+    return this.button.closing > -1 ? this.toHumanNote(this.button.closing) : '';
   }
 
   get openingNote() {
-    return this.toHumanNote(this.button.opening);
+    return this.button.opening > -1 ? this.toHumanNote(this.button.opening) : '';
   }
 
   toHumanNote(_note: number | string) {
@@ -206,13 +218,13 @@ export default class extends Vue {
     .note-text {
       &.opening {
         top: 50%;
-        border-top: 0.1em solid #ccc;
+        border-top: 0.05em solid #ccc;
       }
 
       &.closing {
         bottom: 50%;
-        border-bottom: 0.1em solid #ccc;
-        margin-top: 0.2em;
+        border-bottom: 0.05em solid #ccc;
+        margin-top: 0.1em;
       }
     }
   }
@@ -223,7 +235,7 @@ export default class extends Vue {
     }
     .note-text.opening {
       top: 0;
-      padding-top: 1.5em;
+      padding-top: 1.6em;
       line-height: 0;
     }
   }

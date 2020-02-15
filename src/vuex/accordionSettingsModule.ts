@@ -1,5 +1,5 @@
 import {
-  createModule, mutation, getter,
+  createModule, mutation, getter, action,
 } from 'vuex-class-component';
 import _ from 'lodash';
 import { AccordionDefinition } from '@/components/accordion/AccordionDef';
@@ -24,13 +24,19 @@ function accordionLayouts(module: AccordionSettingsModule) {
 export class AccordionSettingsModule extends VuexModule {
   @getter customLayouts: AccordionDefinition[] = [];
 
-  private currentAccordionLayout: AccordionDefinition = accordions[0];
+  private currentAccordionLayout: AccordionDefinition = null as any;
 
   viewStyle: ViewStyle = 'both';
 
   showEditControls: boolean = false;
 
   public mirrorView: boolean = false;
+
+  @action async onSetup() {
+    if (!this.currentAccordionLayout) {
+      [this.accordionLayout] = accordions;
+    }
+  }
 
   get accordionLayouts() {
     return accordionLayouts(this);
@@ -63,7 +69,7 @@ export class AccordionSettingsModule extends VuexModule {
   }
 
   @mutation resetLayout() {
-    const source = accordionLayouts(this).find((i) => i.id === this.currentAccordionLayout.id);
+    const source = accordionLayouts(this).find((i) => i.id === this.currentAccordionLayout!.id);
     if (source) {
       this.currentAccordionLayout = _.cloneDeep(source);
     }
@@ -74,6 +80,7 @@ export class AccordionSettingsModule extends VuexModule {
     copy.name = skipNameChange ? copy.name : `${copy.name} (Copy)`;
     copy.id = generateUUID();
     copy.custom = true;
+    copy.edited = false;
     this.customLayouts.push(copy);
     this.currentAccordionLayout = copy;
   }

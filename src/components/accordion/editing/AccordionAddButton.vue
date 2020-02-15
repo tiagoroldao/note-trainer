@@ -11,7 +11,8 @@
         'font-size': fontSize + 'px',
       }"
       class="accordion-add-button"
-      color="green lighten-4">
+      color="green lighten-4"
+      @click="$emit('add-button')">
       <v-icon>
         add_circle_outline
       </v-icon>

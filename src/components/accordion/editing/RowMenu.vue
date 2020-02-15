@@ -4,7 +4,6 @@
     <v-menu
       v-model="showingMenu"
       absolute
-      offset-y
       v-bind="$props"
       :close-on-content-click="false">
       <template v-slot:activator="{ on }">
@@ -41,6 +40,14 @@
             class="offset-slider"
             @input="onChangeOffset" />
         </v-card-text>
+        <v-divider />
+        <v-btn
+          class="ma-2"
+          small
+          color="error"
+          @click="onDeleteRow">
+          Delete Row
+        </v-btn>
       </v-card>
     </v-menu>
   </div>
@@ -68,6 +75,11 @@ export default class extends Vue {
 
   onChangeOffset($event: number) {
     this.$emit('set-row-offset', $event);
+  }
+
+  onDeleteRow() {
+    this.$emit('remove-row');
+    this.showingMenu = false;
   }
 }
 </script>
