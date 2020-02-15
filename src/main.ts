@@ -14,8 +14,8 @@ Vue.prototype.$audioContext = services.$audioContext;
 Vue.prototype.$vxm = vxm;
 
 new Vue({
-    router,
-    store,
-    vuetify: new Vuetify({}),
-    render: h => h(App),
+  router,
+  store,
+  vuetify: new Vuetify({}),
+  render: (h) => h(App),
 }).$mount('#app');
