@@ -34,7 +34,7 @@ export class AccordionSettingsModule extends VuexModule {
 
   @action async onSetup() {
     if (!this.currentAccordionLayout) {
-      [this.accordionLayout] = accordions;
+      [this.currentAccordionLayout] = accordions;
     }
   }
 
