@@ -5,7 +5,9 @@
       placeholder="Choose Layout..."
       :items="$vxm.settings.accordion.accordionLayouts"
       return-object
+      clearable
       item-text="name"
+      item-value="id"
       @change="onLayoutChoice">
       <template v-slot:item="data">
         <span
@@ -31,7 +33,6 @@
             Delete
           </v-btn>
           <v-btn
-            v-if="currentLayout.edited"
             small
             color="warning"
             :disabled="!currentLayout.edited"
@@ -46,6 +47,13 @@
             class="ma-1"
             @click="saveLayout">
             Save
+          </v-btn>
+          <v-btn
+            small
+            color="primary"
+            class="ma-1"
+            @click="exportLayout">
+            Export
           </v-btn>
         </template>
         <template v-else-if="!currentLayout.edited">
@@ -85,10 +93,24 @@
       ref="changeLayoutModal"
       title="Change Layout?"
       text="The current layout has unsaved changes, which will be lost." />
+    <ConfirmModal
+      ref="exportLayoutModal"
+      title="Exported Layout"
+      :actions="[
+        { name: 'close', text: 'Close', color: 'primary' }
+      ]"
+      :dialog-props="{
+        persistent: false,
+      }">
+      <code class="exported-code">
+        {{ JSON.stringify(exportedLayout, null, 4) }}
+      </code>
+    </ConfirmModal>
   </div>
 </template>
 <script lang="ts">
 import Vue from 'vue';
+import _ from 'lodash';
 import {
   Component,
 } from 'vue-property-decorator';
@@ -108,9 +130,12 @@ export default class AccordionLayoutSettings extends Vue {
     layoutChoice: any;
     deleteLayoutModal: ConfirmModal,
     changeLayoutModal: ConfirmModal,
+    exportLayoutModal: ConfirmModal,
   };
 
   deleteDialog = false;
+
+  exportedLayout: any = {};
 
   get keyLayouts() {
     return accordions;
@@ -136,6 +161,15 @@ export default class AccordionLayoutSettings extends Vue {
 
   setLayoutName(name: string) {
     this.$vxm.settings.accordion.updateLayout({ name });
+  }
+
+  exportLayout() {
+    this.exportedLayout = _.cloneDeep(this.$vxm.settings.accordion.accordionLayout);
+    delete this.exportedLayout.id;
+    delete this.exportedLayout.custom;
+    delete this.exportedLayout.edited;
+
+    this.$refs.exportLayoutModal.popup();
   }
 
   resetLayout() {
@@ -175,5 +209,11 @@ export default class AccordionLayoutSettings extends Vue {
   font-weight: bold;
   color: #888;
   margin-right: 0.2em;
+}
+
+.exported-code {
+  text-align: left;
+  padding: 10px;
+  width: 100%;
 }
 </style>

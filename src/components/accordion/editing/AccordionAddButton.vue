@@ -24,7 +24,7 @@ import Vue from 'vue';
 import { Component, Prop } from 'vue-property-decorator';
 
 @Component
-export default class extends Vue {
+export default class AccordionAddButton extends Vue {
   @Prop({ required: true }) size!: number;
 
   get buttonSize() {

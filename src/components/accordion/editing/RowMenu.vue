@@ -58,7 +58,7 @@ import { Component, Prop } from 'vue-property-decorator';
 import { RowDefinition } from '../AccordionDef';
 
 @Component
-export default class extends Vue {
+export default class RowMenu extends Vue {
   @Prop({ required: true }) size!: number;
 
   @Prop({ required: true }) row!: RowDefinition;

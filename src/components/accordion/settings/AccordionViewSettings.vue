@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SettingsSection title="Note Display">
+    <SettingsSection title="Display Options">
       <v-radio-group
         v-model="$vxm.settings.accordion.viewStyle"
         class="inline-block"

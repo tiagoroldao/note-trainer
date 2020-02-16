@@ -58,7 +58,7 @@
 </template>
 0
 <script lang="ts">
-import { Note } from 'tonal';
+import { Midi, Note } from '@tonaljs/modules';
 import { toAbc } from 'tonal-abc-notation';
 import NoteRenderer from '@/components/NoteRenderer.vue';
 import Vue from 'vue';
@@ -137,7 +137,7 @@ export default class NoteTeacher extends Vue {
   public handleNoteData(pitch: PitchData) {
     if (this.state !== 'querying') return;
     if (pitch.freq > 0) {
-      const identified: string = toAbc(Note.enharmonic(Note.fromMidi(Note.freqToMidi(pitch.freq))))
+      const identified: string = toAbc(Note.enharmonic(Midi.midiToNoteName(Midi.freqToMidi(pitch.freq))))
         || '';
       if (identified.length && identified !== this.tempNote) {
         this.tempNote = identified;
@@ -168,10 +168,10 @@ export default class NoteTeacher extends Vue {
       note = Math.floor(Math.random() * (max - min) + min);
     } while (
       this.$vxm.settings.teacher.notes.indexOf(
-        Note.pc(Note.fromMidi(note, true) as string) as string,
+        Midi.midiToNoteName(note, { sharps: true, pitchClass: true }) as string,
       ) === -1
     );
-    return toAbc(Note.fromMidi(note, true));
+    return toAbc(Midi.midiToNoteName(note, { sharps: true }));
   }
 
   public beforeDestroy() {

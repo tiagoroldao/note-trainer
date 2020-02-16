@@ -36,6 +36,8 @@
             :row="row"
             :mirror-view="mirrorView"
             :show-edit-controls="showEditControls"
+            :display="$vxm.settings.accordion.viewStyle"
+            :highlights="highlightedNotes"
             :button-space="buttonSpace"
             class="row-holder"
             :style="{
@@ -109,9 +111,9 @@ export default class AccordionViewer extends Vue {
     const buttonsSpaceX = rect.width / this.rowsLength;
 
     this.squareSize = Math.min(rect.height, rect.width);
-    this.centerX = this.squareSize / 2;
-    this.centerY = this.squareSize / 2;
     this.buttonSpace = Math.floor(Math.min(buttonsSpaceX, buttonsSpaceY));
+    this.centerX = this.squareSize / 2;
+    this.centerY = (this.buttonSpace * this.buttonLength) / 2;
   }
 
   onNoteChange(
@@ -241,6 +243,11 @@ export default class AccordionViewer extends Vue {
       ...this.accordion.rightHand.map((r) => r.buttons.length + Math.abs(r.offset || 0) + editOffset),
       ...this.accordion.leftHand.map((r) => r.buttons.length + Math.abs(r.offset || 0) + editOffset),
     );
+  }
+
+  get highlightedNotes() {
+    return this.$vxm.noteHighlighter.showHighlights
+      ? this.$vxm.noteHighlighter.highlightedScaleNotes : [];
   }
 
   get showEditControls() {

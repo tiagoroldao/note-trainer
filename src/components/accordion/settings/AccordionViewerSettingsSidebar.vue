@@ -3,6 +3,8 @@
     <AccordionLayoutSettings />
     <v-divider />
     <AccordionViewSettings />
+    <v-divider />
+    <AccordionScaleSettings />
   </div>
 </template>
 <script lang="ts">
@@ -12,11 +14,13 @@ import {
 } from 'vue-property-decorator';
 import AccordionLayoutSettings from './AccordionLayoutSettings.vue';
 import AccordionViewSettings from './AccordionViewSettings.vue';
+import AccordionScaleSettings from './AccordionScaleSettings.vue';
 
 @Component({
   components: {
     AccordionLayoutSettings,
     AccordionViewSettings,
+    AccordionScaleSettings,
   },
 })
 export default class AccordionViewSettingsSidebar extends Vue {

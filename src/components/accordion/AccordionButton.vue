@@ -13,12 +13,12 @@
       }">
       <div :class="['note-texts', `show-${displayedCalc}`]">
         <div
-          class="note-text opening"
+          :class="['note-text opening', { highlighted: !!openingNoteHighlighted }]"
           @click="onButtonClick($event, 'opening')">
           {{ openingNote }}
         </div>
         <div
-          class="note-text closing"
+          :class="['note-text closing', { highlighted: !!closingNoteHighlighted }]"
           @click="onButtonClick($event, 'closing')">
           {{ closingNote }}
         </div>
@@ -62,6 +62,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import _ from 'lodash';
+import { Tonal } from '@tonaljs/modules';
 import { Component, Prop } from 'vue-property-decorator';
 import { toHumanNote } from '@/helpers/noteHelpers';
 import { ButtonDefinition } from './AccordionDef';
@@ -74,12 +75,14 @@ import OptionsMenu from './editing/OptionsMenu.vue';
     OptionsMenu,
   },
 })
-export default class extends Vue {
+export default class AccordionButton extends Vue {
   @Prop({ default: false }) editable!: boolean;
 
   @Prop({ required: true }) size!: number;
 
   @Prop({ required: true }) button!: ButtonDefinition;
+
+  @Prop({ default: () => [] }) highlights!: string[];
 
   @Prop({ default: 'both' }) display!: 'opening' | 'closing' | 'both';
 
@@ -114,10 +117,10 @@ export default class extends Vue {
     );
   }
 
-  onNoteChosen(note: any) {
+  onNoteChosen(_note: any) {
     this.$refs.noteChooserMenu.hide();
     const button = _.cloneDeep(this.button);
-    button[this.editing || 'opening'] = note;
+    button[this.editing || 'opening'] = _note;
     this.$emit('note-change', button);
     this.editing = null;
   }
@@ -138,12 +141,20 @@ export default class extends Vue {
     return this.button.closing !== '' && this.button.opening !== '';
   }
 
+  get openingNoteHighlighted() {
+    return this.highlights.find((n) => Tonal.note(this.button.opening).chroma === Tonal.note(n).chroma);
+  }
+
+  get closingNoteHighlighted() {
+    return this.highlights.find((n) => Tonal.note(this.button.closing).chroma === Tonal.note(n).chroma);
+  }
+
   get closingNote() {
-    return this.toHumanNote(this.button.closing);
+    return this.toHumanNote(this.closingNoteHighlighted || this.button.closing);
   }
 
   get openingNote() {
-    return this.toHumanNote(this.button.opening);
+    return this.toHumanNote(this.openingNoteHighlighted || this.button.opening);
   }
 
   toHumanNote(_note: number | string) {
@@ -203,6 +214,15 @@ export default class extends Vue {
     left: 0;
     right: 0;
     bottom: 0;
+
+    &.highlighted {
+      background: #ff5252;
+      color: white;
+
+      &.closing {
+        background: #4caf50;
+      }
+    }
   }
 
   &.show-both {
@@ -217,7 +237,7 @@ export default class extends Vue {
       &.closing {
         bottom: 50%;
         border-bottom: 0.05em solid #ccc;
-        margin-top: 0.1em;
+        padding-top: 0.1em;
       }
     }
   }
@@ -239,7 +259,7 @@ export default class extends Vue {
     }
     .note-text.closing {
       top: 0;
-      padding-top: 1.5em;
+      padding-top: 1.6em;
       line-height: 0;
     }
   }

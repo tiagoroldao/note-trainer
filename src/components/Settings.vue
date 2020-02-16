@@ -145,12 +145,12 @@
 </template>
 
 <script lang="ts">
-import { Note } from 'tonal';
+import { Range } from '@tonaljs/modules';
 import {
   Component, Vue, Provide, Prop,
 } from 'vue-property-decorator';
 import SettingsSection from './SettingsSection.vue';
-import { toRomance } from '../helpers/noteHelpers';
+import { toHumanNote } from '../helpers/noteHelpers';
 
 @Component({
   components: { SettingsSection },
@@ -166,7 +166,7 @@ export default class Settings extends Vue {
 
   @Provide() public devices = [] as MediaDeviceInfo[];
 
-  @Provide() public possibleNotes = Note.names(' #');
+  @Provide() public possibleNotes = Range.chromatic(['C1', 'B1'], { sharps: true, pitchClass: true });
 
   onChangeVol(minVol: number) {
     this.$vxm.settings.setMinVol(minVol);
@@ -185,11 +185,7 @@ export default class Settings extends Vue {
   }
 
   toHumanNote(_note: number | string) {
-    let note = _note;
-    if (typeof note === 'number') {
-      note = Note.fromMidi(note, true);
-    }
-    return this.$vxm.settings.useRomanceNotes ? toRomance(note) : note;
+    return toHumanNote(_note, this.$vxm.settings.useRomanceNotes, false);
   }
 
   public toggleStream() {

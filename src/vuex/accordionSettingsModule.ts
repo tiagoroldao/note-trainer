@@ -16,8 +16,8 @@ export type ViewStyle = 'opening' | 'closing' | 'both';
 
 function accordionLayouts(module: AccordionSettingsModule) {
   return [
-    ...accordions,
     ...module.customLayouts,
+    ...accordions,
   ];
 }
 

@@ -38,7 +38,7 @@ export default class Home extends Vue {
   links = [
     { to: '/', text: 'Pitch Finder' },
     { to: '/teacher', text: 'Teacher' },
-    { to: '/accordion', text: 'Accordion' },
+    { to: '/accordion', text: 'Accordion [Work in progress!]' },
     { to: '/about', text: 'About' },
   ];
 }

@@ -1,7 +1,6 @@
 <template>
   <v-dialog
     v-model="dialog"
-    persistent
     v-bind="dialogProps">
     <v-card>
       <v-card-title
@@ -10,7 +9,9 @@
         {{ title }}
       </v-card-title>
       <v-card-text>
-        {{ text }}
+        <slot>
+          {{ text }}
+        </slot>
       </v-card-text>
       <v-card-actions>
         <v-spacer />
@@ -43,7 +44,12 @@ export default class SomeComponent extends Vue {
 
   @Prop({ default: '' }) text!: string;
 
-  @Prop({ default: () => ({ 'max-width': '290' }) }) dialogProps!: any;
+  @Prop({
+    default: () => ({
+      'max-width': '290',
+      persistent: true,
+    }),
+  }) dialogProps!: any;
 
   @Prop({
     default: () => [

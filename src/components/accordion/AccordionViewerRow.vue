@@ -32,7 +32,8 @@
         class="button"
         :size="buttonSpace"
         :button="button"
-        :display="$vxm.settings.accordion.viewStyle"
+        :highlights="highlights"
+        :display="display"
         :style="{
           top: getButtonY(row, index) + 'px',
         }"
@@ -61,10 +62,14 @@ import { RowDefinition, ButtonDefinition } from './AccordionDef';
     RowMenu,
   },
 })
-export default class AccordionViewer extends Vue {
+export default class AccordionViewerRow extends Vue {
   @Prop({ default: false }) mirrorView!: boolean;
 
   @Prop({ default: false }) showEditControls!: boolean;
+
+  @Prop({ default: 'both' }) display!: string;
+
+  @Prop({ default: () => [] }) highlights!: string[];
 
   @Prop({ required: true }) row!: RowDefinition;
 

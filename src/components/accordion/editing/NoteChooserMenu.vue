@@ -31,7 +31,7 @@ import {
   Component, Vue,
 } from 'vue-property-decorator';
 import _ from 'lodash';
-import { Note } from 'tonal';
+import { Midi } from '@tonaljs/modules';
 import { toHumanNote } from '@/helpers/noteHelpers';
 
 @Component
@@ -40,7 +40,10 @@ export default class NoteChooserMenu extends Vue {
     noteChoice: any;
   }
 
-  private notes = _.range(128).map((n) => ({ value: Note.fromMidi(n, true), text: this.toHumanNote(n) }));
+  private notes = _.range(128).map((n) => ({
+    value: Midi.midiToNoteName(n, { sharps: true }),
+    text: this.toHumanNote(n, false),
+  }));
 
   private value: string = '';
 
@@ -64,10 +67,11 @@ export default class NoteChooserMenu extends Vue {
   onChosenNote($event: any) {
     this.$emit('change', $event || '');
     this.showingMenu = false;
+    this.value = '';
   }
 
-  toHumanNote(_note: number | string) {
-    return toHumanNote(_note, this.$vxm.settings.useRomanceNotes);
+  toHumanNote(_note: number | string, hideOctave = true) {
+    return toHumanNote(_note, this.$vxm.settings.useRomanceNotes, hideOctave);
   }
 }
 </script>

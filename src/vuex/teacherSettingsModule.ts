@@ -1,7 +1,7 @@
 import {
-  createModule, mutation, getter,
+  createModule, mutation, getter, action,
 } from 'vuex-class-component';
-import { Scale } from 'tonal';
+import { Scale } from '@tonaljs/modules';
 
 const VuexModule = createModule({
   strict: false,
@@ -12,9 +12,15 @@ const VuexModule = createModule({
 export class TeacherSettingsModule extends VuexModule {
     @getter noteRegisterTime = 350;
 
-    @getter notes: string[] = Scale.notes('C major');
+    @getter notes: string[] = [];
 
     @getter noteRange: number[] = [10, 100];
+
+    @action async onSetup() {
+      if (!this.notes || this.notes.length) {
+        this.notes = Scale.scale('C major').notes;
+      }
+    }
 
     @mutation setNoteRegisterTime(time: number) {
       this.noteRegisterTime = Math.max(0, time);

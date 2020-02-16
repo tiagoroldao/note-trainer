@@ -55,14 +55,14 @@
 </template>
 
 <script lang="ts">
-import { Note } from 'tonal';
+import { Midi } from '@tonaljs/modules';
 import { toAbc } from 'tonal-abc-notation';
 import NoteRenderer from '@/components/NoteRenderer.vue';
 import Vue from 'vue';
 import {
   Component, Provide, Watch,
 } from 'vue-property-decorator';
-import { toRomance } from '@/helpers/noteHelpers';
+import { toHumanNote } from '@/helpers/noteHelpers';
 
 type pitchState = 'off' | 'on';
 
@@ -98,11 +98,7 @@ export default class PitchDetector extends Vue {
     }
 
     toHumanNote(_note: number | string) {
-      let note = _note;
-      if (typeof note === 'number') {
-        note = Note.fromMidi(note, true);
-      }
-      return this.$vxm.settings.useRomanceNotes ? toRomance(note) : note;
+      return toHumanNote(_note, this.$vxm.settings.useRomanceNotes, false);
     }
 
     public toggleStream() {
@@ -123,7 +119,7 @@ export default class PitchDetector extends Vue {
       this.unsubscribers = this.unsubscribers.concat([
         this.$audioContext.pitchAnalyser.on('pitchData', (pitch) => {
           if (this.state === 'on' && pitch.freq > 0) {
-            const noteString = Note.fromMidi(Note.freqToMidi(pitch.freq), true) as string;
+            const noteString = Midi.midiToNoteName(Midi.freqToMidi(pitch.freq), { sharps: true }) as string;
             this.note = toAbc(noteString);
             this.noteString = this.toHumanNote(noteString);
             this.duration = this.$audioContext.pitchAnalyser.duration;

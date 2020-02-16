@@ -4,6 +4,7 @@ import VuexPersistence from 'vuex-persist';
 import { extractVuexModule, createProxy } from 'vuex-class-component';
 import { SettingsModule } from './vuex/settingsModule';
 import { AudioModule } from './vuex/audioModule';
+import { NoteHighlighterModule } from './vuex/noteHighlighterModule';
 
 Vue.use(Vuex);
 
@@ -29,6 +30,7 @@ const options: StoreOptions<any> = {
   modules: {
     ...extractVuexModule(SettingsModule),
     ...extractVuexModule(AudioModule),
+    ...extractVuexModule(NoteHighlighterModule),
   },
   mutations: {
     RESTORE_MUTATION: vuexPersist.RESTORE_MUTATION,
@@ -41,4 +43,5 @@ export const store = new Vuex.Store(options);
 export const vxm = {
   settings: createProxy(store, SettingsModule),
   audio: createProxy(store, AudioModule),
+  noteHighlighter: createProxy(store, NoteHighlighterModule),
 };
