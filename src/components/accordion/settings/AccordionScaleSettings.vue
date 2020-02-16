@@ -5,14 +5,20 @@
         v-model="$vxm.noteHighlighter.showHighlights"
         class="inline-block"
         label="Show Scale?" />
-      <v-autocomplete
-        v-model="$vxm.noteHighlighter.highlightedScaleName"
-        placeholder="Choose Scale..."
-        :items="possibleScales" />
-      <v-autocomplete
-        v-model="$vxm.noteHighlighter.highlightedScaleKey"
-        placeholder="Choose Key..."
-        :items="possibleKeys" />
+      <v-row>
+        <v-col cols="4">
+          <v-autocomplete
+            v-model="$vxm.noteHighlighter.highlightedScaleKey"
+            placeholder="Choose Key..."
+            :items="possibleKeys" />
+        </v-col>
+        <v-col cols="8">
+          <v-autocomplete
+            v-model="$vxm.noteHighlighter.highlightedScaleName"
+            placeholder="Choose Scale..."
+            :items="possibleScales" />
+        </v-col>
+      </v-row>
     </SettingsSection>
   </div>
 </template>
