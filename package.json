@@ -25,7 +25,7 @@
     "vue-router": "^3.1.3",
     "vuetify": "^2.2.11",
     "vuex": "^3.1.2",
-    "vuex-class-component": "git+https://github.com/tiagoroldao/vuex-class-component.git#2b6b878442b4ffbabf7cdf3ad14fc292d6493883",
+    "vuex-class-component": "git+https://github.com/tiagoroldao/vuex-class-component.git#c2c428bacadf15784773607732b6302792b2e5d1",
     "vuex-persist": "^2.1.1"
   },
   "devDependencies": {

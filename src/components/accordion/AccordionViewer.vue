@@ -227,7 +227,7 @@ export default class AccordionViewer extends Vue {
     const centerOffset = ((this.accordion.rightHand.length - this.accordion.leftHand.length) / 2);
     let rowOffset = (this.centerRowWidth / 2)
     + (isRightHand ? this.accordion.rightHand : this.accordion.leftHand).length
-    - rowIndex;
+    - rowIndex - 0.5;
 
     if (!isRightHand) {
       rowOffset = -rowOffset;
