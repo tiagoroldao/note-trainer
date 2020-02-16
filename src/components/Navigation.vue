@@ -1,5 +1,12 @@
 <template>
   <v-list dense>
+    <div
+      class="close-button"
+      @click="$emit('close')">
+      <v-icon>
+        close
+      </v-icon>
+    </div>
     <v-list-item two-line>
       <v-list-item-content>
         <v-list-item-subtitle>
@@ -52,5 +59,18 @@ export default class Home extends Vue {
 }
 /deep/ .v-navigation-drawer__border {
   z-index: 1;
+}
+
+.close-button {
+  position: absolute;
+  z-index: 1;
+  background: white;
+  right: 0;
+  top: 0;
+  padding: 0.5em;
+  border-left: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  border-bottom-left-radius: 1.5em;
+  cursor: pointer;
 }
 </style>

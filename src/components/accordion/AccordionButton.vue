@@ -13,12 +13,18 @@
       }">
       <div :class="['note-texts', `show-${displayedCalc}`]">
         <div
-          :class="['note-text opening', { highlighted: !!openingNoteHighlighted }]"
+          :class="['note-text opening', {
+            highlighted: !!openingNoteHighlighted,
+          }]"
+          :style="openingNoteHighlighted && getHighlightStyle(openingNoteHighlightedIndex, true)"
           @click="onButtonClick($event, 'opening')">
           {{ openingNote }}
         </div>
         <div
-          :class="['note-text closing', { highlighted: !!closingNoteHighlighted }]"
+          :class="['note-text closing', {
+            highlighted: !!closingNoteHighlighted,
+          }]"
+          :style="closingNoteHighlighted && getHighlightStyle(closingNoteHighlightedIndex, false)"
           @click="onButtonClick($event, 'closing')">
           {{ closingNote }}
         </div>
@@ -63,11 +69,17 @@
 import Vue from 'vue';
 import _ from 'lodash';
 import { Tonal } from '@tonaljs/modules';
+import Color from 'color';
 import { Component, Prop } from 'vue-property-decorator';
 import { toHumanNote } from '@/helpers/noteHelpers';
 import { ButtonDefinition } from './AccordionDef';
 import NoteChooserMenu from './editing/NoteChooserMenu.vue';
 import OptionsMenu from './editing/OptionsMenu.vue';
+
+const closingStartHue = '#17d8ff';
+const closingEndHue = '#26ff17';
+const openingStartHue = '#ff2617';
+const openingEndHue = '#ffe817';
 
 @Component({
   components: {
@@ -81,6 +93,8 @@ export default class AccordionButton extends Vue {
   @Prop({ required: true }) size!: number;
 
   @Prop({ required: true }) button!: ButtonDefinition;
+
+  @Prop({ default: false }) showHighlightsAsScale!: boolean;
 
   @Prop({ default: () => [] }) highlights!: string[];
 
@@ -98,6 +112,19 @@ export default class AccordionButton extends Vue {
     }
 
     return this.display;
+  }
+
+  getHighlightStyle(index: number, opening: boolean) {
+    if (this.highlights.length && this.showHighlightsAsScale) {
+      const startHue = Color(opening ? openingStartHue : closingStartHue);
+      const endHue = Color(opening ? openingEndHue : closingEndHue);
+
+      return {
+        background: startHue.mix(endHue, index / this.highlights.length).string(),
+      };
+    }
+
+    return {};
   }
 
   onButtonAction(actionEvent: any) {
@@ -141,12 +168,24 @@ export default class AccordionButton extends Vue {
     return this.button.closing !== '' && this.button.opening !== '';
   }
 
+  get openingNoteHighlightedIndex() {
+    return !this.editable
+      ? this.highlights.findIndex((n) => Tonal.note(this.button.opening).chroma === Tonal.note(n).chroma)
+      : -1;
+  }
+
   get openingNoteHighlighted() {
-    return this.highlights.find((n) => Tonal.note(this.button.opening).chroma === Tonal.note(n).chroma);
+    return this.highlights[this.openingNoteHighlightedIndex];
+  }
+
+  get closingNoteHighlightedIndex() {
+    return !this.editable
+      ? this.highlights.findIndex((n) => Tonal.note(this.button.closing).chroma === Tonal.note(n).chroma)
+      : -1;
   }
 
   get closingNoteHighlighted() {
-    return this.highlights.find((n) => Tonal.note(this.button.closing).chroma === Tonal.note(n).chroma);
+    return this.highlights[this.closingNoteHighlightedIndex];
   }
 
   get closingNote() {

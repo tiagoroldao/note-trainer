@@ -13,6 +13,7 @@
     "@types/lodash": "^4.14.149",
     "abcjs": "^5.10.2",
     "animejs": "^3.1.0",
+    "color": "^3.1.2",
     "core-js": "^3.4.1",
     "eslint-plugin-import": "^2.18.2",
     "lodash": "^4.17.15",
@@ -29,6 +30,7 @@
     "vuex-persist": "^2.1.1"
   },
   "devDependencies": {
+    "@types/color": "^3.0.1",
     "@typescript-eslint/eslint-plugin": "^2.19.2",
     "@typescript-eslint/parser": "^2.19.2",
     "@vue/cli-plugin-babel": "^4.0.5",

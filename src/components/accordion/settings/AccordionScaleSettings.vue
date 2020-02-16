@@ -1,10 +1,20 @@
 <template>
   <div>
     <SettingsSection title="Scale Display">
-      <v-switch
-        v-model="$vxm.noteHighlighter.showHighlights"
-        class="inline-block"
-        label="Show Scale?" />
+      <v-row>
+        <v-col cols="6">
+          <v-switch
+            v-model="$vxm.noteHighlighter.showHighlights"
+            class="inline-block"
+            label="Show Scale?" />
+        </v-col>
+        <v-col cols="6">
+          <v-switch
+            v-model="$vxm.noteHighlighter.showHighlightsAsScale"
+            class="inline-block"
+            label="Use color gradients?" />
+        </v-col>
+      </v-row>
       <v-row>
         <v-col cols="4">
           <v-autocomplete

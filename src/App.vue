@@ -25,7 +25,7 @@
       app
       :clipped="true"
       :width="400">
-      <navigation>
+      <navigation @close="drawer = false">
         <router-view name="sidebar" />
       </navigation>
     </v-navigation-drawer>

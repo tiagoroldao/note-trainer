@@ -38,6 +38,7 @@
             :show-edit-controls="showEditControls"
             :display="$vxm.settings.accordion.viewStyle"
             :highlights="highlightedNotes"
+            :show-highlights-as-scale="$vxm.noteHighlighter.showHighlightsAsScale"
             :button-space="buttonSpace"
             class="row-holder"
             :style="{

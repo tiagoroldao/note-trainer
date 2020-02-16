@@ -33,6 +33,7 @@
         :size="buttonSpace"
         :button="button"
         :highlights="highlights"
+        :show-highlights-as-scale="showHighlightsAsScale"
         :display="display"
         :style="{
           top: getButtonY(row, index) + 'px',
@@ -66,6 +67,8 @@ export default class AccordionViewerRow extends Vue {
   @Prop({ default: false }) mirrorView!: boolean;
 
   @Prop({ default: false }) showEditControls!: boolean;
+
+  @Prop({ default: false }) showHighlightsAsScale!: boolean;
 
   @Prop({ default: 'both' }) display!: string;
 

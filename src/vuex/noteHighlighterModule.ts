@@ -12,6 +12,8 @@ const VuexModule = createModule({
 export class NoteHighlighterModule extends VuexModule {
   showHighlights: boolean = false;
 
+  showHighlightsAsScale: boolean = true;
+
   highlightedScaleName: string = 'major';
 
   highlightedScaleKey: string = 'C';
