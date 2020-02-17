@@ -1,7 +1,7 @@
 <template>
   <div class="accordion-button-holder">
     <div
-      :class="['accordion-button', { editable, hasNote }, `editing-${editing}`]"
+      :class="['accordion-button', { editable }, `editing-${editing}`]"
       :style="{
         height: buttonSize + 'px',
         width: buttonSize + 'px',
@@ -11,23 +11,37 @@
         'border-width': borderSize + 'px',
         'font-size': fontSize + 'px',
       }">
-      <div :class="['note-texts', `show-${displayedCalc}`]">
-        <div
-          :class="['note-text opening', {
-            highlighted: !!openingNoteHighlighted,
-          }]"
-          :style="openingNoteHighlighted && getHighlightStyle(openingNoteHighlightedIndex, true)"
-          @click="onButtonClick($event, 'opening')">
-          {{ openingNote }}
-        </div>
-        <div
-          :class="['note-text closing', {
-            highlighted: !!closingNoteHighlighted,
-          }]"
-          :style="closingNoteHighlighted && getHighlightStyle(closingNoteHighlightedIndex, false)"
-          @click="onButtonClick($event, 'closing')">
-          {{ closingNote }}
-        </div>
+      <div :class="['note-texts', `show-${displayedNote}`]">
+        <NoteChooserMenu
+          :note="button.opening"
+          @change="onNoteChosen($event, true)">
+          <template v-slot:activator="{ on }">
+            <div
+              :class="['note-text opening', {
+                chord: button.opening.isChord,
+                highlighted: !!openingNoteHighlighted,
+              }]"
+              :style="openingNoteHighlighted && getHighlightStyle(openingNoteHighlightedIndex, true)"
+              v-on="on">
+              {{ openingNote }}
+            </div>
+          </template>
+        </NoteChooserMenu>
+        <NoteChooserMenu
+          :note="button.closing"
+          @change="onNoteChosen($event, false)">
+          <template v-slot:activator="{ on }">
+            <div
+              :class="['note-text closing', {
+                chord: button.closing.isChord,
+                highlighted: !!closingNoteHighlighted,
+              }]"
+              :style="closingNoteHighlighted && getHighlightStyle(closingNoteHighlightedIndex, false)"
+              v-on="on">
+              {{ closingNote }}
+            </div>
+          </template>
+        </NoteChooserMenu>
       </div>
     </div>
     <OptionsMenu
@@ -60,9 +74,6 @@
         </v-btn>
       </template>
     </OptionsMenu>
-    <NoteChooserMenu
-      ref="noteChooserMenu"
-      @change="onNoteChosen" />
   </div>
 </template>
 <script lang="ts">
@@ -72,7 +83,7 @@ import { Tonal } from '@tonaljs/modules';
 import Color from 'color';
 import { Component, Prop } from 'vue-property-decorator';
 import { toHumanNote } from '@/helpers/noteHelpers';
-import { ButtonDefinition } from './AccordionDef';
+import { ButtonDefinition, NoteDefinition } from './AccordionDef';
 import NoteChooserMenu from './editing/NoteChooserMenu.vue';
 import OptionsMenu from './editing/OptionsMenu.vue';
 
@@ -106,9 +117,15 @@ export default class AccordionButton extends Vue {
     noteChooserMenu: NoteChooserMenu;
   }
 
-  get displayedCalc() {
-    if (!this.editable && this.button.closing === this.button.opening) {
-      return 'opening';
+  get displayedNote() {
+    if (this.editable) {
+      return this.display;
+    }
+    if (this.button.closing.note === this.button.opening.note) {
+      if (this.openingNoteHighlighted && this.closingNoteHighlighted) {
+        return this.display;
+      }
+      return this.closingNoteHighlighted ? 'closing' : 'opening';
     }
 
     return this.display;
@@ -131,25 +148,10 @@ export default class AccordionButton extends Vue {
     this.$emit(actionEvent);
   }
 
-  onButtonClick(
-    event: MouseEvent,
-    row: 'opening' | 'closing',
-  ) {
-    if (!this.editable) { return; }
-    this.editing = row;
-    this.$refs.noteChooserMenu.show(
-      event.clientX,
-      event.clientY,
-      this.button[row],
-    );
-  }
-
-  onNoteChosen(_note: any) {
-    this.$refs.noteChooserMenu.hide();
+  onNoteChosen(_note: NoteDefinition, opening = true) {
     const button = _.cloneDeep(this.button);
-    button[this.editing || 'opening'] = _note;
+    button[opening ? 'opening' : 'closing'] = _note;
     this.$emit('note-change', button);
-    this.editing = null;
   }
 
   get buttonSize() {
@@ -164,13 +166,9 @@ export default class AccordionButton extends Vue {
     return Math.ceil(this.buttonSize / 3.5);
   }
 
-  get hasNote() {
-    return this.button.closing !== '' && this.button.opening !== '';
-  }
-
   get openingNoteHighlightedIndex() {
     return !this.editable
-      ? this.highlights.findIndex((n) => Tonal.note(this.button.opening).chroma === Tonal.note(n).chroma)
+      ? this.highlights.findIndex((n) => Tonal.note(this.button.opening.note).chroma === Tonal.note(n).chroma)
       : -1;
   }
 
@@ -180,7 +178,7 @@ export default class AccordionButton extends Vue {
 
   get closingNoteHighlightedIndex() {
     return !this.editable
-      ? this.highlights.findIndex((n) => Tonal.note(this.button.closing).chroma === Tonal.note(n).chroma)
+      ? this.highlights.findIndex((n) => Tonal.note(this.button.closing.note).chroma === Tonal.note(n).chroma)
       : -1;
   }
 
@@ -196,8 +194,8 @@ export default class AccordionButton extends Vue {
     return this.toHumanNote(this.openingNoteHighlighted || this.button.opening);
   }
 
-  toHumanNote(_note: number | string) {
-    return toHumanNote(_note, this.$vxm.settings.useRomanceNotes);
+  toHumanNote(_note: number | string | NoteDefinition) {
+    return toHumanNote(_note, { useRomanceNotes: this.$vxm.settings.useRomanceNotes });
   }
 }
 </script>
@@ -234,8 +232,7 @@ export default class AccordionButton extends Vue {
 
     .note-text:hover {
       font-weight: bold;
-      outline: blue;
-      // background: rgb(174, 255, 221);
+      background: rgb(245, 245, 245);
     }
   }
 }
@@ -253,6 +250,10 @@ export default class AccordionButton extends Vue {
     left: 0;
     right: 0;
     bottom: 0;
+
+    &.chord {
+      font-weight: bold;
+    }
 
     &.highlighted {
       background: #ff5252;

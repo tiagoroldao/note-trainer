@@ -30,7 +30,7 @@ import {
 } from 'vue-property-decorator';
 
 @Component
-export default class NoteChooserMenu extends Vue {
+export default class ButtonOptionsMenu extends Vue {
   @Prop({ required: true }) items!: {name: string, title: string}[];
 
   showingMenu = false;

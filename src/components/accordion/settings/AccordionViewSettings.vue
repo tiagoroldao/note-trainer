@@ -44,8 +44,3 @@ import SettingsSection from '@/components/SettingsSection.vue';
 export default class AccordionViewSettings extends Vue {
 }
 </script>
-<style lang="scss" scoped>
-.inline-block {
-  display: inline-block;
-}
-</style>

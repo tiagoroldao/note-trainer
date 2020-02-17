@@ -194,15 +194,11 @@ export default class AccordionLayoutSettings extends Vue {
   }
 
   saveLayout() {
-    this.$vxm.settings.accordion.saveLayout();
+    this.$vxm.settings.accordion.saveLayout(this.$vxm.settings.accordion.accordionLayout);
   }
 }
 </script>
 <style lang="scss" scoped>
-.inline-block {
-  display: inline-block;
-}
-
 .custom-marker {
   font-size: 0.8em;
   vertical-align: middle;

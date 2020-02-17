@@ -1,7 +1,11 @@
-export interface ButtonDefinition {
+export interface NoteDefinition {
   isChord?: boolean;
-  opening: string;
-  closing: string;
+  note: string;
+}
+
+export interface ButtonDefinition {
+  opening: NoteDefinition;
+  closing: NoteDefinition;
 }
 
 export interface RowDefinition {

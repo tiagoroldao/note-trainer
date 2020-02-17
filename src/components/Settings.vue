@@ -185,7 +185,7 @@ export default class Settings extends Vue {
   }
 
   toHumanNote(_note: number | string) {
-    return toHumanNote(_note, this.$vxm.settings.useRomanceNotes, false);
+    return toHumanNote(_note, { useRomanceNotes: this.$vxm.settings.useRomanceNotes, hideOctave: false });
   }
 
   public toggleStream() {

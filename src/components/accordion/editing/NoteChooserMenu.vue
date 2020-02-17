@@ -7,11 +7,21 @@
     :position-y="y"
     :close-on-content-click="false"
     style="max-width: 600px">
+    <template v-slot:activator="{ on }">
+      <slot
+        name="activator"
+        :on="on" />
+    </template>
     <v-card>
       <v-card-text class="pa-2">
+        <v-checkbox
+          :input-value="note.isChord"
+          class="inline-block"
+          label="Is a chord?"
+          @change="onChosenChord" />
         <v-autocomplete
           ref="noteChoice"
-          :value="value"
+          :value="note.note"
           hide-details
           :hide-selected="false"
           clearable
@@ -28,11 +38,12 @@
 
 <script lang="ts">
 import {
-  Component, Vue,
+  Component, Vue, Prop,
 } from 'vue-property-decorator';
 import _ from 'lodash';
 import { Midi } from '@tonaljs/modules';
 import { toHumanNote } from '@/helpers/noteHelpers';
+import { NoteDefinition } from '../AccordionDef';
 
 @Component
 export default class NoteChooserMenu extends Vue {
@@ -40,12 +51,15 @@ export default class NoteChooserMenu extends Vue {
     noteChoice: any;
   }
 
-  private notes = _.range(128).map((n) => ({
-    value: Midi.midiToNoteName(n, { sharps: true }),
-    text: this.toHumanNote(n, false),
-  }));
+  private notes = _.range(128)
+    .flatMap((n) => [Midi.midiToNoteName(n, { sharps: true }), Midi.midiToNoteName(n)])
+    .filter((value, index, self) => self.indexOf(value) === index)
+    .map((n) => ({
+      value: n,
+      text: this.toHumanNote(n, false),
+    }));
 
-  private value: string = '';
+  @Prop({ required: true }) note!: NoteDefinition;
 
   showingMenu = false;
 
@@ -53,11 +67,13 @@ export default class NoteChooserMenu extends Vue {
 
   y = 0;
 
-  show(x = 0, y = 0, value?: string) {
+  show(x = 0, y = 0) {
     this.x = x;
     this.y = y;
-    this.value = value || '';
     this.showingMenu = true;
+    setTimeout(() => {
+      this.$forceUpdate();
+    });
   }
 
   hide() {
@@ -65,13 +81,28 @@ export default class NoteChooserMenu extends Vue {
   }
 
   onChosenNote($event: any) {
-    this.$emit('change', $event || '');
-    this.showingMenu = false;
-    this.value = '';
+    this.setNote({
+      note: $event,
+      isChord: this.note.isChord,
+    });
+  }
+
+  onChosenChord($event: any) {
+    this.setNote({
+      note: this.note.note,
+      isChord: $event,
+    });
+  }
+
+  setNote(note: NoteDefinition) {
+    this.$emit('change', note);
   }
 
   toHumanNote(_note: number | string, hideOctave = true) {
-    return toHumanNote(_note, this.$vxm.settings.useRomanceNotes, hideOctave);
+    return toHumanNote(
+      _note,
+      { useRomanceNotes: this.$vxm.settings.useRomanceNotes, hideOctave },
+    );
   }
 }
 </script>

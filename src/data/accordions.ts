@@ -3,153 +3,153 @@ import { AccordionDefinition } from '@/components/accordion/AccordionDef';
 export const accordions: AccordionDefinition[] = [
   {
     id: '1',
-    name: 'Milleret Pignol + Darwin',
+    name: 'G/C Pignol + Darwin',
     rightHand: [
       {
         buttons: [
           {
-            opening: 'E3',
-            closing: 'C#3',
+            opening: { note: 'E3' },
+            closing: { note: 'C#3' },
           },
           {
-            opening: 'F#3',
-            closing: 'D3',
+            opening: { note: 'F#3' },
+            closing: { note: 'D3' },
           },
           {
-            opening: 'A3',
-            closing: 'G3',
+            opening: { note: 'A3' },
+            closing: { note: 'G3' },
           },
           {
-            opening: 'C4',
-            closing: 'B3',
+            opening: { note: 'C4' },
+            closing: { note: 'B3' },
           },
           {
-            opening: 'E4',
-            closing: 'D4',
+            opening: { note: 'E4' },
+            closing: { note: 'D4' },
           },
           {
-            opening: 'F#4',
-            closing: 'G4',
+            opening: { note: 'F#4' },
+            closing: { note: 'G4' },
           },
           {
-            opening: 'A4',
-            closing: 'B4',
+            opening: { note: 'A4' },
+            closing: { note: 'B4' },
           },
           {
-            opening: 'C5',
-            closing: 'D5',
+            opening: { note: 'C5' },
+            closing: { note: 'D5' },
           },
           {
-            opening: 'E5',
-            closing: 'G5',
+            opening: { note: 'E5' },
+            closing: { note: 'G5' },
           },
           {
-            opening: 'F#4',
-            closing: 'B5',
+            opening: { note: 'F#4' },
+            closing: { note: 'B5' },
           },
           {
-            opening: 'A5',
-            closing: 'D6',
-          },
-        ],
-      },
-      {
-        buttons: [
-          {
-            opening: 'G3',
-            closing: 'C3',
-          },
-          {
-            opening: 'G#3',
-            closing: 'E3',
-          },
-          {
-            opening: 'B3',
-            closing: 'A3',
-          },
-          {
-            opening: 'D3',
-            closing: 'C4',
-          },
-          {
-            opening: 'F4',
-            closing: 'E4',
-          },
-          {
-            opening: 'G#4',
-            closing: 'A4',
-          },
-          {
-            opening: 'B4',
-            closing: 'C5',
-          },
-          {
-            opening: 'D4',
-            closing: 'E5',
-          },
-          {
-            opening: 'F5',
-            closing: 'A5',
-          },
-          {
-            opening: 'G#5',
-            closing: 'C6',
-          },
-          {
-            opening: 'B5',
-            closing: 'E6',
-          },
-          {
-            opening: 'D5',
-            closing: 'G6',
+            opening: { note: 'A5' },
+            closing: { note: 'D6' },
           },
         ],
       },
       {
         buttons: [
           {
-            opening: 'A#3',
-            closing: 'F3',
+            opening: { note: 'G3' },
+            closing: { note: 'C3' },
           },
           {
-            opening: 'C#3',
-            closing: 'F#3',
+            opening: { note: 'G#3' },
+            closing: { note: 'E3' },
           },
           {
-            opening: 'D#3',
-            closing: 'D#3',
+            opening: { note: 'B3' },
+            closing: { note: 'A3' },
           },
           {
-            opening: 'G3',
-            closing: 'F4',
+            opening: { note: 'D3' },
+            closing: { note: 'C4' },
           },
           {
-            opening: 'A#4',
-            closing: 'F#4',
+            opening: { note: 'F4' },
+            closing: { note: 'E4' },
           },
           {
-            opening: 'C#4',
-            closing: 'D#4',
+            opening: { note: 'G#4' },
+            closing: { note: 'A4' },
           },
           {
-            opening: 'D#4',
-            closing: 'F5',
+            opening: { note: 'B4' },
+            closing: { note: 'C5' },
           },
           {
-            opening: 'G4',
-            closing: 'F#5',
+            opening: { note: 'D4' },
+            closing: { note: 'E5' },
           },
           {
-            opening: 'A#5',
-            closing: 'D#5',
+            opening: { note: 'F5' },
+            closing: { note: 'A5' },
           },
           {
-            opening: 'C#5',
-            closing: 'F6',
+            opening: { note: 'G#5' },
+            closing: { note: 'C6' },
           },
           {
-            opening: 'C6',
-            closing: 'F#6',
+            opening: { note: 'B5' },
+            closing: { note: 'E6' },
+          },
+          {
+            opening: { note: 'D5' },
+            closing: { note: 'G6' },
+          },
+        ],
+      },
+      {
+        buttons: [
+          {
+            opening: { note: 'Bb3' },
+            closing: { note: 'F3' },
+          },
+          {
+            opening: { note: 'C#3' },
+            closing: { note: 'F#3' },
+          },
+          {
+            opening: { note: 'Eb3' },
+            closing: { note: 'Eb3' },
+          },
+          {
+            opening: { note: 'G3' },
+            closing: { note: 'F4' },
+          },
+          {
+            opening: { note: 'Bb4' },
+            closing: { note: 'F#4' },
+          },
+          {
+            opening: { note: 'C#4' },
+            closing: { note: 'Eb4' },
+          },
+          {
+            opening: { note: 'Eb4' },
+            closing: { note: 'F5' },
+          },
+          {
+            opening: { note: 'G4' },
+            closing: { note: 'F#5' },
+          },
+          {
+            opening: { note: 'Bb5' },
+            closing: { note: 'Eb5' },
+          },
+          {
+            opening: { note: 'C#5' },
+            closing: { note: 'F6' },
+          },
+          {
+            opening: { note: 'C6' },
+            closing: { note: 'F#6' },
           },
         ],
       },
@@ -159,28 +159,64 @@ export const accordions: AccordionDefinition[] = [
         offset: 1.5,
         buttons: [
           {
-            opening: 'G#3',
-            closing: 'G#3',
+            opening: {
+              note: 'G#3',
+              isChord: true,
+            },
+            closing: {
+              note: 'G#3',
+              isChord: true,
+            },
           },
           {
-            opening: 'F#3',
-            closing: 'F#3',
+            opening: {
+              note: 'F#3',
+              isChord: true,
+            },
+            closing: {
+              note: 'F#3',
+              isChord: true,
+            },
           },
           {
-            opening: 'E3',
-            closing: 'E3',
+            opening: {
+              note: 'E3',
+              isChord: true,
+            },
+            closing: {
+              note: 'E3',
+              isChord: true,
+            },
           },
           {
-            opening: 'D3',
-            closing: 'D3',
+            opening: {
+              note: 'D3',
+              isChord: true,
+            },
+            closing: {
+              note: 'D3',
+              isChord: true,
+            },
           },
           {
-            opening: 'C3',
-            closing: 'C3',
+            opening: {
+              note: 'C3',
+              isChord: true,
+            },
+            closing: {
+              note: 'C3',
+              isChord: true,
+            },
           },
           {
-            opening: 'A#3',
-            closing: 'A#3',
+            opening: {
+              note: 'Bb3',
+              isChord: true,
+            },
+            closing: {
+              note: 'Bb3',
+              isChord: true,
+            },
           },
         ],
       },
@@ -188,28 +224,64 @@ export const accordions: AccordionDefinition[] = [
         offset: 0.5,
         buttons: [
           {
-            opening: 'C#3',
-            closing: 'C#3',
+            opening: {
+              note: 'C#3',
+              isChord: true,
+            },
+            closing: {
+              note: 'C#3',
+              isChord: true,
+            },
           },
           {
-            opening: 'B3',
-            closing: 'B3',
+            opening: {
+              note: 'B3',
+              isChord: true,
+            },
+            closing: {
+              note: 'B3',
+              isChord: true,
+            },
           },
           {
-            opening: 'A3',
-            closing: 'A3',
+            opening: {
+              note: 'A3',
+              isChord: true,
+            },
+            closing: {
+              note: 'A3',
+              isChord: true,
+            },
           },
           {
-            opening: 'G3',
-            closing: 'G3',
+            opening: {
+              note: 'G3',
+              isChord: true,
+            },
+            closing: {
+              note: 'G3',
+              isChord: true,
+            },
           },
           {
-            opening: 'F3',
-            closing: 'F3',
+            opening: {
+              note: 'F3',
+              isChord: true,
+            },
+            closing: {
+              note: 'F3',
+              isChord: true,
+            },
           },
           {
-            opening: 'D#3',
-            closing: 'D#3',
+            opening: {
+              note: 'Eb3',
+              isChord: true,
+            },
+            closing: {
+              note: 'Eb3',
+              isChord: true,
+            },
           },
         ],
       },
@@ -217,28 +289,52 @@ export const accordions: AccordionDefinition[] = [
         offset: -0.5,
         buttons: [
           {
-            opening: 'G#2',
-            closing: 'G#2',
+            opening: {
+              note: 'G#2',
+            },
+            closing: {
+              note: 'G#2',
+            },
           },
           {
-            opening: 'F#2',
-            closing: 'F#2',
+            opening: {
+              note: 'F#2',
+            },
+            closing: {
+              note: 'F#2',
+            },
           },
           {
-            opening: 'E2',
-            closing: 'E2',
+            opening: {
+              note: 'E2',
+            },
+            closing: {
+              note: 'E2',
+            },
           },
           {
-            opening: 'D2',
-            closing: 'D2',
+            opening: {
+              note: 'D2',
+            },
+            closing: {
+              note: 'D2',
+            },
           },
           {
-            opening: 'C2',
-            closing: 'C2',
+            opening: {
+              note: 'C2',
+            },
+            closing: {
+              note: 'C2',
+            },
           },
           {
-            opening: 'A#2',
-            closing: 'A#2',
+            opening: {
+              note: 'Bb2',
+            },
+            closing: {
+              note: 'Bb2',
+            },
           },
         ],
       },
@@ -246,28 +342,52 @@ export const accordions: AccordionDefinition[] = [
         offset: -1.5,
         buttons: [
           {
-            opening: 'C#2',
-            closing: 'C#2',
+            opening: {
+              note: 'C#2',
+            },
+            closing: {
+              note: 'C#2',
+            },
           },
           {
-            opening: 'B2',
-            closing: 'B2',
+            opening: {
+              note: 'B2',
+            },
+            closing: {
+              note: 'B2',
+            },
           },
           {
-            opening: 'A2',
-            closing: 'A2',
+            opening: {
+              note: 'A2',
+            },
+            closing: {
+              note: 'A2',
+            },
           },
           {
-            opening: 'G2',
-            closing: 'G2',
+            opening: {
+              note: 'G2',
+            },
+            closing: {
+              note: 'G2',
+            },
           },
           {
-            opening: 'F2',
-            closing: 'F2',
+            opening: {
+              note: 'F2',
+            },
+            closing: {
+              note: 'F2',
+            },
           },
           {
-            opening: 'D#2',
-            closing: 'D#2',
+            opening: {
+              note: 'Eb2',
+            },
+            closing: {
+              note: 'Eb2',
+            },
           },
         ],
       },
@@ -275,153 +395,281 @@ export const accordions: AccordionDefinition[] = [
   },
   {
     id: '2',
-    name: 'Milleret Pignol 12 Base',
+    name: 'G/C Pignol 12 Base',
     rightHand: [
       {
         buttons: [
           {
-            opening: 'E3',
-            closing: 'C#3',
+            opening: {
+              note: 'Bb3',
+            },
+            closing: {
+              note: 'C#3',
+            },
           },
           {
-            opening: 'F#3',
-            closing: 'D3',
+            opening: {
+              note: 'F#3',
+            },
+            closing: {
+              note: 'D3',
+            },
           },
           {
-            opening: 'A3',
-            closing: 'G3',
+            opening: {
+              note: 'A3',
+            },
+            closing: {
+              note: 'G3',
+            },
           },
           {
-            opening: 'C4',
-            closing: 'B3',
+            opening: {
+              note: 'C4',
+            },
+            closing: {
+              note: 'B3',
+            },
           },
           {
-            opening: 'E4',
-            closing: 'D4',
+            opening: {
+              note: 'E4',
+            },
+            closing: {
+              note: 'D4',
+            },
           },
           {
-            opening: 'F#4',
-            closing: 'G4',
+            opening: {
+              note: 'F#4',
+            },
+            closing: {
+              note: 'G4',
+            },
           },
           {
-            opening: 'A4',
-            closing: 'B4',
+            opening: {
+              note: 'A4',
+            },
+            closing: {
+              note: 'B4',
+            },
           },
           {
-            opening: 'C5',
-            closing: 'D5',
+            opening: {
+              note: 'C5',
+            },
+            closing: {
+              note: 'D5',
+            },
           },
           {
-            opening: 'E5',
-            closing: 'G5',
+            opening: {
+              note: 'E5',
+            },
+            closing: {
+              note: 'G5',
+            },
           },
           {
-            opening: 'F#4',
-            closing: 'B5',
+            opening: {
+              note: 'F#4',
+            },
+            closing: {
+              note: 'B5',
+            },
           },
           {
-            opening: 'A5',
-            closing: 'D6',
+            opening: {
+              note: 'A5',
+            },
+            closing: {
+              note: 'D6',
+            },
+          },
+          {
+            opening: {
+              note: 'D5',
+            },
+            closing: {
+              note: 'G6',
+            },
           },
         ],
       },
       {
         buttons: [
           {
-            opening: 'G3',
-            closing: 'C3',
+            opening: {
+              note: 'G#3',
+            },
+            closing: {
+              note: 'E3',
+            },
           },
           {
-            opening: 'G#3',
-            closing: 'E3',
+            opening: {
+              note: 'B3',
+            },
+            closing: {
+              note: 'A3',
+            },
           },
           {
-            opening: 'B3',
-            closing: 'A3',
+            opening: {
+              note: 'D3',
+            },
+            closing: {
+              note: 'C4',
+            },
           },
           {
-            opening: 'D3',
-            closing: 'C4',
+            opening: {
+              note: 'F4',
+            },
+            closing: {
+              note: 'E4',
+            },
           },
           {
-            opening: 'F4',
-            closing: 'E4',
+            opening: {
+              note: 'G#4',
+            },
+            closing: {
+              note: 'A4',
+            },
           },
           {
-            opening: 'G#4',
-            closing: 'A4',
+            opening: {
+              note: 'B4',
+            },
+            closing: {
+              note: 'C5',
+            },
           },
           {
-            opening: 'B4',
-            closing: 'C5',
+            opening: {
+              note: 'D4',
+            },
+            closing: {
+              note: 'E5',
+            },
           },
           {
-            opening: 'D4',
-            closing: 'E5',
+            opening: {
+              note: 'F5',
+            },
+            closing: {
+              note: 'A5',
+            },
           },
           {
-            opening: 'F5',
-            closing: 'A5',
+            opening: {
+              note: 'G#5',
+            },
+            closing: {
+              note: 'C6',
+            },
           },
           {
-            opening: 'G#5',
-            closing: 'C6',
+            opening: {
+              note: 'B5',
+            },
+            closing: {
+              note: 'E6',
+            },
           },
           {
-            opening: 'B5',
-            closing: 'E6',
-          },
-          {
-            opening: 'D5',
-            closing: 'G6',
+            opening: {
+              note: 'D5',
+            },
+            closing: {
+              note: 'A6',
+            },
           },
         ],
       },
       {
         buttons: [
           {
-            opening: 'A#3',
-            closing: 'F3',
+            opening: {
+              note: 'C#3',
+            },
+            closing: {
+              note: 'G#3',
+            },
           },
           {
-            opening: 'C#3',
-            closing: 'F#3',
+            opening: {
+              note: 'Eb3',
+            },
+            closing: {
+              note: 'Eb3',
+            },
           },
           {
-            opening: 'D#3',
-            closing: 'D#3',
+            opening: {
+              note: 'G3',
+            },
+            closing: {
+              note: 'F4',
+            },
           },
           {
-            opening: 'G3',
-            closing: 'F4',
+            opening: {
+              note: 'Bb4',
+            },
+            closing: {
+              note: 'F#4',
+            },
           },
           {
-            opening: 'A#4',
-            closing: 'F#4',
+            opening: {
+              note: 'C#4',
+            },
+            closing: {
+              note: 'Eb4',
+            },
           },
           {
-            opening: 'C#4',
-            closing: 'D#4',
+            opening: {
+              note: 'Eb4',
+            },
+            closing: {
+              note: 'F5',
+            },
           },
           {
-            opening: 'D#4',
-            closing: 'F5',
+            opening: {
+              note: 'G4',
+            },
+            closing: {
+              note: 'F#5',
+            },
           },
           {
-            opening: 'G4',
-            closing: 'F#5',
+            opening: {
+              note: 'Bb5',
+            },
+            closing: {
+              note: 'Eb5',
+            },
           },
           {
-            opening: 'A#5',
-            closing: 'D#5',
+            opening: {
+              note: 'C#5',
+            },
+            closing: {
+              note: 'F6',
+            },
           },
           {
-            opening: 'C#5',
-            closing: 'F6',
-          },
-          {
-            opening: 'C6',
-            closing: 'F#6',
+            opening: {
+              note: 'Eb6',
+            },
+            closing: {
+              note: 'A6',
+            },
           },
         ],
       },
@@ -431,28 +679,58 @@ export const accordions: AccordionDefinition[] = [
         offset: 0,
         buttons: [
           {
-            opening: 'B3',
-            closing: 'G#3',
+            opening: {
+              note: 'B3',
+              isChord: true,
+            },
+            closing: {
+              note: 'G#3',
+              isChord: true,
+            },
           },
           {
-            opening: 'B2',
-            closing: 'G#2',
+            opening: {
+              note: 'B2',
+            },
+            closing: {
+              note: 'G#2',
+            },
           },
           {
-            opening: 'D3',
-            closing: 'G3',
+            opening: {
+              note: 'D3',
+              isChord: true,
+            },
+            closing: {
+              note: 'G3',
+              isChord: true,
+            },
           },
           {
-            opening: 'D2',
-            closing: 'G2',
+            opening: {
+              note: 'D2',
+            },
+            closing: {
+              note: 'G2',
+            },
           },
           {
-            opening: 'G3',
-            closing: 'C3',
+            opening: {
+              note: 'G3',
+              isChord: true,
+            },
+            closing: {
+              note: 'C3',
+              isChord: true,
+            },
           },
           {
-            opening: 'G2',
-            closing: 'C2',
+            opening: {
+              note: 'G2',
+            },
+            closing: {
+              note: 'C2',
+            },
           },
         ],
       },
@@ -460,28 +738,58 @@ export const accordions: AccordionDefinition[] = [
         offset: 0,
         buttons: [
           {
-            opening: 'A#3',
-            closing: 'D#3',
+            opening: {
+              note: 'Bb3',
+              isChord: true,
+            },
+            closing: {
+              note: 'Eb3',
+              isChord: true,
+            },
           },
           {
-            opening: 'A#2',
-            closing: 'D#2',
+            opening: {
+              note: 'Bb2',
+            },
+            closing: {
+              note: 'Eb2',
+            },
           },
           {
-            opening: 'A3',
-            closing: 'E3',
+            opening: {
+              note: 'A3',
+              isChord: true,
+            },
+            closing: {
+              note: 'E3',
+              isChord: true,
+            },
           },
           {
-            opening: 'A2',
-            closing: 'E2',
+            opening: {
+              note: 'A2',
+            },
+            closing: {
+              note: 'E2',
+            },
           },
           {
-            opening: 'F3',
-            closing: 'F3',
+            opening: {
+              note: 'F3',
+              isChord: true,
+            },
+            closing: {
+              note: 'F3',
+              isChord: true,
+            },
           },
           {
-            opening: 'F2',
-            closing: 'F2',
+            opening: {
+              note: 'F2',
+            },
+            closing: {
+              note: 'F2',
+            },
           },
         ],
       },
@@ -489,153 +797,281 @@ export const accordions: AccordionDefinition[] = [
   },
   {
     id: '3',
-    name: 'Milleret Pignol 18 Base',
+    name: 'G/C Pignol 18 Base',
     rightHand: [
       {
         buttons: [
           {
-            opening: 'E3',
-            closing: 'C#3',
+            opening: {
+              note: 'Bb3',
+            },
+            closing: {
+              note: 'C#3',
+            },
           },
           {
-            opening: 'F#3',
-            closing: 'D3',
+            opening: {
+              note: 'F#3',
+            },
+            closing: {
+              note: 'D3',
+            },
           },
           {
-            opening: 'A3',
-            closing: 'G3',
+            opening: {
+              note: 'A3',
+            },
+            closing: {
+              note: 'G3',
+            },
           },
           {
-            opening: 'C4',
-            closing: 'B3',
+            opening: {
+              note: 'C4',
+            },
+            closing: {
+              note: 'B3',
+            },
           },
           {
-            opening: 'E4',
-            closing: 'D4',
+            opening: {
+              note: 'E4',
+            },
+            closing: {
+              note: 'D4',
+            },
           },
           {
-            opening: 'F#4',
-            closing: 'G4',
+            opening: {
+              note: 'F#4',
+            },
+            closing: {
+              note: 'G4',
+            },
           },
           {
-            opening: 'A4',
-            closing: 'B4',
+            opening: {
+              note: 'A4',
+            },
+            closing: {
+              note: 'B4',
+            },
           },
           {
-            opening: 'C5',
-            closing: 'D5',
+            opening: {
+              note: 'C5',
+            },
+            closing: {
+              note: 'D5',
+            },
           },
           {
-            opening: 'E5',
-            closing: 'G5',
+            opening: {
+              note: 'E5',
+            },
+            closing: {
+              note: 'G5',
+            },
           },
           {
-            opening: 'F#4',
-            closing: 'B5',
+            opening: {
+              note: 'F#4',
+            },
+            closing: {
+              note: 'B5',
+            },
           },
           {
-            opening: 'A5',
-            closing: 'D6',
+            opening: {
+              note: 'A5',
+            },
+            closing: {
+              note: 'D6',
+            },
+          },
+          {
+            opening: {
+              note: 'D5',
+            },
+            closing: {
+              note: 'G6',
+            },
           },
         ],
       },
       {
         buttons: [
           {
-            opening: 'G3',
-            closing: 'C3',
+            opening: {
+              note: 'G#3',
+            },
+            closing: {
+              note: 'E3',
+            },
           },
           {
-            opening: 'G#3',
-            closing: 'E3',
+            opening: {
+              note: 'B3',
+            },
+            closing: {
+              note: 'A3',
+            },
           },
           {
-            opening: 'B3',
-            closing: 'A3',
+            opening: {
+              note: 'D3',
+            },
+            closing: {
+              note: 'C4',
+            },
           },
           {
-            opening: 'D3',
-            closing: 'C4',
+            opening: {
+              note: 'F4',
+            },
+            closing: {
+              note: 'E4',
+            },
           },
           {
-            opening: 'F4',
-            closing: 'E4',
+            opening: {
+              note: 'G#4',
+            },
+            closing: {
+              note: 'A4',
+            },
           },
           {
-            opening: 'G#4',
-            closing: 'A4',
+            opening: {
+              note: 'B4',
+            },
+            closing: {
+              note: 'C5',
+            },
           },
           {
-            opening: 'B4',
-            closing: 'C5',
+            opening: {
+              note: 'D4',
+            },
+            closing: {
+              note: 'E5',
+            },
           },
           {
-            opening: 'D4',
-            closing: 'E5',
+            opening: {
+              note: 'F5',
+            },
+            closing: {
+              note: 'A5',
+            },
           },
           {
-            opening: 'F5',
-            closing: 'A5',
+            opening: {
+              note: 'G#5',
+            },
+            closing: {
+              note: 'C6',
+            },
           },
           {
-            opening: 'G#5',
-            closing: 'C6',
+            opening: {
+              note: 'B5',
+            },
+            closing: {
+              note: 'E6',
+            },
           },
           {
-            opening: 'B5',
-            closing: 'E6',
-          },
-          {
-            opening: 'D5',
-            closing: 'G6',
+            opening: {
+              note: 'D5',
+            },
+            closing: {
+              note: 'A6',
+            },
           },
         ],
       },
       {
         buttons: [
           {
-            opening: 'A#3',
-            closing: 'F3',
+            opening: {
+              note: 'C#3',
+            },
+            closing: {
+              note: 'G#3',
+            },
           },
           {
-            opening: 'C#3',
-            closing: 'F#3',
+            opening: {
+              note: 'Eb3',
+            },
+            closing: {
+              note: 'Eb3',
+            },
           },
           {
-            opening: 'D#3',
-            closing: 'D#3',
+            opening: {
+              note: 'G3',
+            },
+            closing: {
+              note: 'F4',
+            },
           },
           {
-            opening: 'G3',
-            closing: 'F4',
+            opening: {
+              note: 'Bb4',
+            },
+            closing: {
+              note: 'F#4',
+            },
           },
           {
-            opening: 'A#4',
-            closing: 'F#4',
+            opening: {
+              note: 'C#4',
+            },
+            closing: {
+              note: 'Eb4',
+            },
           },
           {
-            opening: 'C#4',
-            closing: 'D#4',
+            opening: {
+              note: 'Eb4',
+            },
+            closing: {
+              note: 'F5',
+            },
           },
           {
-            opening: 'D#4',
-            closing: 'F5',
+            opening: {
+              note: 'G4',
+            },
+            closing: {
+              note: 'F#5',
+            },
           },
           {
-            opening: 'G4',
-            closing: 'F#5',
+            opening: {
+              note: 'Bb5',
+            },
+            closing: {
+              note: 'Eb5',
+            },
           },
           {
-            opening: 'A#5',
-            closing: 'D#5',
+            opening: {
+              note: 'C#5',
+            },
+            closing: {
+              note: 'F6',
+            },
           },
           {
-            opening: 'C#5',
-            closing: 'F6',
-          },
-          {
-            opening: 'C6',
-            closing: 'F#6',
+            opening: {
+              note: 'Eb6',
+            },
+            closing: {
+              note: 'A6',
+            },
           },
         ],
       },
@@ -645,28 +1081,58 @@ export const accordions: AccordionDefinition[] = [
         offset: 0,
         buttons: [
           {
-            opening: 'D3',
-            closing: 'G3',
+            opening: {
+              note: 'D3',
+              isChord: true,
+            },
+            closing: {
+              note: 'G3',
+              isChord: true,
+            },
           },
           {
-            opening: 'D2',
-            closing: 'G2',
+            opening: {
+              note: 'D2',
+            },
+            closing: {
+              note: 'G2',
+            },
           },
           {
-            opening: 'G3',
-            closing: 'C3',
+            opening: {
+              note: 'G3',
+              isChord: true,
+            },
+            closing: {
+              note: 'C3',
+              isChord: true,
+            },
           },
           {
-            opening: 'G2',
-            closing: 'C2',
+            opening: {
+              note: 'G2',
+            },
+            closing: {
+              note: 'C2',
+            },
           },
           {
-            opening: 'A#3',
-            closing: 'D#3',
+            opening: {
+              note: 'Bb3',
+              isChord: true,
+            },
+            closing: {
+              note: 'Eb3',
+              isChord: true,
+            },
           },
           {
-            opening: 'A#2',
-            closing: 'D#2',
+            opening: {
+              note: 'Bb2',
+            },
+            closing: {
+              note: 'Eb2',
+            },
           },
         ],
       },
@@ -674,56 +1140,112 @@ export const accordions: AccordionDefinition[] = [
         offset: 0,
         buttons: [
           {
-            opening: 'A3',
-            closing: 'E3',
+            opening: {
+              note: 'A3',
+              isChord: true,
+            },
+            closing: {
+              note: 'E3',
+              isChord: true,
+            },
           },
           {
-            opening: 'A2',
-            closing: 'E2',
+            opening: {
+              note: 'A2',
+            },
+            closing: {
+              note: 'E2',
+            },
           },
           {
-            opening: 'F3',
-            closing: 'F3',
+            opening: {
+              note: 'F3',
+              isChord: true,
+            },
+            closing: {
+              note: 'F3',
+              isChord: true,
+            },
           },
           {
-            opening: 'F2',
-            closing: 'F2',
+            opening: {
+              note: 'F2',
+            },
+            closing: {
+              note: 'F2',
+            },
           },
           {
-            opening: 'B3',
-            closing: 'G#3',
+            opening: {
+              note: 'B3',
+              isChord: true,
+            },
+            closing: {
+              note: 'G#3',
+              isChord: true,
+            },
           },
           {
-            opening: 'B2',
-            closing: 'G#2',
+            opening: {
+              note: 'B2',
+            },
+            closing: {
+              note: 'G#2',
+            },
           },
         ],
       },
       {
         buttons: [
           {
-            opening: 'E2',
-            closing: 'A2',
+            opening: {
+              note: 'E2',
+            },
+            closing: {
+              note: 'A2',
+            },
           },
           {
-            opening: 'C#2',
-            closing: 'C#2',
+            opening: {
+              note: 'C#2',
+            },
+            closing: {
+              note: 'C#2',
+            },
           },
           {
-            opening: 'F#2',
-            closing: 'F#2',
+            opening: {
+              note: 'F#2',
+            },
+            closing: {
+              note: 'F#2',
+            },
           },
           {
-            opening: 'C2',
-            closing: 'D2',
+            opening: {
+              note: 'C2',
+            },
+            closing: {
+              note: 'D2',
+            },
           },
           {
-            opening: 'G#2',
-            closing: 'B2',
+            opening: {
+              note: 'G#2',
+              isChord: false,
+            },
+            closing: {
+              note: 'B2',
+              isChord: false,
+            },
           },
           {
-            opening: 'D#2',
-            closing: 'A#2',
+            opening: {
+              note: 'Eb2',
+            },
+            closing: {
+              note: 'Bb2',
+            },
           },
         ],
       },
@@ -736,92 +1258,92 @@ export const accordions: AccordionDefinition[] = [
       {
         buttons: [
           {
-            opening: 'C#4',
-            closing: 'D#4',
+            opening: { note: 'C#4' },
+            closing: { note: 'Eb4' },
           },
           {
-            opening: 'F#3',
-            closing: 'D3',
+            opening: { note: 'F#3' },
+            closing: { note: 'D3' },
           },
           {
-            opening: 'A3',
-            closing: 'G3',
+            opening: { note: 'A3' },
+            closing: { note: 'G3' },
           },
           {
-            opening: 'C4',
-            closing: 'B3',
+            opening: { note: 'C4' },
+            closing: { note: 'B3' },
           },
           {
-            opening: 'E4',
-            closing: 'D4',
+            opening: { note: 'E4' },
+            closing: { note: 'D4' },
           },
           {
-            opening: 'F#4',
-            closing: 'G4',
+            opening: { note: 'F#4' },
+            closing: { note: 'G4' },
           },
           {
-            opening: 'A4',
-            closing: 'B4',
+            opening: { note: 'A4' },
+            closing: { note: 'B4' },
           },
           {
-            opening: 'C5',
-            closing: 'D5',
+            opening: { note: 'C5' },
+            closing: { note: 'D5' },
           },
           {
-            opening: 'E5',
-            closing: 'G5',
+            opening: { note: 'E5' },
+            closing: { note: 'G5' },
           },
           {
-            opening: 'F#4',
-            closing: 'B5',
+            opening: { note: 'F#4' },
+            closing: { note: 'B5' },
           },
           {
-            opening: 'A5',
-            closing: 'D6',
+            opening: { note: 'A5' },
+            closing: { note: 'D6' },
           },
         ],
       },
       {
         buttons: [
           {
-            opening: 'A#4',
-            closing: 'G#4',
+            opening: { note: 'Bb4' },
+            closing: { note: 'G#4' },
           },
           {
-            opening: 'B3',
-            closing: 'G3',
+            opening: { note: 'B3' },
+            closing: { note: 'G3' },
           },
           {
-            opening: 'D3',
-            closing: 'C4',
+            opening: { note: 'D3' },
+            closing: { note: 'C4' },
           },
           {
-            opening: 'F4',
-            closing: 'E4',
+            opening: { note: 'F4' },
+            closing: { note: 'E4' },
           },
           {
-            opening: 'A4',
-            closing: 'G4',
+            opening: { note: 'A4' },
+            closing: { note: 'G4' },
           },
           {
-            opening: 'B4',
-            closing: 'C5',
+            opening: { note: 'B4' },
+            closing: { note: 'C5' },
           },
           {
-            opening: 'D4',
-            closing: 'E5',
+            opening: { note: 'D4' },
+            closing: { note: 'E5' },
           },
           {
-            opening: 'F5',
-            closing: 'G5',
+            opening: { note: 'F5' },
+            closing: { note: 'G5' },
           },
           {
-            opening: 'A5',
-            closing: 'C6',
+            opening: { note: 'A5' },
+            closing: { note: 'C6' },
           },
           {
-            opening: 'B5',
-            closing: 'E6',
+            opening: { note: 'B5' },
+            closing: { note: 'E6' },
           },
         ],
       },
@@ -831,20 +1353,40 @@ export const accordions: AccordionDefinition[] = [
         offset: 0,
         buttons: [
           {
-            opening: 'D3',
-            closing: 'G3',
+            opening: {
+              note: 'D3',
+              isChord: true,
+            },
+            closing: {
+              note: 'G3',
+              isChord: true,
+            },
           },
           {
-            opening: 'D2',
-            closing: 'G2',
+            opening: {
+              note: 'D2',
+            },
+            closing: {
+              note: 'G2',
+            },
           },
           {
-            opening: 'G3',
-            closing: 'C3',
+            opening: {
+              note: 'G3',
+              isChord: true,
+            },
+            closing: {
+              note: 'C3',
+              isChord: true,
+            },
           },
           {
-            opening: 'G2',
-            closing: 'C2',
+            opening: {
+              note: 'G2',
+            },
+            closing: {
+              note: 'C2',
+            },
           },
         ],
       },
@@ -852,20 +1394,40 @@ export const accordions: AccordionDefinition[] = [
         offset: 0,
         buttons: [
           {
-            opening: 'A3',
-            closing: 'E3',
+            opening: {
+              note: 'A3',
+              isChord: true,
+            },
+            closing: {
+              note: 'E3',
+              isChord: true,
+            },
           },
           {
-            opening: 'A2',
-            closing: 'E2',
+            opening: {
+              note: 'A2',
+            },
+            closing: {
+              note: 'E2',
+            },
           },
           {
-            opening: 'F3',
-            closing: 'F3',
+            opening: {
+              note: 'F3',
+              isChord: true,
+            },
+            closing: {
+              note: 'F3',
+              isChord: true,
+            },
           },
           {
-            opening: 'F2',
-            closing: 'F2',
+            opening: {
+              note: 'F2',
+            },
+            closing: {
+              note: 'F2',
+            },
           },
         ],
       },
@@ -878,104 +1440,104 @@ export const accordions: AccordionDefinition[] = [
       {
         buttons: [
           {
-            opening: 'E2',
-            closing: 'B2',
+            opening: { note: 'E2' },
+            closing: { note: 'B2' },
           },
           {
-            opening: 'F#3',
-            closing: 'D3',
+            opening: { note: 'F#3' },
+            closing: { note: 'D3' },
           },
           {
-            opening: 'A3',
-            closing: 'G3',
+            opening: { note: 'A3' },
+            closing: { note: 'G3' },
           },
           {
-            opening: 'C4',
-            closing: 'B3',
+            opening: { note: 'C4' },
+            closing: { note: 'B3' },
           },
           {
-            opening: 'E4',
-            closing: 'D4',
+            opening: { note: 'E4' },
+            closing: { note: 'D4' },
           },
           {
-            opening: 'F#4',
-            closing: 'G4',
+            opening: { note: 'F#4' },
+            closing: { note: 'G4' },
           },
           {
-            opening: 'A4',
-            closing: 'B4',
+            opening: { note: 'A4' },
+            closing: { note: 'B4' },
           },
           {
-            opening: 'C5',
-            closing: 'D5',
+            opening: { note: 'C5' },
+            closing: { note: 'D5' },
           },
           {
-            opening: 'E5',
-            closing: 'G5',
+            opening: { note: 'E5' },
+            closing: { note: 'G5' },
           },
           {
-            opening: 'F#4',
-            closing: 'B5',
+            opening: { note: 'F#4' },
+            closing: { note: 'B5' },
           },
           {
-            opening: 'A5',
-            closing: 'D6',
-          },
-        ],
-      },
-      {
-        buttons: [
-          {
-            opening: 'A2',
-            closing: 'E2',
-          },
-          {
-            opening: 'B3',
-            closing: 'G3',
-          },
-          {
-            opening: 'D3',
-            closing: 'C4',
-          },
-          {
-            opening: 'F4',
-            closing: 'E4',
-          },
-          {
-            opening: 'A4',
-            closing: 'G4',
-          },
-          {
-            opening: 'B4',
-            closing: 'C5',
-          },
-          {
-            opening: 'D4',
-            closing: 'E5',
-          },
-          {
-            opening: 'F5',
-            closing: 'G5',
-          },
-          {
-            opening: 'A5',
-            closing: 'C6',
-          },
-          {
-            opening: 'B5',
-            closing: 'E6',
+            opening: { note: 'A5' },
+            closing: { note: 'D6' },
           },
         ],
       },
       {
         buttons: [
           {
-            opening: 'C#4',
-            closing: 'D#4',
+            opening: { note: 'A2' },
+            closing: { note: 'E2' },
           },
           {
-            opening: 'A#4',
-            closing: 'G#4',
+            opening: { note: 'B3' },
+            closing: { note: 'G3' },
+          },
+          {
+            opening: { note: 'D3' },
+            closing: { note: 'C4' },
+          },
+          {
+            opening: { note: 'F4' },
+            closing: { note: 'E4' },
+          },
+          {
+            opening: { note: 'A4' },
+            closing: { note: 'G4' },
+          },
+          {
+            opening: { note: 'B4' },
+            closing: { note: 'C5' },
+          },
+          {
+            opening: { note: 'D4' },
+            closing: { note: 'E5' },
+          },
+          {
+            opening: { note: 'F5' },
+            closing: { note: 'G5' },
+          },
+          {
+            opening: { note: 'A5' },
+            closing: { note: 'C6' },
+          },
+          {
+            opening: { note: 'B5' },
+            closing: { note: 'E6' },
+          },
+        ],
+      },
+      {
+        buttons: [
+          {
+            opening: { note: 'C#4' },
+            closing: { note: 'Eb4' },
+          },
+          {
+            opening: { note: 'Bb4' },
+            closing: { note: 'G#4' },
           },
         ],
       },
@@ -985,28 +1547,58 @@ export const accordions: AccordionDefinition[] = [
         offset: 0,
         buttons: [
           {
-            opening: 'B3',
-            closing: 'G#3',
+            opening: {
+              note: 'B3',
+              isChord: true,
+            },
+            closing: {
+              note: 'G#3',
+              isChord: true,
+            },
           },
           {
-            opening: 'B2',
-            closing: 'G#2',
+            opening: {
+              note: 'B2',
+            },
+            closing: {
+              note: 'G#2',
+            },
           },
           {
-            opening: 'D3',
-            closing: 'G3',
+            opening: {
+              note: 'D3',
+              isChord: true,
+            },
+            closing: {
+              note: 'G3',
+              isChord: true,
+            },
           },
           {
-            opening: 'D2',
-            closing: 'G2',
+            opening: {
+              note: 'D2',
+            },
+            closing: {
+              note: 'G2',
+            },
           },
           {
-            opening: 'G3',
-            closing: 'C3',
+            opening: {
+              note: 'G3',
+              isChord: true,
+            },
+            closing: {
+              note: 'C3',
+              isChord: true,
+            },
           },
           {
-            opening: 'G2',
-            closing: 'C2',
+            opening: {
+              note: 'G2',
+            },
+            closing: {
+              note: 'C2',
+            },
           },
         ],
       },
@@ -1014,28 +1606,920 @@ export const accordions: AccordionDefinition[] = [
         offset: 0,
         buttons: [
           {
-            opening: 'A#3',
-            closing: 'D#3',
+            opening: {
+              note: 'Bb3',
+              isChord: true,
+            },
+            closing: {
+              note: 'Eb3',
+              isChord: true,
+            },
           },
           {
-            opening: 'A#2',
-            closing: 'D#2',
+            opening: {
+              note: 'Bb2',
+            },
+            closing: {
+              note: 'Eb2',
+            },
           },
           {
-            opening: 'A3',
-            closing: 'E3',
+            opening: {
+              note: 'A3',
+              isChord: true,
+            },
+            closing: {
+              note: 'E3',
+              isChord: true,
+            },
           },
           {
-            opening: 'A2',
-            closing: 'E2',
+            opening: {
+              note: 'A2',
+            },
+            closing: {
+              note: 'E2',
+            },
           },
           {
-            opening: 'F3',
-            closing: 'F3',
+            opening: {
+              note: 'F3',
+              isChord: true,
+            },
+            closing: {
+              note: 'F3',
+              isChord: true,
+            },
           },
           {
-            opening: 'F2',
-            closing: 'F2',
+            opening: {
+              note: 'F2',
+            },
+            closing: {
+              note: 'F2',
+            },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: '6',
+    name: 'G/C Heim 18 Base',
+    rightHand: [
+      {
+        buttons: [
+          {
+            opening: {
+              note: 'E3',
+            },
+            closing: {
+              note: 'B2',
+            },
+          },
+          {
+            opening: {
+              note: 'F#3',
+            },
+            closing: {
+              note: 'D3',
+            },
+          },
+          {
+            opening: {
+              note: 'A3',
+            },
+            closing: {
+              note: 'G3',
+            },
+          },
+          {
+            opening: {
+              note: 'C4',
+            },
+            closing: {
+              note: 'B3',
+            },
+          },
+          {
+            opening: {
+              note: 'E4',
+            },
+            closing: {
+              note: 'D4',
+            },
+          },
+          {
+            opening: {
+              note: 'F#4',
+            },
+            closing: {
+              note: 'G4',
+            },
+          },
+          {
+            opening: {
+              note: 'A4',
+            },
+            closing: {
+              note: 'B4',
+            },
+          },
+          {
+            opening: {
+              note: 'C5',
+            },
+            closing: {
+              note: 'D5',
+            },
+          },
+          {
+            opening: {
+              note: 'E5',
+            },
+            closing: {
+              note: 'G5',
+            },
+          },
+          {
+            opening: {
+              note: 'F#4',
+            },
+            closing: {
+              note: 'B5',
+            },
+          },
+          {
+            opening: {
+              note: 'A5',
+            },
+            closing: {
+              note: 'D6',
+            },
+          },
+          {
+            opening: {
+              note: 'C6',
+            },
+            closing: {
+              note: 'G6',
+            },
+          },
+        ],
+      },
+      {
+        buttons: [
+          {
+            opening: {
+              note: 'G3',
+            },
+            closing: {
+              note: 'E3',
+            },
+          },
+          {
+            opening: {
+              note: 'B3',
+            },
+            closing: {
+              note: 'G3',
+            },
+          },
+          {
+            opening: {
+              note: 'D3',
+            },
+            closing: {
+              note: 'C4',
+            },
+          },
+          {
+            opening: {
+              note: 'F4',
+            },
+            closing: {
+              note: 'E4',
+            },
+          },
+          {
+            opening: {
+              note: 'A4',
+            },
+            closing: {
+              note: 'G3',
+            },
+          },
+          {
+            opening: {
+              note: 'B4',
+            },
+            closing: {
+              note: 'C5',
+            },
+          },
+          {
+            opening: {
+              note: 'D4',
+            },
+            closing: {
+              note: 'E5',
+            },
+          },
+          {
+            opening: {
+              note: 'F5',
+            },
+            closing: {
+              note: 'G3',
+            },
+          },
+          {
+            opening: {
+              note: 'A5',
+            },
+            closing: {
+              note: 'C6',
+            },
+          },
+          {
+            opening: {
+              note: 'B5',
+            },
+            closing: {
+              note: 'E6',
+            },
+          },
+          {
+            opening: {
+              note: 'D5',
+            },
+            closing: {
+              note: 'G6',
+            },
+          },
+        ],
+      },
+      {
+        buttons: [
+          {
+            opening: {
+              note: 'Bb2',
+            },
+            closing: {
+              note: 'G#2',
+            },
+          },
+          {
+            opening: {
+              note: 'C#3',
+            },
+            closing: {
+              note: 'A3',
+            },
+          },
+          {
+            opening: {
+              note: 'G3',
+            },
+            closing: {
+              note: 'Eb3',
+            },
+          },
+          {
+            opening: {
+              note: 'G#3',
+            },
+            closing: {
+              note: 'G#3',
+            },
+          },
+          {
+            opening: {
+              note: 'Bb3',
+            },
+            closing: {
+              note: 'A4',
+            },
+          },
+          {
+            opening: {
+              note: 'C#4',
+            },
+            closing: {
+              note: 'Eb4',
+            },
+          },
+          {
+            opening: {
+              note: 'G4',
+            },
+            closing: {
+              note: 'G#5',
+            },
+          },
+          {
+            opening: {
+              note: 'G#4',
+            },
+            closing: {
+              note: 'A5',
+            },
+          },
+          {
+            opening: {
+              note: 'Bb5',
+            },
+            closing: {
+              note: 'Eb5',
+            },
+          },
+          {
+            opening: {
+              note: 'C#5',
+            },
+            closing: {
+              note: 'G#5',
+            },
+          },
+        ],
+      },
+    ],
+    leftHand: [
+      {
+        offset: 0,
+        buttons: [
+          {
+            opening: {
+              note: 'B3',
+              isChord: true,
+            },
+            closing: {
+              note: 'G#3',
+              isChord: true,
+            },
+          },
+          {
+            opening: {
+              note: 'B2',
+            },
+            closing: {
+              note: 'G#2',
+            },
+          },
+          {
+            opening: {
+              note: 'D3',
+              isChord: true,
+            },
+            closing: {
+              note: 'G3',
+              isChord: true,
+            },
+          },
+          {
+            opening: {
+              note: 'D2',
+            },
+            closing: {
+              note: 'G2',
+            },
+          },
+          {
+            opening: {
+              note: 'G3',
+              isChord: true,
+            },
+            closing: {
+              note: 'C3',
+              isChord: true,
+            },
+          },
+          {
+            opening: {
+              note: 'G2',
+            },
+            closing: {
+              note: 'C2',
+            },
+          },
+        ],
+      },
+      {
+        offset: 0,
+        buttons: [
+          {
+            opening: {
+              note: 'Eb3',
+              isChord: true,
+            },
+            closing: {
+              note: 'Eb3',
+              isChord: true,
+            },
+          },
+          {
+            opening: {
+              note: 'Eb4',
+            },
+            closing: {
+              note: 'Eb2',
+            },
+          },
+          {
+            opening: {
+              note: 'A3',
+              isChord: true,
+            },
+            closing: {
+              note: 'E3',
+              isChord: true,
+            },
+          },
+          {
+            opening: {
+              note: 'A2',
+            },
+            closing: {
+              note: 'E2',
+            },
+          },
+          {
+            opening: {
+              note: 'F3',
+              isChord: true,
+            },
+            closing: {
+              note: 'F3',
+              isChord: true,
+            },
+          },
+          {
+            opening: {
+              note: 'F2',
+            },
+            closing: {
+              note: 'F2',
+            },
+          },
+        ],
+      },
+      {
+        buttons: [
+          {
+            opening: {
+              note: 'C#3',
+              isChord: true,
+            },
+            closing: {
+              note: 'B3',
+              isChord: true,
+            },
+          },
+          {
+            opening: {
+              note: 'C#2',
+            },
+            closing: {
+              note: 'B2',
+            },
+          },
+          {
+            opening: {
+              note: 'F#3',
+              isChord: true,
+            },
+            closing: {
+              note: 'A3',
+              isChord: true,
+            },
+          },
+          {
+            opening: {
+              note: 'F#2',
+            },
+            closing: {
+              note: 'A2',
+            },
+          },
+          {
+            opening: {
+              note: 'C3',
+              isChord: true,
+            },
+            closing: {
+              note: 'D3',
+              isChord: true,
+            },
+          },
+          {
+            opening: {
+              note: 'C2',
+            },
+            closing: {
+              note: 'D2',
+            },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: '7',
+    name: 'G/C Heim 12 Base',
+    rightHand: [
+      {
+        buttons: [
+          {
+            opening: {
+              note: 'E3',
+            },
+            closing: {
+              note: 'B2',
+            },
+          },
+          {
+            opening: {
+              note: 'F#3',
+            },
+            closing: {
+              note: 'D3',
+            },
+          },
+          {
+            opening: {
+              note: 'A3',
+            },
+            closing: {
+              note: 'G3',
+            },
+          },
+          {
+            opening: {
+              note: 'C4',
+            },
+            closing: {
+              note: 'B3',
+            },
+          },
+          {
+            opening: {
+              note: 'E4',
+            },
+            closing: {
+              note: 'D4',
+            },
+          },
+          {
+            opening: {
+              note: 'F#4',
+            },
+            closing: {
+              note: 'G4',
+            },
+          },
+          {
+            opening: {
+              note: 'A4',
+            },
+            closing: {
+              note: 'B4',
+            },
+          },
+          {
+            opening: {
+              note: 'C5',
+            },
+            closing: {
+              note: 'D5',
+            },
+          },
+          {
+            opening: {
+              note: 'E5',
+            },
+            closing: {
+              note: 'G5',
+            },
+          },
+          {
+            opening: {
+              note: 'F#4',
+            },
+            closing: {
+              note: 'B5',
+            },
+          },
+          {
+            opening: {
+              note: 'A5',
+            },
+            closing: {
+              note: 'D6',
+            },
+          },
+          {
+            opening: {
+              note: 'C6',
+            },
+            closing: {
+              note: 'G6',
+            },
+          },
+        ],
+      },
+      {
+        buttons: [
+          {
+            opening: {
+              note: 'G3',
+            },
+            closing: {
+              note: 'E3',
+            },
+          },
+          {
+            opening: {
+              note: 'B3',
+            },
+            closing: {
+              note: 'G3',
+            },
+          },
+          {
+            opening: {
+              note: 'D3',
+            },
+            closing: {
+              note: 'C4',
+            },
+          },
+          {
+            opening: {
+              note: 'F4',
+            },
+            closing: {
+              note: 'E4',
+            },
+          },
+          {
+            opening: {
+              note: 'A4',
+            },
+            closing: {
+              note: 'G3',
+            },
+          },
+          {
+            opening: {
+              note: 'B4',
+            },
+            closing: {
+              note: 'C5',
+            },
+          },
+          {
+            opening: {
+              note: 'D4',
+            },
+            closing: {
+              note: 'E5',
+            },
+          },
+          {
+            opening: {
+              note: 'F5',
+            },
+            closing: {
+              note: 'G3',
+            },
+          },
+          {
+            opening: {
+              note: 'A5',
+            },
+            closing: {
+              note: 'C6',
+            },
+          },
+          {
+            opening: {
+              note: 'B5',
+            },
+            closing: {
+              note: 'E6',
+            },
+          },
+          {
+            opening: {
+              note: 'D5',
+            },
+            closing: {
+              note: 'G6',
+            },
+          },
+        ],
+      },
+      {
+        buttons: [
+          {
+            opening: {
+              note: 'Bb2',
+            },
+            closing: {
+              note: 'G#2',
+            },
+          },
+          {
+            opening: {
+              note: 'C#3',
+            },
+            closing: {
+              note: 'A3',
+            },
+          },
+          {
+            opening: {
+              note: 'G3',
+            },
+            closing: {
+              note: 'Eb3',
+            },
+          },
+          {
+            opening: {
+              note: 'G#3',
+            },
+            closing: {
+              note: 'G#3',
+            },
+          },
+          {
+            opening: {
+              note: 'Bb3',
+            },
+            closing: {
+              note: 'A4',
+            },
+          },
+          {
+            opening: {
+              note: 'C#4',
+            },
+            closing: {
+              note: 'Eb4',
+            },
+          },
+          {
+            opening: {
+              note: 'G4',
+            },
+            closing: {
+              note: 'G#5',
+            },
+          },
+          {
+            opening: {
+              note: 'G#4',
+            },
+            closing: {
+              note: 'A5',
+            },
+          },
+          {
+            opening: {
+              note: 'Bb5',
+            },
+            closing: {
+              note: 'Eb5',
+            },
+          },
+          {
+            opening: {
+              note: 'C#5',
+            },
+            closing: {
+              note: 'G#5',
+            },
+          },
+        ],
+      },
+    ],
+    leftHand: [
+      {
+        offset: 0,
+        buttons: [
+          {
+            opening: {
+              note: 'B3',
+              isChord: true,
+            },
+            closing: {
+              note: 'G#3',
+              isChord: true,
+            },
+          },
+          {
+            opening: {
+              note: 'B2',
+            },
+            closing: {
+              note: 'G#2',
+            },
+          },
+          {
+            opening: {
+              note: 'D3',
+              isChord: true,
+            },
+            closing: {
+              note: 'G3',
+              isChord: true,
+            },
+          },
+          {
+            opening: {
+              note: 'D2',
+            },
+            closing: {
+              note: 'G2',
+            },
+          },
+          {
+            opening: {
+              note: 'G3',
+              isChord: true,
+            },
+            closing: {
+              note: 'C3',
+              isChord: true,
+            },
+          },
+          {
+            opening: {
+              note: 'G2',
+            },
+            closing: {
+              note: 'C2',
+            },
+          },
+        ],
+      },
+      {
+        offset: 0,
+        buttons: [
+          {
+            opening: {
+              note: 'Eb3',
+              isChord: true,
+            },
+            closing: {
+              note: 'Eb3',
+              isChord: true,
+            },
+          },
+          {
+            opening: {
+              note: 'Eb4',
+            },
+            closing: {
+              note: 'Eb2',
+            },
+          },
+          {
+            opening: {
+              note: 'A3',
+              isChord: true,
+            },
+            closing: {
+              note: 'E3',
+              isChord: true,
+            },
+          },
+          {
+            opening: {
+              note: 'A2',
+            },
+            closing: {
+              note: 'E2',
+            },
+          },
+          {
+            opening: {
+              note: 'F3',
+              isChord: true,
+            },
+            closing: {
+              note: 'F3',
+              isChord: true,
+            },
+          },
+          {
+            opening: {
+              note: 'F2',
+            },
+            closing: {
+              note: 'F2',
+            },
           },
         ],
       },

@@ -36,6 +36,22 @@ export class AccordionSettingsModule extends VuexModule {
     if (!this.currentAccordionLayout) {
       [this.accordionLayout] = accordions;
     }
+    this.updateLayoutsToLatest();
+  }
+
+  @mutation updateLayoutsToLatest() {
+    [...this.customLayouts, this.currentAccordionLayout].forEach((l) => {
+      [...l.leftHand, ...l.rightHand].forEach((r) => {
+        r.buttons.forEach((b) => {
+          if (typeof b.closing === 'string') {
+            b.closing = { note: b.closing };
+          }
+          if (typeof b.opening === 'string') {
+            b.opening = { note: b.opening };
+          }
+        });
+      });
+    });
   }
 
   get accordionLayouts() {
@@ -60,11 +76,11 @@ export class AccordionSettingsModule extends VuexModule {
     };
   }
 
-  @mutation saveLayout() {
-    const copyIndex = this.customLayouts.findIndex((i) => i.id === this.currentAccordionLayout.id);
+  @mutation saveLayout(layout: AccordionDefinition) {
+    const copyIndex = this.customLayouts.findIndex((i) => i.id === layout.id);
     if (copyIndex > -1) {
-      this.currentAccordionLayout.edited = false;
-      this.customLayouts.splice(copyIndex, 1, this.currentAccordionLayout);
+      layout.edited = false;
+      this.customLayouts.splice(copyIndex, 1, _.cloneDeep(layout));
     }
   }
 

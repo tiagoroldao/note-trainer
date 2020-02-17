@@ -160,8 +160,8 @@ export default class AccordionViewer extends Vue {
     );
 
     rows[rowIndex].buttons.splice(index, 0, {
-      opening: '',
-      closing: '',
+      opening: { note: '' },
+      closing: { note: '' },
     });
 
     this.$vxm.settings.accordion.updateLayout({

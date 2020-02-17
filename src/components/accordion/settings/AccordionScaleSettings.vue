@@ -34,7 +34,7 @@
 </template>
 <script lang="ts">
 import Vue from 'vue';
-import { ScaleDictionary, Range } from '@tonaljs/modules';
+import { ScaleDictionary, Range, Note } from '@tonaljs/modules';
 import {
   Component,
 } from 'vue-property-decorator';
@@ -53,15 +53,12 @@ export default class AccordionScaleSettings extends Vue {
 
   get possibleKeys() {
     return Range.chromatic(['C1', 'B1'], { sharps: true, pitchClass: true })
+      .flatMap((n) => [n, Note.enharmonic(n)])
+      .filter((value, index, self) => self.indexOf(value) === index)
       .map((k) => ({
         value: k,
-        text: toHumanNote(k, this.$vxm.settings.useRomanceNotes),
+        text: toHumanNote(k, { useRomanceNotes: this.$vxm.settings.useRomanceNotes }),
       }));
   }
 }
 </script>
-<style lang="scss" scoped>
-.inline-block {
-  display: inline-block;
-}
-</style>
