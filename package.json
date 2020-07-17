@@ -14,7 +14,7 @@
     "animejs": "^3.1.0",
     "core-js": "^3.4.1",
     "eslint-plugin-import": "^2.18.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "pitchfinder": "^2.1.0",
     "tonal": "^2.2.2",
     "tonal-abc-notation": "^2.2.2",
