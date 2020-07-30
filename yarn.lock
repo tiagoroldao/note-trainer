@@ -781,6 +781,11 @@
     error-stack-parser "^2.0.0"
     string-width "^2.0.0"
 
+"@types/animejs@^3.1.0":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@types/animejs/-/animejs-3.1.1.tgz#f1455e306a96f4bff9aae6b5b61c1b5efca74cf4"
+  integrity sha512-vKWHlTcIyyglTNqT/eBPQcmHYMxv23Jrn1qU/SWcTilodSG12d0BNcq+D2fAyW2vv3YwsJJbPBhTRzPt8aPJDw==
+
 "@types/color-name@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
@@ -1327,6 +1332,11 @@ amdefine@>=0.0.4:
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
 
+animejs@^3.1.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/animejs/-/animejs-3.2.0.tgz#2daea7365983249022cc454fa726acdb4a84345d"
+  integrity sha512-zhtGl5cS0G2f5DfciMO8uwWpnx06nfFnHlXYYXHBazHep1Lyd6kEtBQP+9hpYKE0dBZjIigHp9VpMO95ZfXQJQ==
+
 ansi-colors@^3.0.0:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/ansi-colors/-/ansi-colors-3.2.4.tgz#e3a3da4bfbae6c86a9c285625de124a234026fbf"
@@ -1698,9 +1708,9 @@ bluebird@^3.1.1, bluebird@^3.5.5:
   integrity sha512-DdmyoGCleJnkbp3nkbxTLJ18rjDsE4yCggEwKNXkeV123sPNfOCYeDoeuOY+F2FrSjO1YXcTU+dsy96KMy+gcg==
 
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
-  version "4.11.8"
-  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.8.tgz#2cde09eb5ee341f484746bb0309b3253b1b1442f"
-  integrity sha512-ItfYfPLkWHUjckQCk8xC+LwxgK8NYcXywGigJgSwOP8Y2iyWT4f2vsZnoOXTTbo+o5yXmIUJ4gn5538SO5S3gA==
+  version "4.11.9"
+  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.9.tgz#26d556829458f9d1e81fc48952493d0ba3507828"
+  integrity sha512-E6QoYqCKZfgatHTdHzs1RRKP7ip4vvm+EyRUeE2RF0NblwVvb0p6jSVeNTOFxPn26QXN2o6SMfNxKp6kU8zQaw==
 
 body-parser@1.19.0:
   version "1.19.0"
@@ -3114,9 +3124,9 @@ electron-to-chromium@^1.3.306:
   integrity sha512-frDqXvrIROoYvikSKTIKbHbzO6M3/qC6kCIt/1FOa9kALe++c4VAJnwjSFvf1tYLEUsP2n9XZ4XSCyqc3l7A/A==
 
 elliptic@^6.0.0:
-  version "6.5.1"
-  resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.1.tgz#c380f5f909bf1b9b4428d028cd18d3b0efd6b52b"
-  integrity sha512-xvJINNLbTeWQjrl6X+7eQCrIy/YPv5XCpKW6kB5mKvtnGILoLDcySuwomfdzt0BMdLNVnuRNTuzKNHj0bva1Cg==
+  version "6.5.3"
+  resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.3.tgz#cb59eb2efdaf73a0bd78ccd7015a62ad6e0f93d6"
+  integrity sha512-IMqzv5wNQf+E6aHeIqATs0tOLeOTwj1QKbRcS3jBbYkl5oLAserA8yJTT7/VyHUYG91PRmPyeQDObKLPpeS4dw==
   dependencies:
     bn.js "^4.4.0"
     brorand "^1.0.1"
@@ -8870,15 +8880,15 @@ vue@^2.6.10:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
   integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==
 
-vuetify@^1.5.14:
-  version "1.5.21"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.5.21.tgz#e62b4f3b23fc9db39abf340cc9abea3e3859a051"
-  integrity sha512-x0F2mNoWMXVA2ntrmvfjJFU2elaq2WK1tD9wOBu447xUHdZqswziFD82pNtmWRy3TjEXsLj/ZNO8e5dZig+Iqg==
+vuetify@^2.2.11:
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.3.6.tgz#5e667eb120ae1498837cdee5515cc175c1ee4b5e"
+  integrity sha512-mnn5ijJOQf6o443A2ymKrwJAFjaloU0x1QJJArswHv+y2FsSp9obZ6KXDKuzxO6hdGt8VDt/p4S2Hs8A41kbOg==
 
-vuex-class-component@^2.2.1:
+"vuex-class-component@git+https://github.com/tiagoroldao/vuex-class-component.git#3c343a203efd50734f8d7ed2c9cc3baa0b4f2964":
   version "2.2.1"
-  resolved "https://registry.yarnpkg.com/vuex-class-component/-/vuex-class-component-2.2.1.tgz#0901ac701691c4f48b61552a72d882f01bff6c59"
-  integrity sha512-ViHL2BVWPoqmPdZbzqQV/6Txa28nLNf9j9W9w4y7bTDh/noR2TPxPppRYC9FmZBmi+Q0OwJaSy2Ue23fi6/iCg==
+  uid "3c343a203efd50734f8d7ed2c9cc3baa0b4f2964"
+  resolved "git+https://github.com/tiagoroldao/vuex-class-component.git#3c343a203efd50734f8d7ed2c9cc3baa0b4f2964"
   dependencies:
     object.getownpropertydescriptors "^2.0.3"
     rimraf "^2.6.3"
