@@ -781,6 +781,11 @@
     error-stack-parser "^2.0.0"
     string-width "^2.0.0"
 
+"@types/animejs@^3.1.0":
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/@types/animejs/-/animejs-3.1.5.tgz#3cb6c7b90069c6e2969a392eb65ec6311e92c1ab"
+  integrity sha512-4i3i1YuNaNEPoHBJY78uzYu8qKIwyx96G04tnVtNhRMQC9I1Xhg6fY9GeWmZAzudaesKKrPkQgTCthT1zSGYyg==
+
 "@types/color-name@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
@@ -1327,6 +1332,11 @@ amdefine@>=0.0.4:
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
 
+animejs@^3.1.0:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/animejs/-/animejs-3.2.1.tgz#de9fe2e792f44a777a7fdf6ae160e26604b0cdda"
+  integrity sha512-sWno3ugFryK5nhiDm/2BKeFCpZv7vzerWUcUPyAZLDhMek3+S/p418ldZJbJXo5ZUOpfm2kP2XRO4NJcULMy9A==
+
 ansi-colors@^3.0.0:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/ansi-colors/-/ansi-colors-3.2.4.tgz#e3a3da4bfbae6c86a9c285625de124a234026fbf"
@@ -1840,9 +1850,9 @@ browserslist@^4.0.0, browserslist@^4.6.0, browserslist@^4.7.1, browserslist@^4.7
     node-releases "^1.1.40"
 
 buffer-from@^1.0.0:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.1.tgz#32713bc028f75c02fdb710d7c7bcec1f2c6070ef"
-  integrity sha512-MQcXEUbCKtEo7bhqEs6560Hyd4XaovZlO/k9V3hjVUF/zwW7KBVdSK4gIt/bzwS9MbR5qob+F5jusZsb0YQK2A==
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.2.tgz#2b146a6fd72e80b4f55d255f35ed59a3a9a41bd5"
+  integrity sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==
 
 buffer-indexof@^1.0.0:
   version "1.1.1"
@@ -7749,9 +7759,9 @@ source-map-resolve@^0.5.0:
     urix "^0.1.0"
 
 source-map-support@~0.5.12:
-  version "0.5.16"
-  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.16.tgz#0ae069e7fe3ba7538c64c98515e35339eac5a042"
-  integrity sha512-efyLRJDr68D9hBBNIPWFjhpFzURh+KJykQwvMyW5UiZzYwoF6l4YMMDIJJEyFWxWCqfyxLzz6tSfUFR+kXXsVQ==
+  version "0.5.21"
+  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.21.tgz#04fe7c7f9e1ed2d662233c28cb2b35b9f63f6e4f"
+  integrity sha512-uBHU3L3czsIyYXKX88fdrGovxdSCoTGDRZ6SYXtSRxLZUzHg5P/66Ht6uoUlHu9EZod+inXhKo3qQgwXUT/y1w==
   dependencies:
     buffer-from "^1.0.0"
     source-map "^0.6.0"
@@ -8227,9 +8237,9 @@ terser-webpack-plugin@^2.1.2:
     webpack-sources "^1.4.3"
 
 terser@^4.1.2, terser@^4.3.9:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/terser/-/terser-4.4.0.tgz#22c46b4817cf4c9565434bfe6ad47336af259ac3"
-  integrity sha512-oDG16n2WKm27JO8h4y/w3iqBGAOSCtq7k8dRmrn4Wf9NouL0b2WpMHGChFGZq4nFAQy1FsNJrVQHfurXOSTmOA==
+  version "4.8.1"
+  resolved "https://registry.yarnpkg.com/terser/-/terser-4.8.1.tgz#a00e5634562de2239fd404c649051bf6fc21144f"
+  integrity sha512-4GnLC0x667eJG0ewJTa6z/yXrbLGv80D9Ru6HIpCQmO+Q4PfEtBFi0ObSckqwL6VyQv/7ENJieXHo2ANmdQwgw==
   dependencies:
     commander "^2.20.0"
     source-map "~0.6.1"
@@ -8870,15 +8880,15 @@ vue@^2.6.10:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
   integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==
 
-vuetify@^1.5.14:
-  version "1.5.21"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.5.21.tgz#e62b4f3b23fc9db39abf340cc9abea3e3859a051"
-  integrity sha512-x0F2mNoWMXVA2ntrmvfjJFU2elaq2WK1tD9wOBu447xUHdZqswziFD82pNtmWRy3TjEXsLj/ZNO8e5dZig+Iqg==
+vuetify@^2.2.11:
+  version "2.6.7"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.6.7.tgz#9c6fb7d20e1c4b07417084cbe5996c2dadf099df"
+  integrity sha512-1XxCv6mt1UsKaW7rqow0hF/jOw1ijT/fHH9euWLHgSVIcPAx8D2AY5ihTCBbMmV53Hj/YD0DUvzyk6cM/OGHvw==
 
-vuex-class-component@^2.2.1:
+"vuex-class-component@git+https://github.com/tiagoroldao/vuex-class-component.git#3c343a203efd50734f8d7ed2c9cc3baa0b4f2964":
   version "2.2.1"
-  resolved "https://registry.yarnpkg.com/vuex-class-component/-/vuex-class-component-2.2.1.tgz#0901ac701691c4f48b61552a72d882f01bff6c59"
-  integrity sha512-ViHL2BVWPoqmPdZbzqQV/6Txa28nLNf9j9W9w4y7bTDh/noR2TPxPppRYC9FmZBmi+Q0OwJaSy2Ue23fi6/iCg==
+  uid "3c343a203efd50734f8d7ed2c9cc3baa0b4f2964"
+  resolved "git+https://github.com/tiagoroldao/vuex-class-component.git#3c343a203efd50734f8d7ed2c9cc3baa0b4f2964"
   dependencies:
     object.getownpropertydescriptors "^2.0.3"
     rimraf "^2.6.3"
